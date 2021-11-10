@@ -1,17 +1,16 @@
 package com.lwh147.common.core.exception;
 
 /**
- * 自定义业务异常枚举类
+ * 自定义业务异常枚举示例
  *
  * @author lwh
  * @date 2021/11/8 10:38
  **/
 public enum BusinessExceptionEnum implements ICommonExceptionEnum {
     /**
-     * 占位
+     * 推荐按照 “ B + 服务名首字母大写 + 表名首字母大写 + 两位数字 ” 的形式依次定义异常码
      **/
-    CONNECTION_REFUSED("C200004", "连接被拒绝"),
-
+    BUSINESS_ERROR("B0000", "系统出现未处理的业务异常"),
     ;
 
     /**

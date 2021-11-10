@@ -38,7 +38,7 @@ public class RespBody<T> implements Serializable {
      * 错误码
      **/
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @ApiModelProperty(value = "错误码", example = "C000001")
+    @ApiModelProperty(value = "错误码", example = "00000")
     private String errorCode;
     /**
      * 提示信息

@@ -149,7 +149,7 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
                     return e;
                 }
             }
-            throw CommonExceptionEnum.OTHER.toException("【" + value + "】不是允许的排序字段");
+            throw CommonExceptionEnum.CLIENT_ARGUMENT_NOT_VALID_ERROR.toException("【" + value + "】不是允许的排序字段");
         }
 
         /**
