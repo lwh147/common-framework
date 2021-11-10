@@ -53,9 +53,7 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
     /**
      * 排序字段名
      * <p>
-     * 枚举类型
-     * <p>
-     * 编写规则参考 DefaultSortColumnEnum
+     * 枚举类型，编写规则参考 DefaultSortColumnEnum
      **/
     @ApiModelProperty(value = "需要排序的字段名称", example = "createTime")
     private T columnName;
