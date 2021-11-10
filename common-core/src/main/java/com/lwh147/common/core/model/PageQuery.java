@@ -1,9 +1,13 @@
 package com.lwh147.common.core.model;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.lwh147.common.core.constant.CommonConstant;
 import com.lwh147.common.core.enums.ICommonEnum;
 import com.lwh147.common.core.enums.OrderEnum;
+import com.lwh147.common.core.exception.CommonExceptionEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,7 +17,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -21,7 +24,8 @@ import java.util.Objects;
  *
  * @param <T> 排序字段名称<strong>枚举对象</strong>，且必须实现
  *            {@code com.lwh147.common.core.enums.ICommonEnum} 接口
- *            使用枚举是为了限制用户输入，<strong>防止SQL注入</strong>
+ *            使用枚举是为了限制用户输入，<strong>防止SQL注入</strong>，
+ *            详细参考内部类DefaultSortColumnEnum
  * @author lwh
  * @date 2021/10/22 10:44
  **/
@@ -49,11 +53,11 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
     /**
      * 排序字段名
      * <p>
-     * 驼峰格式
-     * <p>
      * 枚举类型
+     * <p>
+     * 编写规则参考 DefaultSortColumnEnum
      **/
-    @ApiModelProperty(value = "需要排序的字段名称，驼峰格式", example = "createTime")
+    @ApiModelProperty(value = "需要排序的字段名称", example = "createTime")
     private T columnName;
 
     /**
@@ -80,13 +84,98 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
      **/
     public String getSortSqlSuffix() {
         // 默认按创建时间降序排序
-        if (Objects.isNull(this.columnName) || Objects.isNull(this.order)) {
-            return "create_time DESC";
+        String column = DefaultSortColumnEnum.CREATE_TIME.getName();
+        String order = OrderEnum.DESC.getValue();
+        if (Objects.nonNull(this.columnName) && Objects.nonNull(this.order)) {
+            // 排序条件不为空，获取用户指定的排序条件
+            column = this.columnName.getName();
+            order = this.order.getValue();
         }
-        // 驼峰转下划线
-        String column = this.columnName.getValue().replaceAll("[A-Z]", "_$0")
-                .toLowerCase(Locale.ROOT);
         // 使用空格拼接
-        return column + CommonConstant.SPACE + this.order;
+        return column + CommonConstant.SPACE + order;
+    }
+
+    /**
+     * 默认排序字段枚举类，只有创建时间
+     * <p>
+     * 枚举值 createTime 代表前端传参取值
+     * <p>
+     * 枚举名称 create_time 代表参数实际对应的数据库字段名
+     * <p>
+     * 也就是说 {@code name} 属性在这里被当作 <strong>实际的数据库字段名</strong> 使用
+     * <p>
+     * 如果自定义排序字段枚举类，必须按照上述规则进行编写
+     * 这样能够避免暴露数据库字段名称到前端，增加安全性
+     **/
+    public enum DefaultSortColumnEnum implements ICommonEnum {
+        /**
+         * 默认排序字段，注意枚举值和枚举名称代表的意义
+         **/
+        CREATE_TIME("createTime", "create_time"),
+        ;
+
+        /**
+         * 枚举值，给前端使用的字段名
+         * <p>
+         * {@code @EnumValue} mybatis-plus注解，该注解所注属性将被作为value存入数据库
+         * {@code @JsonValue} jackson注解，枚举对象序列化时该注解所注属性将被作为value
+         **/
+        @EnumValue
+        @JsonValue
+        private final String value;
+        /**
+         * 枚举值描述，实际数据库中的字段名称
+         **/
+        private final String name;
+
+        /**
+         * 构造方法，默认私有
+         **/
+        DefaultSortColumnEnum(String value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+
+        /**
+         * 根据枚举值寻找枚举对象
+         * <p>
+         * {@code @JsonCreator} jackson注解，将使用此方法进行反序列化
+         *
+         * @return DefaultSortColumnEnum 找到的枚举对象
+         * @throws com.lwh147.common.core.exception.CommonException
+         **/
+        @JsonCreator
+        public static DefaultSortColumnEnum fromValue(String value) {
+            for (DefaultSortColumnEnum e : DefaultSortColumnEnum.values()) {
+                if (e.getValue().equals(value)) {
+                    return e;
+                }
+            }
+            throw CommonExceptionEnum.OTHER.toException("【" + value + "】不是允许的排序字段");
+        }
+
+        /**
+         * 判断枚举值是否存在
+         *
+         * @return DefaultSortColumnEnum 匹配的枚举对象，不存在返回null
+         **/
+        public static DefaultSortColumnEnum exist(String value) {
+            for (DefaultSortColumnEnum e : DefaultSortColumnEnum.values()) {
+                if (e.getValue().equals(value)) {
+                    return e;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public String getValue() {
+            return this.value;
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
     }
 }

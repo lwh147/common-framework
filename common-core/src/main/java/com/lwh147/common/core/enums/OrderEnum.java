@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 
 /**
- * 排序类型枚举
+ * 排序规则枚举
  *
  * @author lwh
  * @date 2021/11/9 10:30
@@ -20,6 +20,7 @@ public enum OrderEnum implements ICommonEnum {
      * 降序
      **/
     DESC("DESC", "降序"),
+
     ;
 
     /**
@@ -59,7 +60,7 @@ public enum OrderEnum implements ICommonEnum {
                 return e;
             }
         }
-        throw CommonExceptionEnum.OTHER.toException("找不到枚举【OrderEnum." + value + "】");
+        throw CommonExceptionEnum.OTHER.toException("没有排序规则【" + value + "】");
     }
 
     /**

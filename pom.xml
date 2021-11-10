@@ -187,11 +187,6 @@
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.annotation.version}</version>
-            </dependency>
             <!-- 其它开发工具依赖库 -->
         </dependencies>
     </dependencyManagement>

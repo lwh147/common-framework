@@ -61,6 +61,7 @@ public enum ExampleEnum implements ICommonEnum {
                 return e;
             }
         }
+        // 错误原因可根据业务场景进行定制
         throw CommonExceptionEnum.OTHER.toException("找不到枚举【ExampleEnum." + value + "】");
     }
 
