@@ -10,11 +10,24 @@ public class CommonConstant {
     /**
      * TOKEN KEY
      **/
-    public static final String TOKEN_KEY = "X-TOKEN";
+    public static final String TOKEN = "X-TOKEN";
+    /**
+     * REFRESH TOKEN KEY
+     **/
+    public static final String REFRESH_TOKEN = "X-TOKEN-REFRESH";
+    /**
+     * ACCESS TOKEN KEY
+     **/
+    public static final String ACCESS_TOKEN = "accessToken";
     /**
      * 时间戳 KEY
      **/
     public static final String TIMESTAMP = "TIMESTAMP";
+    /**
+     * 版本号 KEY
+     **/
+    public static final String VERSION = "VERSION";
+
     /**
      * 请求
      **/
@@ -33,7 +46,7 @@ public class CommonConstant {
      **/
     public static final String SPACE = " ";
     /**
-     * 空格
+     * 冒号
      **/
     public static final String COLON = ":";
 

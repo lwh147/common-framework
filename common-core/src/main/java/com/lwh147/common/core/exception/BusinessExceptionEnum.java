@@ -10,7 +10,8 @@ public enum BusinessExceptionEnum implements ICommonExceptionEnum {
     /**
      * 推荐按照 “ B + 服务名首字母大写 + 表名首字母大写 + 两位数字 ” 的形式依次定义异常码
      **/
-    BUSINESS_ERROR("B0000", "系统出现未处理的业务异常"),
+    BUSINESS_ERROR("B0000", "业务异常"),
+
     ;
 
     /**
@@ -43,6 +44,11 @@ public enum BusinessExceptionEnum implements ICommonExceptionEnum {
     @Override
     public BusinessException toException(Throwable e) {
         return new BusinessException(this, e);
+    }
+
+    @Override
+    public BusinessException toException(String causation, Throwable e) {
+        return new BusinessException(this, causation, e);
     }
 
     @Override

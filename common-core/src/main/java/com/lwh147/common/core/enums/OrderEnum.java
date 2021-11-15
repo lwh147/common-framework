@@ -60,7 +60,7 @@ public enum OrderEnum implements ICommonEnum {
                 return e;
             }
         }
-        throw CommonExceptionEnum.CLIENT_ARGUMENT_NOT_VALID_ERROR.toException("没有排序规则【" + value + "】");
+        throw CommonExceptionEnum.CLIENT_ARGUMENT_NOT_VALID_ERROR.toException("没有排序规则[" + value + "]");
     }
 
     /**

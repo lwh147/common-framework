@@ -42,4 +42,16 @@ public interface ICommonException {
      * @return String
      **/
     String getSource();
+
+    /**
+     * 设置错误来源
+     *
+     * @param source 错误来源
+     **/
+    void setSource(String source);
+
+    /**
+     * 获取导致出错的异常对象
+     **/
+    Throwable getCause();
 }

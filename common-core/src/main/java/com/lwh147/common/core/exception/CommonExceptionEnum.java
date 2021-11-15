@@ -8,9 +8,20 @@ package com.lwh147.common.core.exception;
  **/
 public enum CommonExceptionEnum implements ICommonExceptionEnum {
     /**
-     * 顶级宏观错误码
+     * 通用开发框架异常
      **/
-    COMMON_ERROR("00000", "系统未处理的异常"),
+    COMMON_ERROR("00000", "通用开发框架层执行异常"),
+
+    /**
+     * 系统一级宏观错误码
+     **/
+    SYSTEM_ERROR("S0001", "系统执行出错"),
+    /**
+     * 系统二级宏观错误码
+     **/
+    SYSTEM_UNHANDLED_EXCEPTION_ERROR("S0100", "系统未处理的异常"),
+    SYSTEM_TIMEOUT_ERROR("S0200", "系统执行超时"),
+    SYSTEM_RESOURCE_ERROR("S0300", "系统资源异常"),
 
     /**
      * 用户端一级宏观错误码
@@ -31,16 +42,6 @@ public enum CommonExceptionEnum implements ICommonExceptionEnum {
     CLIENT_DEVICE_ERROR("C1000", "用户设备异常"),
 
     /**
-     * 服务端一级宏观错误码
-     **/
-    SERVER_ERROR("S0001", "系统执行出错"),
-    /**
-     * 服务端二级宏观错误码
-     **/
-    SERVER_TIMEOUT_ERROR("S0100", "系统执行超时"),
-    SERVER_RESOURCE_ERROR("S0200", "系统资源异常"),
-
-    /**
      * 远程调用一级宏观错误码
      **/
     REMOTE_ERROR("R0001", "远程调用出错"),
@@ -51,6 +52,7 @@ public enum CommonExceptionEnum implements ICommonExceptionEnum {
     REMOTE_CACHE_ERROR("R0200", "缓存服务出错"),
     REMOTE_DB_ERROR("R0300", "数据库服务出错"),
     REMOTE_MESSAGE_ERROR("R0400", "消息服务出错"),
+
     ;
 
     /**
@@ -83,6 +85,11 @@ public enum CommonExceptionEnum implements ICommonExceptionEnum {
     @Override
     public CommonException toException(Throwable e) {
         return new CommonException(this, e);
+    }
+
+    @Override
+    public CommonException toException(String causation, Throwable e) {
+        return new CommonException(this, causation, e);
     }
 
     @Override

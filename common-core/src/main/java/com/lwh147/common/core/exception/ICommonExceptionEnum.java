@@ -23,12 +23,21 @@ public interface ICommonExceptionEnum {
     ICommonException toException(String causation);
 
     /**
-     * 构造带导致错误的原始异常对象的异常
+     * 构造带导致错误的异常对象的异常
      *
      * @param e 导致发生错误的未知异常
      * @return ICommonException
      **/
     ICommonException toException(Throwable e);
+
+    /**
+     * 构造带导致错误的异常对象的异常，支持错误原因自定义
+     *
+     * @param causation 错误原因
+     * @param e         导致发生错误的异常
+     * @return ICommonException
+     **/
+    ICommonException toException(String causation, Throwable e);
 
     /**
      * 获取错误码

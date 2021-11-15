@@ -56,8 +56,8 @@ public class RespBody<T> implements Serializable {
      * 错误原因
      **/
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @ApiModelProperty(value = "错误原因", example = "找不到枚举类型【CommonEnum.ERROR】")
-    private String errorCausation;
+    @ApiModelProperty(value = "错误原因", example = "找不到枚举类型[CommonEnum.ERROR]")
+    private String causation;
 
     /**
      * 构建无响应数据的成功响应
@@ -96,8 +96,8 @@ public class RespBody<T> implements Serializable {
                 .success(false)
                 .errorCode(ice.getCode())
                 .errorMessage(ice.getMessage())
+                .causation(ice.getCausation())
                 .errorSource(ice.getSource())
-                .errorCausation(ice.getCausation())
                 .build();
     }
 }

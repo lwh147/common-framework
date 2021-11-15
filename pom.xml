@@ -50,6 +50,7 @@
         <logback.version>1.2.3</logback.version>
         <jackson.annotation.version>2.11.1</jackson.annotation.version>
         <!-- 其它开发工具依赖库版本管理 -->
+        <reflections.version>0.9.11</reflections.version>
     </properties>
 
     <dependencyManagement>
@@ -188,6 +189,11 @@
                 <version>${logback.version}</version>
             </dependency>
             <!-- 其它开发工具依赖库 -->
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

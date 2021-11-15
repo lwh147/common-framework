@@ -4,8 +4,6 @@ import com.sun.istack.internal.Nullable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.text.MessageFormat;
-
 /**
  * 自定义业务异常
  *
@@ -34,72 +32,65 @@ public class BusinessException extends RuntimeException implements ICommonExcept
     private String causation;
 
     /**
-     * 基本构造方式
-     *
-     * @param code    错误码
-     * @param message 错误信息
-     **/
-    public BusinessException(String code, String message) {
-        super(MessageFormat.format(MESSAGE_PATTERN, code, message, null));
-        this.code = code;
-        this.message = message;
-    }
-
-    /**
-     * 带错误原因的构造方式
-     *
-     * @param code      错误码
-     * @param message   错误信息
-     * @param causation 错误原因
-     **/
-    public BusinessException(String code, String message, String causation) {
-        super(MessageFormat.format(MESSAGE_PATTERN, code, message, causation));
-        this.code = code;
-        this.message = message;
-        this.causation = causation;
-    }
-
-    /**
-     * 使用异常枚举类行为规范接口对象的构造方式
+     * 使用异常枚举类行为规范接口对象的基本构造方式
+     * <p>
+     * 只包含简单的错误码和错误信息
      *
      * @param ice 异常枚举类行为规范接口对象
      **/
     public BusinessException(ICommonExceptionEnum ice) {
-        super(MessageFormat.format(MESSAGE_PATTERN, ice.getCode(), ice.getMessage(), null));
+        super();
         this.code = ice.getCode();
         this.message = ice.getMessage();
     }
 
     /**
-     * 使用异常枚举类行为规范接口对象的构造方式
-     * 带错误原因
+     * 使用异常枚举类行为规范接口对象的完整构造方式1
+     * <p>
+     * 包含错误码、错误信息以及错误原因描述
      *
      * @param ice       异常枚举类行为规范接口对象
      * @param causation 错误原因
      **/
     public BusinessException(ICommonExceptionEnum ice, String causation) {
-        super(MessageFormat.format(MESSAGE_PATTERN, ice.getCode(), ice.getMessage(), causation));
+        super();
         this.code = ice.getCode();
         this.message = ice.getMessage();
         this.causation = causation;
     }
 
     /**
-     * 使用异常枚举类行为规范接口对象的构造方式
-     * 带错误原因
+     * 使用异常枚举类行为规范接口对象的完整构造方式2
+     * <p>
+     * 包含错误码、错误信息以及错误原因描述
+     * <p>
+     * 与方式1不同的是错误原因默认使用从 传入的 导致出错的异常对象中获取的信息
      *
      * @param ice 异常枚举类行为规范接口对象
-     * @param e   错误原因，导致出错的未知异常
+     * @param e   导致出错的异常对象
      **/
     public BusinessException(ICommonExceptionEnum ice, Throwable e) {
-        super(MessageFormat.format(MESSAGE_PATTERN, ice.getCode(), ice.getMessage(), e.getMessage()), e);
+        super(e);
         this.code = ice.getCode();
         this.message = ice.getMessage();
         this.causation = e.getMessage();
     }
 
     /**
-     * 转String字符串模板
+     * 使用异常枚举类行为规范接口对象的完整构造方式3
+     * <p>
+     * 包含错误码、错误信息以及错误原因描述
+     * <p>
+     * 在方式2的基础上增加用户自定义错误原因的支持（比如汉化或友好化）
+     *
+     * @param ice      异常枚举类行为规范接口对象
+     * @param casation 错误原因描述
+     * @param e        导致出错的异常对象
      **/
-    private static final String MESSAGE_PATTERN = "BusinessException(code: {0}, message: {1}, causation: {2})";
+    public BusinessException(ICommonExceptionEnum ice, String casation, Throwable e) {
+        super(e);
+        this.code = ice.getCode();
+        this.message = ice.getMessage();
+        this.causation = casation;
+    }
 }
