@@ -2,6 +2,7 @@ package com.lwh147.common.web.exception.converter;
 
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.core.exception.ICommonException;
+import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
@@ -19,8 +20,8 @@ import java.util.Set;
  * @author lwh
  * @date 2021/11/10 16:15
  **/
-// 消除使用泛型类原始类型时的安全检查警告
-@SuppressWarnings("rawtypes")
+@Slf4j
+@SuppressWarnings("rawtypes")   // 消除使用泛型类原始类型时的安全检查警告
 public class ExceptionConverterPoolSingleton {
     /**
      * 异常转换器对象池，根据转换器所接收的异常类型进行存储
@@ -39,6 +40,7 @@ public class ExceptionConverterPoolSingleton {
      * @return ExceptionConverterPoolSingleton
      **/
     public static ExceptionConverterPoolSingleton newInstance() {
+
         // 不为null直接返回
         if (Objects.nonNull(exceptionConverter)) {
             return exceptionConverter;
@@ -51,7 +53,10 @@ public class ExceptionConverterPoolSingleton {
                 return exceptionConverter;
             }
             // 调用构造方法实例化对象
-            return new ExceptionConverterPoolSingleton();
+            log.debug("开始初始化异常转换器池...");
+            exceptionConverter = new ExceptionConverterPoolSingleton();
+            log.debug("异常转换器池初始化完成");
+            return exceptionConverter;
         }
     }
 
@@ -61,12 +66,19 @@ public class ExceptionConverterPoolSingleton {
     private ExceptionConverterPoolSingleton() {
         this.pool = new HashMap<>(16);
         // 扫描基础包路径下实现了IExceptionConverter接口的转换器类
-        final String PACKAGE_NAME = "com.lwh147.commmon.web.exception.converter";
+        final String PACKAGE_NAME = "com.lwh147.common.web.exception.converter";
         Reflections reflections = new Reflections(PACKAGE_NAME);
         Set<Class<? extends IExceptionConverter>> subTypes = reflections.getSubTypesOf(IExceptionConverter.class);
         for (Class<? extends IExceptionConverter> cls : subTypes) {
+            log.debug("扫描到异常转换器：{}", cls.toString());
             // 实例化转换器对象并根据其转换的异常类型放入转换器池中
             this.pool.put(getType(cls), newInstance(cls));
+        }
+        // 有循环，输出前先判断
+        if (log.isDebugEnabled()) {
+            for (Map.Entry<Type, IExceptionConverter> e : pool.entrySet()) {
+                log.debug("Type: {}, Converter: {}", e.getKey().toString(), e.getClass().toString());
+            }
         }
     }
 
@@ -87,7 +99,7 @@ public class ExceptionConverterPoolSingleton {
             // 不为空则调用其转换方法进行转换
             return converter.convert(e);
         }
-        // 没有找到对应的异常转换器，抛出异常
+        // 没有找到
         return CommonExceptionEnum.SYSTEM_UNHANDLED_EXCEPTION_ERROR.toException(e.getClass().toString()
                 + ": " + e.getMessage(), e);
     }
@@ -99,16 +111,18 @@ public class ExceptionConverterPoolSingleton {
      * @return Type 该转换器支持转换的异常类型
      **/
     private Type getType(Class<? extends IExceptionConverter> cls) {
-        final String METHOD_NAME = "converter";
-        try {
-            // 获取转换方法对象
-            Method method = cls.getMethod(METHOD_NAME, Exception.class);
-            // 获取该转换器对象支持转换的异常类型
-            return method.getParameterTypes()[0];
-        } catch (NoSuchMethodException e) {
-            throw CommonExceptionEnum.COMMON_ERROR.toException("没有找到异常转换器对象"
-                    + "[" + cls.toGenericString() + "]的[" + METHOD_NAME + "]方法[" + e.getMessage() + "]", e);
+        final String METHOD_NAME = "convert";
+        // 获取转换方法对象，必须是public的
+        Method[] methods = cls.getMethods();
+        for (Method m : methods) {
+            if (m.getName().equals(METHOD_NAME)) {
+                // 获取该转换器对象支持转换的异常类型
+                return m.getParameterTypes()[0];
+            }
         }
+        // 没找到
+        throw CommonExceptionEnum.COMMON_ERROR.toException("没有找到异常转换器对象"
+                + "[" + cls.toGenericString() + "]的[" + METHOD_NAME + "]方法");
     }
 
     /**

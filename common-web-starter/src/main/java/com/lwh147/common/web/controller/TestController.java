@@ -1,5 +1,6 @@
 package com.lwh147.common.web.controller;
 
+import com.lwh147.common.core.exception.BusinessExceptionEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,6 @@ public class TestController {
     }
 
     private void test2() {
-        int i = 1 / 0;
+        throw BusinessExceptionEnum.BUSINESS_ERROR.toException("业务失败");
     }
 }

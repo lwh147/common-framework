@@ -4,3 +4,9 @@ server:
 spring:
   application:
     name: common-service
+
+logging:
+  level:
+    com:
+      lwh147:
+        common: debug

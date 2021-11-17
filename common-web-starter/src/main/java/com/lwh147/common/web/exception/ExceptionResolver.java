@@ -2,6 +2,7 @@ package com.lwh147.common.web.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
+import com.lwh147.common.core.constant.CommonConstant;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.core.exception.ICommonException;
 import com.lwh147.common.core.model.RespBody;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * 全局异常处理
@@ -26,7 +28,7 @@ import java.util.Objects;
  * @author lwh
  * @date 2021/11/10 15:36
  **/
-@Slf4j(topic = "全局异常处理")
+@Slf4j
 @Configuration
 public class ExceptionResolver implements HandlerExceptionResolver {
     /**
@@ -44,7 +46,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
         ICommonException ice;
         // 判断参数是否合法
         if (Objects.isNull(httpServletRequest) || Objects.isNull(httpServletResponse) || Objects.isNull(e)) {
-            throw CommonExceptionEnum.COMMON_ERROR.toException("[全局异常处理]上下文环境异常: 请求或响应或异常对象为null");
+            throw CommonExceptionEnum.COMMON_ERROR.toException("上下文环境异常: 请求或响应或异常对象为null");
         }
         // 判断是不是自定义异常
         else if (e instanceof ICommonException) {
@@ -58,6 +60,8 @@ public class ExceptionResolver implements HandlerExceptionResolver {
         if (Objects.isNull(ice.getSource())) {
             ice.setSource(APP_NAME);
         }
+        // 打印前对异常信息进行处理（去除回车换行）
+        ice.setCausation(Pattern.compile("[\r\n]").matcher(ice.getCausation()).replaceAll(CommonConstant.SPACE));
         // 打印异常信息记录日志
         this.print(ice);
         // 写入响应体
@@ -88,7 +92,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
             pw.write(objectMapper.writeValueAsString(respBody));
             pw.flush();
         } catch (IOException e) {
-            throw CommonExceptionEnum.COMMON_ERROR.toException("[全局异常处理]写入响应体失败: " + e.getMessage(), e);
+            throw CommonExceptionEnum.COMMON_ERROR.toException("写入响应体失败: " + e.getMessage(), e);
         } finally {
             if (Objects.nonNull(pw)) {
                 pw.close();

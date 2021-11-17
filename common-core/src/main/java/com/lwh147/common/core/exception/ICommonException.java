@@ -37,6 +37,11 @@ public interface ICommonException {
     String getCausation();
 
     /**
+     * 设置错误原因
+     **/
+    void setCausation(String causation);
+
+    /**
      * 获取错误来源
      *
      * @return String
