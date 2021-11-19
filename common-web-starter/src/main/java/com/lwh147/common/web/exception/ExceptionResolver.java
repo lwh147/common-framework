@@ -1,17 +1,17 @@
 package com.lwh147.common.web.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.net.HttpHeaders;
-import com.lwh147.common.core.constant.CommonConstant;
+import com.lwh147.common.core.constant.RegExpConstant;
+import com.lwh147.common.core.constant.WebConstant;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.core.exception.ICommonException;
 import com.lwh147.common.core.model.RespBody;
 import com.lwh147.common.web.exception.converter.ExceptionConverterPoolSingleton;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 /**
  * 全局异常处理
@@ -29,13 +28,13 @@ import java.util.regex.Pattern;
  * @date 2021/11/10 15:36
  **/
 @Slf4j
-@Configuration
+@Component
 public class ExceptionResolver implements HandlerExceptionResolver {
     /**
      * 当前应用名称
      **/
     @Value("${spring.application.name}")
-    private String APP_NAME;
+    private String appName;
     /**
      * 异常转换器单例池
      **/
@@ -58,12 +57,12 @@ public class ExceptionResolver implements HandlerExceptionResolver {
         }
         // 微服务系统中，判断是否是下游错误的封装异常
         if (Objects.isNull(ice.getSource())) {
-            ice.setSource(APP_NAME);
+            ice.setSource(appName);
         }
         // 打印前对异常信息进行处理（去除回车换行）
-        ice.setCausation(Pattern.compile("[\r\n]").matcher(ice.getCausation()).replaceAll(CommonConstant.SPACE));
+        ice.setCausation(RegExpConstant.ENTER_PATTERN.matcher(ice.getCausation()).replaceAll(""));
         // 打印异常信息记录日志
-        this.print(ice);
+        this.doLog(ice);
         // 写入响应体
         this.writeRespBody(httpServletResponse, ice);
         // 返回
@@ -79,11 +78,9 @@ public class ExceptionResolver implements HandlerExceptionResolver {
     private void writeRespBody(HttpServletResponse response, ICommonException ice) {
         // 构造失败响应体
         RespBody<?> respBody = RespBody.failure(ice);
-        // 响应体类型
-        final String APPLICATION_JSON_UTF8 = "application/json;charset=UTF-8";
         // 设置响应头
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        response.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_UTF8);
+        response.setHeader(WebConstant.Header.CONTENT_TYPE, WebConstant.ContentType.APPLICATION_JSON_CHARSET_UTF_8);
         // 写入响应内容
         PrintWriter pw = null;
         try {
@@ -105,8 +102,8 @@ public class ExceptionResolver implements HandlerExceptionResolver {
      *
      * @param ice 自定义异常
      **/
-    private void print(ICommonException ice) {
+    private void doLog(ICommonException ice) {
         // 打印异常类记录信息，cause为null默认不打印任何信息，不会报错
-        log.error("{}", ice.toString(), ice.getCause());
+        log.error(ice.toString(), ice.getCause());
     }
 }

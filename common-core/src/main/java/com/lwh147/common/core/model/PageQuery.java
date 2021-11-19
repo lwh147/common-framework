@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.lwh147.common.core.constant.CommonConstant;
 import com.lwh147.common.core.enums.ICommonEnum;
 import com.lwh147.common.core.enums.OrderEnum;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
@@ -90,7 +89,7 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
             order = this.order.getValue();
         }
         // 使用空格拼接
-        return column + CommonConstant.SPACE + order;
+        return column + " " + order;
     }
 
     /**

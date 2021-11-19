@@ -1,8 +1,9 @@
 package com.lwh147.common.web.controller;
 
-import com.lwh147.common.core.exception.BusinessExceptionEnum;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * 测试控制器
@@ -10,15 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
  * @author lwh
  * @date 2021/11/15 10:19
  **/
+@Slf4j
 @RestController
 public class TestController {
-    @GetMapping("/test")
-    String test() {
-        this.test2();
+    @PostMapping("/testPost")
+    String test(@RequestParam("name") String name, @RequestBody Map<String, Object> map) {
+        log.debug("name: {}", name);
+        log.debug("map: {}", map);
         return "SUCCESS";
     }
 
-    private void test2() {
-        throw BusinessExceptionEnum.BUSINESS_ERROR.toException("业务失败");
+    @GetMapping("/testGet")
+    String test(@RequestParam("name") String name) {
+        log.debug("name: {}", name);
+        return "SUCCESS";
     }
 }

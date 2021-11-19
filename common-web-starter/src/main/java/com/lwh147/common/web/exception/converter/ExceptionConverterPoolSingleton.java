@@ -21,7 +21,7 @@ import java.util.Set;
  * @date 2021/11/10 16:15
  **/
 @Slf4j
-@SuppressWarnings("rawtypes")   // 消除使用泛型类原始类型时的安全检查警告
+@SuppressWarnings("rawtypes")
 public class ExceptionConverterPoolSingleton {
     /**
      * 异常转换器对象池，根据转换器所接收的异常类型进行存储
@@ -45,8 +45,10 @@ public class ExceptionConverterPoolSingleton {
         if (Objects.nonNull(exceptionConverter)) {
             return exceptionConverter;
         }
-        // 为null，说明该类还没有一个实例对象，进行实例化操作
-        // 对类对象加锁，防止并发和并行操作导致实例化多次
+        /*
+         * 为null，说明该类还没有一个实例对象，进行实例化操作
+         * 对类对象加锁，防止并发和并行操作导致实例化多次
+         */
         synchronized (ExceptionConverterPoolSingleton.class) {
             // 双重校验
             if (Objects.nonNull(exceptionConverter)) {
@@ -66,8 +68,8 @@ public class ExceptionConverterPoolSingleton {
     private ExceptionConverterPoolSingleton() {
         this.pool = new HashMap<>(16);
         // 扫描基础包路径下实现了IExceptionConverter接口的转换器类
-        final String PACKAGE_NAME = "com.lwh147.common.web.exception.converter";
-        Reflections reflections = new Reflections(PACKAGE_NAME);
+        final String packageName = "com.lwh147.common.web.exception.converter";
+        Reflections reflections = new Reflections(packageName);
         Set<Class<? extends IExceptionConverter>> subTypes = reflections.getSubTypesOf(IExceptionConverter.class);
         for (Class<? extends IExceptionConverter> cls : subTypes) {
             log.debug("扫描到异常转换器：{}", cls.toString());
@@ -90,7 +92,6 @@ public class ExceptionConverterPoolSingleton {
      * @param e 待转换的异常对象
      * @return ICommonException
      **/
-    // 消除类型检查警告
     @SuppressWarnings("unchecked")
     public ICommonException convert(Exception e) {
         // 从转换池中获取对应类型的转换器
@@ -111,18 +112,18 @@ public class ExceptionConverterPoolSingleton {
      * @return Type 该转换器支持转换的异常类型
      **/
     private Type getType(Class<? extends IExceptionConverter> cls) {
-        final String METHOD_NAME = "convert";
+        final String methodName = "convert";
         // 获取转换方法对象，必须是public的
         Method[] methods = cls.getMethods();
         for (Method m : methods) {
-            if (m.getName().equals(METHOD_NAME)) {
+            if (m.getName().equals(methodName)) {
                 // 获取该转换器对象支持转换的异常类型
                 return m.getParameterTypes()[0];
             }
         }
         // 没找到
         throw CommonExceptionEnum.COMMON_ERROR.toException("没有找到异常转换器对象"
-                + "[" + cls.toGenericString() + "]的[" + METHOD_NAME + "]方法");
+                + "[" + cls.toGenericString() + "]的[" + methodName + "]方法");
     }
 
     /**

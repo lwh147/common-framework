@@ -38,6 +38,8 @@ public interface ICommonException {
 
     /**
      * 设置错误原因
+     *
+     * @param causation 错误原因
      **/
     void setCausation(String causation);
 
@@ -57,6 +59,8 @@ public interface ICommonException {
 
     /**
      * 获取导致出错的异常对象
+     *
+     * @return Throwable 导致出错的异常对象
      **/
     Throwable getCause();
 }

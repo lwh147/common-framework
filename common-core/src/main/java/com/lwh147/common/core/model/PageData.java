@@ -64,8 +64,10 @@ public class PageData<T> implements Serializable {
     public static <T> PageData<T> fromPage(Page<T> page) {
         // 这里必须显式指定builder的泛型为T类型，与page对象的泛型保持一致
         PageDataBuilder<T> builder = builder();
-        // 直接调用builder()方法通过new获得的builder会隐式采用Object作为泛型类型，从而产生类型不匹配问题
-        // return new PageDataBuilder<>() ===> builder类型为PageDataBuilder<Object>
+        /*
+         * 直接调用builder()方法获得的builder会隐式采用Object作为泛型类型从而产生类型不匹配问题
+         * return new PageDataBuilder<>()，builder类型为PageDataBuilder<Object>
+         */
         return builder
                 .size(page.getSize())
                 .current(page.getCurrent())
