@@ -32,6 +32,10 @@
             <groupId>com.lwh147</groupId>
             <artifactId>common-util</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.lwh147</groupId>
+            <artifactId>common-swagger-starter</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>

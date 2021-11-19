@@ -14,14 +14,14 @@ import java.util.Map;
 @Slf4j
 @RestController
 public class TestController {
-    @PostMapping("/testPost")
+    @PostMapping("common/client/testPost")
     public String test(@RequestParam("name") String name, @RequestBody Map<String, Object> map) {
         log.debug("name: {}", name);
         log.debug("map: {}", map);
         return "SUCCESS";
     }
 
-    @GetMapping("/testGet")
+    @GetMapping("common/admin/testGet")
     public String test(@RequestParam("name") String name) {
         log.debug("name: {}", name);
         return "SUCCESS";

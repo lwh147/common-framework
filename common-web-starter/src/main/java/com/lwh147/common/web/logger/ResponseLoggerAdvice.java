@@ -22,7 +22,7 @@ import java.util.Objects;
  * @date 2021/11/17 9:43
  **/
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.lwh147")
 public class ResponseLoggerAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(@Nonnull MethodParameter returnType, @Nonnull Class<? extends HttpMessageConverter<?>> converterType) {
