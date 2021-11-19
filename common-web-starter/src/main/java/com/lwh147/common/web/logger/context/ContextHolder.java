@@ -11,7 +11,7 @@ import java.util.Map;
  * @author lwh
  * @date 2021/11/18 17:40
  **/
-public class RequestContextHolder {
+public class ContextHolder {
     /**
      * 线程本地变量，存储该线程处理的请求相关信息
      **/
@@ -64,6 +64,6 @@ public class RequestContextHolder {
     /**
      * 不能实例化
      **/
-    private RequestContextHolder() {
+    private ContextHolder() {
     }
 }

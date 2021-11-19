@@ -1,5 +1,7 @@
 package com.lwh147.common.web.logger;
 
+import com.lwh147.common.core.constant.WebConstant;
+import com.lwh147.common.web.logger.context.ContextHolder;
 import com.lwh147.common.web.logger.filter.RepeatableReadRequestWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -37,41 +39,38 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
      * @param request 请求对象
      **/
     private void doLog(HttpServletRequest request) {
-        // 获取基础请求信息
+        // 获取基础请求信息并保存到上下文中方便后续使用
         String method = request.getMethod();
-        String queryString = request.getQueryString();
-        String url = request.getRequestURL().toString() + (Objects.isNull(queryString) ? "" : ("?" + queryString));
-        // 基础打印模板，请求方法 请求url
-        String template = "===> {} {}";
+        ContextHolder.set(WebConstant.REQUEST_METHOD, method);
+        String param = request.getQueryString();
+        String url = request.getRequestURL().toString() + (Objects.isNull(param) ? "" : ("?" + param));
+        ContextHolder.set(WebConstant.REQUEST_URL, url);
+        // 基础打印模板，<===代表收到请求 请求方法 请求url
+        String template = "<=== {} {}";
         // 是否是包装类型
         if (request instanceof RepeatableReadRequestWrapper) {
             // 获取请求体信息
-            String bodyString = ((RepeatableReadRequestWrapper) request).getBody();
+            String requestBody = ((RepeatableReadRequestWrapper) request).getBody();
             // 不为空时追加请求体信息打印
-            if (Objects.nonNull(bodyString)) {
-                template += " {}";
-                log.info(template, method, url, bodyString);
+            if (Objects.nonNull(requestBody)) {
+                template += "\n" + WebConstant.REQUEST_BODY + ": {}";
+                log.info(template, String.format("%6s", method), url, requestBody);
+                // 同时写入上下文
+                ContextHolder.set(WebConstant.REQUEST_BODY, requestBody);
                 return;
             }
         }
-        log.info(template, method, url);
+        log.info(template, String.format("%6s", method), url);
     }
 
     @Override
-    public void postHandle(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler, ModelAndView modelAndView) throws Exception {
-        this.doLog(response);
-    }
-
-    /**
-     * 响应日志记录
-     *
-     * @param response 响应对象
-     **/
-    private void doLog(HttpServletResponse response) {
-
+    public void postHandle(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler, ModelAndView modelAndView) {
+        // 响应信息日志记录不能放这里，因为不能获取响应体
     }
 
     @Override
-    public void afterCompletion(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler, Exception ex) throws Exception {
+    public void afterCompletion(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler, Exception ex) {
+        // 请求已完成，清除保存的上下文信息
+        ContextHolder.remove();
     }
 }

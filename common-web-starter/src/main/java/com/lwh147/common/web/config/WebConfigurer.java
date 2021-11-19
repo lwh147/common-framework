@@ -15,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.annotation.Nonnull;
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,20 +41,8 @@ public class WebConfigurer implements WebMvcConfigurer {
      **/
     @Override
     public void configureHandlerExceptionResolvers(@Nonnull List<HandlerExceptionResolver> resolvers) {
+        log.debug("配置并开启全局异常处理");
         resolvers.add(exceptionResolver);
-    }
-
-    /**
-     * 配置可重复读请求替换过滤器
-     **/
-    @Bean
-    public FilterRegistrationBean<RequestReplaceFilter> requestReplaceFilterRegister() {
-        FilterRegistrationBean<RequestReplaceFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(requestReplaceFilter);
-        registrationBean.addUrlPatterns("/*");
-        registrationBean.setName("logFilter");
-        registrationBean.setOrder(2);
-        return registrationBean;
     }
 
     /**
@@ -66,6 +55,21 @@ public class WebConfigurer implements WebMvcConfigurer {
         registrationBean.addUrlPatterns("/*");
         registrationBean.setName("encodingFilter");
         registrationBean.setOrder(1);
+        log.debug("配置并开启统一编码过滤器[UTF-8]");
+        return registrationBean;
+    }
+
+    /**
+     * 配置可重复读请求替换过滤器
+     **/
+    @Bean
+    public FilterRegistrationBean<RequestReplaceFilter> requestReplaceFilterRegister() {
+        FilterRegistrationBean<RequestReplaceFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(requestReplaceFilter);
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setName("logFilter");
+        registrationBean.setOrder(2);
+        log.debug("配置并开启可重复读包装请求替换过滤器");
         return registrationBean;
     }
 
@@ -86,5 +90,6 @@ public class WebConfigurer implements WebMvcConfigurer {
         registry.addInterceptor(requestLoggerInterceptor)
                 .excludePathPatterns(whiteList)
                 .addPathPatterns("/**");
+        log.debug("配置并开启日志记录拦截器，白名单：{}", Arrays.toString(whiteList.toArray()));
     }
 }

@@ -9,8 +9,11 @@ import java.nio.charset.StandardCharsets;
  * @date 2021/11/17 14:57
  **/
 public class WebConstant {
-    public static final String REQUEST = "Request";
-    public static final String RESPONSE = "Response";
+    public static final String REQUEST_METHOD = "requestMethod";
+    public static final String REQUEST_URL = "requestUrl";
+    public static final String REQUEST_PARAM = "requestParam";
+    public static final String REQUEST_BODY = "requestBody";
+    public static final String RESPONSE_BODY = "responseBody";
 
     /**
      * 请求方式

@@ -1,4 +1,4 @@
-package com.lwh147.common.web;
+package com.lwh147.common.web.test;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author lwh
  * @date 2021/11/15 10:17
  **/
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.lwh147.common")
 public class TestApplication {
     public static void main(String[] args) {
         SpringApplication.run(TestApplication.class, args);

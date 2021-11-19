@@ -72,14 +72,14 @@ public class ExceptionConverterPoolSingleton {
         Reflections reflections = new Reflections(packageName);
         Set<Class<? extends IExceptionConverter>> subTypes = reflections.getSubTypesOf(IExceptionConverter.class);
         for (Class<? extends IExceptionConverter> cls : subTypes) {
-            log.debug("扫描到异常转换器：{}", cls.toString());
             // 实例化转换器对象并根据其转换的异常类型放入转换器池中
             this.pool.put(getType(cls), newInstance(cls));
         }
         // 有循环，输出前先判断
         if (log.isDebugEnabled()) {
+            log.debug("扫描到的异常转换器：");
             for (Map.Entry<Type, IExceptionConverter> e : pool.entrySet()) {
-                log.debug("Type: {}, Converter: {}", e.getKey().toString(), e.getClass().toString());
+                log.debug("Converter: {}, Type: {}", e.getClass().toString(), e.getKey().toString());
             }
         }
     }
