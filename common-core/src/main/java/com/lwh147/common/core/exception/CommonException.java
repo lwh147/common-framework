@@ -1,6 +1,6 @@
 package com.lwh147.common.core.exception;
 
-import com.sun.istack.internal.Nullable;
+import com.sun.istack.Nullable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -53,7 +53,7 @@ public class CommonException extends RuntimeException implements ICommonExceptio
      * @param causation 错误原因
      **/
     public CommonException(ICommonExceptionEnum ice, String causation) {
-        super();
+        super(causation);
         this.code = ice.getCode();
         this.message = ice.getMessage();
         this.causation = causation;

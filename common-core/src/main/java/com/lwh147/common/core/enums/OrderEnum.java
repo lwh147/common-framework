@@ -1,6 +1,5 @@
 package com.lwh147.common.core.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
@@ -20,16 +19,13 @@ public enum OrderEnum implements ICommonEnum {
      * 降序
      **/
     DESC("DESC", "降序"),
-
     ;
 
     /**
      * 枚举值
      * <p>
-     * {@code @EnumValue} mybatis-plus注解，该注解所注属性将被作为value存入数据库
      * {@code @JsonValue} jackson注解，枚举对象序列化时该注解所注属性将被作为value
      **/
-    @EnumValue
     @JsonValue
     private final String value;
     /**
@@ -85,5 +81,10 @@ public enum OrderEnum implements ICommonEnum {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

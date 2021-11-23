@@ -83,7 +83,7 @@ public class WebConfigurer implements WebMvcConfigurer {
         whiteList.add("/");
         whiteList.add("/error");
         whiteList.add("/csrf");
-        whiteList.add("/swagger*/**");
+        whiteList.add("/swagger-resources/**");
         whiteList.add("/static/**");
         whiteList.add("/webjars/**");
         whiteList.add("/favicon.ico");

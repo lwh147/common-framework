@@ -33,7 +33,7 @@ public enum CommonExceptionEnum implements ICommonExceptionEnum {
     CLIENT_REGISTER_ERROR("C0100", "用户注册失败"),
     CLIENT_LOGIN_ERROR("C0200", "用户登录失败"),
     CLIENT_NOT_ALLOW_ERROR("C0300", "访问权限异常"),
-    CLIENT_ARGUMENT_NOT_VALID_ERROR("C0400", "用户请求参数错误"),
+    CLIENT_ARGUMENT_NOT_VALID_ERROR("C0400", "用户请求参数非法"),
     CLIENT_REQUEST_ERROR("C0500", "用户请求服务异常"),
     CLIENT_RESOURCE_ERROR("C0600", "用户资源异常"),
     CLIENT_FILE_UPLOAD_ERROR("C0700", "用户上传文件异常"),

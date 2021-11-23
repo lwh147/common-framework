@@ -1,6 +1,6 @@
 package com.lwh147.common.core.exception;
 
-import com.sun.istack.internal.Nullable;
+import com.sun.istack.Nullable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

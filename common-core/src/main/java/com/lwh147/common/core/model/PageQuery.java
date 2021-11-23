@@ -1,6 +1,5 @@
 package com.lwh147.common.core.model;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -114,10 +113,8 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
         /**
          * 枚举值，给前端使用的字段名
          * <p>
-         * {@code @EnumValue} mybatis-plus注解，该注解所注属性将被作为value存入数据库
          * {@code @JsonValue} jackson注解，枚举对象序列化时该注解所注属性将被作为value
          **/
-        @EnumValue
         @JsonValue
         private final String value;
         /**
@@ -173,6 +170,11 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
         @Override
         public String getName() {
             return this.name;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
         }
     }
 }

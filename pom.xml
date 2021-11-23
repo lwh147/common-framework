@@ -41,7 +41,7 @@
         <mybatis-plus.version>3.3.1</mybatis-plus.version>
         <lombok.version>1.18.12</lombok.version>
         <hutool.version>5.7.14</hutool.version>
-        <springfox.swagger.version>2.9.2</springfox.swagger.version>
+        <springfox.swagger.version>3.0.0</springfox.swagger.version>
         <swagger.models.version>1.5.21</swagger.models.version>
         <swagger.annotation.version>1.5.20</swagger.annotation.version>
         <jjwt.version>0.9.1</jjwt.version>
@@ -51,6 +51,7 @@
         <jackson.annotation.version>2.11.1</jackson.annotation.version>
         <!-- 其它开发工具依赖库版本管理 -->
         <reflections.version>0.9.11</reflections.version>
+        <istack.version>4.0.0</istack.version>
     </properties>
 
     <dependencyManagement>
@@ -150,7 +151,7 @@
             </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
+                <artifactId>springfox-boot-starter</artifactId>
                 <version>${springfox.swagger.version}</version>
             </dependency>
             <dependency>
@@ -162,11 +163,6 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-models</artifactId>
                 <version>${swagger.models.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${springfox.swagger.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -193,6 +189,11 @@
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
                 <version>${reflections.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.istack</groupId>
+                <artifactId>istack-commons-runtime</artifactId>
+                <version>${istack.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

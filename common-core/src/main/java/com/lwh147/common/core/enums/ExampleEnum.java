@@ -88,4 +88,9 @@ public enum ExampleEnum implements ICommonEnum {
     public String getName() {
         return this.name;
     }
+
+    @Override
+    public String toString() {
+        return this.value;
+    }
 }

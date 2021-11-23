@@ -23,4 +23,13 @@ public interface ICommonEnum {
      * @return String
      **/
     String getName();
+
+    /**
+     * 重写toString，返回枚举值，保持与序列化结果的一致性
+     * <p>
+     * 枚举类的toString默认返回枚举对象的name
+     *
+     * @return String
+     **/
+    String toString();
 }
