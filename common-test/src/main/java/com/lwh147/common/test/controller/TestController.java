@@ -1,4 +1,4 @@
-package com.lwh147.common.web.test.controller;
+package com.lwh147.common.test.controller;
 
 import com.lwh147.common.core.model.PageQuery;
 import com.lwh147.common.core.model.RespBody;

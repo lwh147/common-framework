@@ -1,4 +1,4 @@
-package com.lwh147.common.web.test;
+package com.lwh147.common.test;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,10 +1,10 @@
 package com.lwh147.common.web.exception;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lwh147.common.core.constant.WebConstant;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.core.exception.ICommonException;
 import com.lwh147.common.core.model.RespBody;
+import com.lwh147.common.util.JacksonUtil;
 import com.lwh147.common.web.exception.converter.ExceptionConverterPoolSingleton;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -82,8 +82,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
         PrintWriter pw = null;
         try {
             pw = response.getWriter();
-            ObjectMapper objectMapper = new ObjectMapper();
-            pw.write(objectMapper.writeValueAsString(respBody));
+            pw.write(JacksonUtil.toJson(respBody));
             pw.flush();
         } catch (IOException e) {
             throw CommonExceptionEnum.COMMON_ERROR.toException("写入响应体失败: " + e.getMessage(), e);

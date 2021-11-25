@@ -19,6 +19,7 @@ common-framework ----------------------------- 基础开发框架根模块(root)
 ├─ common-stream-starter ----------------------- 消息中间件配置starter
 ├─ common-swagger-starter ---------------------- Swagger配置starter
 ├─ common-web-starter -------------------------- 开发框架Web配置starter
+├─ common-test --------------------------------- 开发框架测试模块
 ```
 
 ### 技术选型
@@ -57,6 +58,7 @@ common-framework
 * [common-stream-starter](./common-stream-starter/README.md)
 * [common-swagger-starter](./common-swagger-starter/README.md)
 * [common-web-starter](./common-web-starter/README.md)
+* [common-test](./common-test/README.md)
 
 ## 开发规约
 
