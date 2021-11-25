@@ -60,16 +60,16 @@ public enum CommonExceptionEnum implements ICommonExceptionEnum {
      **/
     private final String code;
     /**
-     * 错误提示信息
+     * 错误描述
      **/
-    private final String message;
+    private final String description;
 
     /**
      * 构造方法，默认私有
      **/
-    CommonExceptionEnum(String code, String message) {
+    CommonExceptionEnum(String code, String description) {
         this.code = code;
-        this.message = message;
+        this.description = description;
     }
 
     @Override
@@ -78,27 +78,27 @@ public enum CommonExceptionEnum implements ICommonExceptionEnum {
     }
 
     @Override
-    public CommonException toException(String causation) {
-        return new CommonException(this, causation);
+    public CommonException toException(String detailMessage) {
+        return new CommonException(this, detailMessage);
     }
 
     @Override
-    public CommonException toException(Throwable e) {
-        return new CommonException(this, e);
+    public CommonException toException(Throwable cause) {
+        return new CommonException(this, cause);
     }
 
     @Override
-    public CommonException toException(String causation, Throwable e) {
-        return new CommonException(this, causation, e);
+    public CommonException toException(String detailMessage, Throwable cause) {
+        return new CommonException(this, detailMessage, cause);
     }
 
     @Override
     public String getCode() {
-        return code;
+        return this.code;
     }
 
     @Override
-    public String getMessage() {
-        return message;
+    public String getDescription() {
+        return this.description;
     }
 }

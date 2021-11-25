@@ -7,12 +7,6 @@ import com.lwh147.common.core.exception.CommonExceptionEnum;
 
 /**
  * 枚举类示例
- * <p>
- * 必须实现接口 {@code ICommonEnum}
- * <p>
- * 必备方法 {@code fromValue()} 和 {@code exist()}
- * <p>
- * 必备注解 {@code @EnumValue} 和 {@code @JsonValue} 及 {@code @JsonCreator}
  *
  * @author lwh
  * @date 2021/10/26 16:45
@@ -27,8 +21,9 @@ public enum ExampleEnum implements ICommonEnum {
     /**
      * 枚举值
      * <p>
-     * {@code @EnumValue} mybatis-plus注解，该注解所注属性将被作为value存入数据库
-     * {@code @JsonValue} jackson注解，枚举对象序列化时该注解所注属性将被作为value
+     * {@code @EnumValue} 指定数据入库时使用该属性作为枚举值，基于 MybatisPlus
+     * <p>
+     * {@code @JsonValue} 指定序列化时使用该属性作为枚举值，基于 Jackson
      **/
     @EnumValue
     @JsonValue
@@ -49,9 +44,9 @@ public enum ExampleEnum implements ICommonEnum {
     /**
      * 根据枚举值寻找枚举对象
      * <p>
-     * {@code @JsonCreator} jackson注解，将使用此方法进行反序列化
+     * {@code @JsonCreator} 指定使用此方法进行反序列化，基于Jackson
      *
-     * @return ExampleEnum 找到的枚举对象
+     * @return 找到的枚举对象，没找到则抛出异常
      * @throws com.lwh147.common.core.exception.CommonException
      **/
     @JsonCreator
@@ -68,7 +63,7 @@ public enum ExampleEnum implements ICommonEnum {
     /**
      * 判断枚举值是否存在
      *
-     * @return ExampleEnum 匹配的枚举对象，不存在返回null
+     * @return 匹配的枚举对象，不存在返回 {@code null}
      **/
     public static ExampleEnum exist(String value) {
         for (ExampleEnum e : ExampleEnum.values()) {

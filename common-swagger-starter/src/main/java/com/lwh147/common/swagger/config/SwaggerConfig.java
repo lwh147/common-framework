@@ -36,7 +36,9 @@ public class SwaggerConfig {
      * <p>
      * 上下文中不存在Swagger配置Bean
      * <p>
-     * springfox.documentation.enabled 配置项缺省或配置为true
+     * springfox.documentation.enabled 配置项缺省或配置为 @{code true}
+     *
+     * @return Swagger配置对象
      **/
     @Bean
     @ConditionalOnMissingBean(Docket.class)
@@ -74,6 +76,8 @@ public class SwaggerConfig {
 
     /**
      * 构建API文档简介和联系人信息
+     *
+     * @return API信息
      **/
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()

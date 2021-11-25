@@ -8,45 +8,17 @@ package com.lwh147.common.core.exception;
  **/
 public interface ICommonException {
     /**
-     * 必须重写toString
+     * 复用了父类属性，所以必须重写toString
      *
-     * @return String
+     * @return 完整的异常信息
      **/
     @Override
     String toString();
 
     /**
-     * 获取错误码
-     *
-     * @return String
-     **/
-    String getCode();
-
-    /**
-     * 获取错误信息
-     *
-     * @return String
-     **/
-    String getMessage();
-
-    /**
-     * 获取错误原因
-     *
-     * @return String
-     **/
-    String getCausation();
-
-    /**
-     * 设置错误原因
-     *
-     * @param causation 错误原因
-     **/
-    void setCausation(String causation);
-
-    /**
      * 获取错误来源
      *
-     * @return String
+     * @return 错误来源
      **/
     String getSource();
 
@@ -58,9 +30,30 @@ public interface ICommonException {
     void setSource(String source);
 
     /**
-     * 获取导致出错的异常对象
+     * 获取错误码
      *
-     * @return Throwable 导致出错的异常对象
+     * @return 错误码
+     **/
+    String getCode();
+
+    /**
+     * 获取错误描述
+     *
+     * @return 错误描述
+     **/
+    String getDescription();
+
+    /**
+     * 获取错误原因
+     *
+     * @return 错误原因，一个异常对象
      **/
     Throwable getCause();
+
+    /**
+     * 获取错误详情
+     *
+     * @return 错误原因的详细描述
+     **/
+    String getMessage();
 }

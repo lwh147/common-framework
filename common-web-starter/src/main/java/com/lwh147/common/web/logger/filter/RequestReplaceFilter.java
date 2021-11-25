@@ -44,7 +44,7 @@ public class RequestReplaceFilter implements Filter {
      * 判断该请求是否需要替换为可重复读请求
      *
      * @param httpServletRequest 请求对象
-     * @return boolean 判断结果
+     * @return 判断结果
      **/
     private boolean isRepeatableSupport(HttpServletRequest httpServletRequest) {
         String contentType = httpServletRequest.getContentType();

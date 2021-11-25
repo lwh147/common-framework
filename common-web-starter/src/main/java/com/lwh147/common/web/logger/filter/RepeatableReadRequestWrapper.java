@@ -114,7 +114,7 @@ public class RepeatableReadRequestWrapper extends HttpServletRequestWrapper {
     /**
      * 获取字符串存储的请求体内容
      *
-     * @return String 可能为 null
+     * @return 请求体字符串，可能为 null
      **/
     public String getBody() {
         return this.body;

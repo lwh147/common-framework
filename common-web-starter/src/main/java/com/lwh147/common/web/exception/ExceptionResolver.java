@@ -1,7 +1,6 @@
 package com.lwh147.common.web.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lwh147.common.core.constant.RegExpConstant;
 import com.lwh147.common.core.constant.WebConstant;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.core.exception.ICommonException;
@@ -36,7 +35,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
     @Value("${spring.application.name}")
     private String appName;
     /**
-     * 异常转换器单例池
+     * 异常转换器池单例对象
      **/
     private final ExceptionConverterPoolSingleton poolSingleton = ExceptionConverterPoolSingleton.newInstance();
 
@@ -59,8 +58,6 @@ public class ExceptionResolver implements HandlerExceptionResolver {
         if (Objects.isNull(ice.getSource())) {
             ice.setSource(appName);
         }
-        // 打印前对异常信息进行处理（去除回车换行）
-        ice.setCausation(RegExpConstant.ENTER_PATTERN.matcher(ice.getCausation()).replaceAll(""));
         // 打印异常信息记录日志
         this.doLog(ice);
         // 写入响应体

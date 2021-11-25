@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 通用分页数据结构
  * <p>
- * {@code @JsonSerialize} 指定字段的序列化策略
+ * {@code @JsonSerialize} 指定字段的序列化策略，基于Jackson
  *
  * @author lwh
  * @date 2021/10/22 10:46
@@ -59,7 +59,7 @@ public class PageData<T> implements Serializable {
      * 根据MybatisPlus的Page分页对象构建通用分页数据结构
      *
      * @param page MybatisPlus返回的Page分页对象
-     * @return PageResp<T> 转换后的通用分页数据结构
+     * @return 使用PageData封装的通用分页数据结构
      **/
     public static <T> PageData<T> fromPage(Page<T> page) {
         // 这里必须显式指定builder的泛型为T类型，与page对象的泛型保持一致

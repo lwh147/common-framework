@@ -8,48 +8,48 @@ package com.lwh147.common.core.exception;
  **/
 public interface ICommonExceptionEnum {
     /**
-     * 直接根据枚举类构造异常
+     * 直接根据枚举类构造异常，对应基本构造方式
      *
      * @return ICommonException
      **/
     ICommonException toException();
 
     /**
-     * 构造带错误原因的异常
+     * 构造带错误详情的异常，对应较完整的构造方式
      *
-     * @param causation 错误原因
+     * @param detailMessage 错误原因的详细描述
      * @return ICommonException
      **/
-    ICommonException toException(String causation);
+    ICommonException toException(String detailMessage);
 
     /**
-     * 构造带导致错误的异常对象的异常
+     * 构造带错误原因的异常，对应完整构造方式1
      *
-     * @param e 导致发生错误的未知异常
+     * @param cause 错误原因，一个异常对象
      * @return ICommonException
      **/
-    ICommonException toException(Throwable e);
+    ICommonException toException(Throwable cause);
 
     /**
-     * 构造带导致错误的异常对象的异常，支持错误原因自定义
+     * 构造带错误原因和错误详情的异常，对应完整构造方式2
      *
-     * @param causation 错误原因
-     * @param e         导致发生错误的异常
+     * @param detailMessage 错误原因的详细描述
+     * @param cause         错误原因，一个异常对象
      * @return ICommonException
      **/
-    ICommonException toException(String causation, Throwable e);
+    ICommonException toException(String detailMessage, Throwable cause);
 
     /**
      * 获取错误码
      *
-     * @return String
+     * @return 错误码
      **/
     String getCode();
 
     /**
-     * 获取错误信息
+     * 获取错误描述
      *
-     * @return String
+     * @return 错误描述
      **/
-    String getMessage();
+    String getDescription();
 }

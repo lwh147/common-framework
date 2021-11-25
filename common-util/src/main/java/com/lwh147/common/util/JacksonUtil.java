@@ -13,6 +13,7 @@ import java.util.Map;
 
 /**
  * Jackson工具类
+ * <p>
  * 按照FastJson的使用逻辑进行封装
  *
  * @author lwh
@@ -21,6 +22,7 @@ import java.util.Map;
 public class JacksonUtil {
     /**
      * 默认使用的ObjectMapper配置项：
+     * <p>
      * json与java对象属性不全对应时也进行转换
      * java对象为空时也进行转换
      * <p>
@@ -46,10 +48,9 @@ public class JacksonUtil {
      * 将格式化的json字符串取消格式化
      *
      * @param json json字符串
-     * @return String
+     * @return 无格式json字符串
      **/
     public static String unFormatJson(String json) {
-        // TODO 有待改进
         if (json.contains(FORMATTED_JSON_MARK)) {
             // 如果带有格式化字符则取消格式化
             return toJson(parseObject(json, Map.class));
@@ -61,7 +62,7 @@ public class JacksonUtil {
      * 使用默认OM配置将java对象转json的方法
      *
      * @param object 待序列化对象
-     * @return String
+     * @return json字符串
      **/
     public static String toJson(Object object) {
         return toJson(object, OBJECT_MAPPER);
@@ -72,7 +73,7 @@ public class JacksonUtil {
      *
      * @param object       待序列化对象
      * @param objectMapper 自定义OM配置
-     * @return String
+     * @return json字符串
      **/
     public static String toJson(Object object, ObjectMapper objectMapper) {
         String res;
@@ -91,7 +92,7 @@ public class JacksonUtil {
      * @param <T>      目标对象
      * @param json     待反序列化的json
      * @param javaType 目标对象类
-     * @return T 目标对象
+     * @return 目标对象
      **/
     public static <T> T parseObject(String json, Class<T> javaType) {
         return parseObject(json, OBJECT_MAPPER, javaType);
@@ -104,7 +105,7 @@ public class JacksonUtil {
      * @param json         待反序列化的json
      * @param objectMapper 自定义OM配置
      * @param javaType     目标对象类
-     * @return T 目标对象
+     * @return 目标对象
      **/
     public static <T> T parseObject(String json, ObjectMapper objectMapper, Class<T> javaType) {
         T t;
@@ -123,7 +124,7 @@ public class JacksonUtil {
      * @param <T>      目标数组元素对象
      * @param json     待反序列化的json
      * @param itemType 目标数组元素对象类
-     * @return List<T> 目标数组
+     * @return 目标对象数组
      **/
     public static <T> List<T> parseList(String json, Class<T> itemType) {
         return parseList(json, OBJECT_MAPPER, itemType);
@@ -136,7 +137,7 @@ public class JacksonUtil {
      * @param json         待反序列化的json
      * @param objectMapper 自定义OM配置
      * @param itemType     目标数组元素对象类
-     * @return List<T> 目标数组
+     * @return 目标对象数组
      **/
     public static <T> List<T> parseList(String json, ObjectMapper objectMapper, Class<T> itemType) {
         List<T> list;

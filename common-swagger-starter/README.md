@@ -1,17 +1,16 @@
-# common-swagger-starter
+# common-swagger-starter 参考文档
 
-# 简介
+## 简介
 
 本部分对Swagger进行了封装，引入jar包之后默认开启Swagger，支持在配置文件中进行开启或关闭控制，同时也支持对扫描包路径、匹配路径规则以及API信息等进行配置，但是目前仅支持基础配置，等待后续更新迭代
 
 > 使用的Swagger版本为 Springfox-3.0.0
 
-# 基础使用
+## 简单使用
 
 引入jar包即可
 
 ```xml
-
 <dependency>
     <groupId>com.lwh147</groupId>
     <artifactId>common-swagger-starter</artifactId>
@@ -19,7 +18,7 @@
 </dependency>
 ```
 
-# 配置项
+## 配置项
 
 配置前缀 `springfox.documentation`
 
@@ -36,9 +35,7 @@
 | contact.url    | String        | 否       | 联系人主页，默认为百度主页 |
 | contact.email  | String        | 否       | 联系人邮箱，默认为空 |
 
-# 待办
-
-待办
+## 待办
 
 * 分组API配置支持
-* 枚举属性展示内容优化
+* Model的枚举属性展示方式优化

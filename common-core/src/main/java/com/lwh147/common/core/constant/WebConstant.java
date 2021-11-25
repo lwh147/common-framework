@@ -66,11 +66,10 @@ public class WebConstant {
         public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 
         /**
-         * 相比较其它类型的body，该类型的body分为多个部分（multipart），而且每部分（part）都拥有单独的
-         * Content-Type 属性，假如body有两部分，一部分可以是二进制流格式数据，另一部分可以是
-         * 普通的 key=value 格式的数据，也可以是其它媒体格式数据，进一步可以添加第三部分、第四部分等
-         * <p>
-         * 是唯一比较特殊的请求体类型
+         * 相比较其它类型请求体，该类型的请求体分为多个部分（multipart），而且每部分（part）
+         * 都拥有单独的 Content-Type 属性，假如有两部分，一部分可以是二进制流格式数据，另一
+         * 部分可以是普通的 key=value 格式的数据，也可以是其它媒体格式数据，还可以添加第三
+         * 部分、第四部分等，是唯一比较特殊的请求体类型
          **/
         public static final String MULTIPART_FORM_DATA = "multipart/form-data";
 

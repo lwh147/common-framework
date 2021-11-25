@@ -21,14 +21,14 @@ public enum BusinessExceptionEnum implements ICommonExceptionEnum {
     /**
      * 错误提示信息
      **/
-    private final String message;
+    private final String description;
 
     /**
      * 构造方法，默认私有
      **/
-    BusinessExceptionEnum(String code, String message) {
+    BusinessExceptionEnum(String code, String description) {
         this.code = code;
-        this.message = message;
+        this.description = description;
     }
 
     @Override
@@ -37,18 +37,18 @@ public enum BusinessExceptionEnum implements ICommonExceptionEnum {
     }
 
     @Override
-    public BusinessException toException(String causation) {
-        return new BusinessException(this, causation);
+    public BusinessException toException(String deatilMessage) {
+        return new BusinessException(this, deatilMessage);
     }
 
     @Override
-    public BusinessException toException(Throwable e) {
-        return new BusinessException(this, e);
+    public BusinessException toException(Throwable cause) {
+        return new BusinessException(this, cause);
     }
 
     @Override
-    public BusinessException toException(String causation, Throwable e) {
-        return new BusinessException(this, causation, e);
+    public BusinessException toException(String detailMessage, Throwable cause) {
+        return new BusinessException(this, detailMessage, cause);
     }
 
     @Override
@@ -57,7 +57,7 @@ public enum BusinessExceptionEnum implements ICommonExceptionEnum {
     }
 
     @Override
-    public String getMessage() {
-        return this.message;
+    public String getDescription() {
+        return this.description;
     }
 }

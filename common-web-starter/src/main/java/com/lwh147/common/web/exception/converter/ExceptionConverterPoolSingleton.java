@@ -1,5 +1,6 @@
 package com.lwh147.common.web.exception.converter;
 
+import com.lwh147.common.core.constant.RegExpConstant;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.core.exception.ICommonException;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * 单例模式的异常转换器对象池
+ * 单例模式的异常转换器池
  *
  * @author lwh
  * @date 2021/11/10 16:15
@@ -24,9 +25,9 @@ import java.util.Set;
 @SuppressWarnings("rawtypes")
 public class ExceptionConverterPoolSingleton {
     /**
-     * 异常转换器对象池，根据转换器所接收的异常类型进行存储
+     * 异常转换器池，根据转换器所接收的异常类型进行存储
      * <p>
-     * 每个异常转换器类实际上也只会实例化产生一个对象
+     * 每个异常转换器类实际上也只会实例化产生一个转换器对象
      **/
     private final Map<Type, IExceptionConverter> pool;
     /**
@@ -37,10 +38,9 @@ public class ExceptionConverterPoolSingleton {
     /**
      * 通过此方法获取该类的唯一实例对象
      *
-     * @return ExceptionConverterPoolSingleton
+     * @return {@link ExceptionConverterPoolSingleton} 异常转换器池对象
      **/
     public static ExceptionConverterPoolSingleton newInstance() {
-
         // 不为null直接返回
         if (Objects.nonNull(exceptionConverter)) {
             return exceptionConverter;
@@ -85,31 +85,31 @@ public class ExceptionConverterPoolSingleton {
     }
 
     /**
-     * 根据传入异常类型从转换池中获取对应的异常转换器对异常进行转换
-     * <p>
-     * 转换为ICommonException
+     * 根据传入异常类型从转换器池中获取对应的异常转换器对异常进行转换
      *
      * @param e 待转换的异常对象
-     * @return ICommonException
+     * @return {@link ICommonException} 转换后的异常对象
      **/
     @SuppressWarnings("unchecked")
     public ICommonException convert(Exception e) {
-        // 从转换池中获取对应类型的转换器
+        // 从转换器池中获取对应类型的转换器
         IExceptionConverter converter = this.pool.get(e.getClass());
         if (Objects.nonNull(converter)) {
             // 不为空则调用其转换方法进行转换
             return converter.convert(e);
         }
         // 没有找到
+        // 去除获取到的message中可能存在的格式化字符
+        String unformattedMessage = RegExpConstant.ENTER_PATTERN.matcher(e.getMessage()).replaceAll("");
         return CommonExceptionEnum.SYSTEM_UNHANDLED_EXCEPTION_ERROR.toException(e.getClass().toString()
-                + ": " + e.getMessage(), e);
+                + ": " + unformattedMessage, e);
     }
 
     /**
-     * 获取特定异常转换器支持转换的异常类型
+     * 获取异常转换器支持转换的异常类型
      *
      * @param cls 异常转换器类对象
-     * @return Type 该转换器支持转换的异常类型
+     * @return {@link Type} 该转换器支持转换的异常类型
      **/
     private Type getType(Class<? extends IExceptionConverter> cls) {
         final String methodName = "convert";
@@ -127,10 +127,10 @@ public class ExceptionConverterPoolSingleton {
     }
 
     /**
-     * 实例化转换器对象
+     * 实例化转换器
      *
-     * @param cls 转换器类对象
-     * @return IExceptionConverter 转换器实例对象
+     * @param cls 转换器类
+     * @return {@link IExceptionConverter} 转换器实例对象
      **/
     private IExceptionConverter newInstance(Class<? extends IExceptionConverter> cls) {
         try {

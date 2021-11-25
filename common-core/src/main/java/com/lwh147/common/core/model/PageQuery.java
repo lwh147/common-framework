@@ -20,10 +20,12 @@ import java.util.Objects;
 /**
  * 通用分页请求结构
  *
- * @param <T> 排序字段名称<strong>枚举对象</strong>，且必须实现
- *            {@code com.lwh147.common.core.enums.ICommonEnum} 接口
- *            使用枚举是为了限制用户输入，<strong>防止SQL注入</strong>，
- *            详细参考内部类DefaultSortColumnEnum
+ * @param <T> 排序字段名称<strong>枚举对象</strong>，必须实现
+ *            {@link ICommonEnum} 接口
+ *            <p>
+ *            使用枚举是为了限制用户输入，<strong>防止SQL注入</strong>
+ *            <p>
+ *            详细参考内部类 {@link DefaultSortColumnEnum}
  * @author lwh
  * @date 2021/10/22 10:44
  **/
@@ -51,7 +53,7 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
     /**
      * 排序字段名
      * <p>
-     * 枚举类型，编写规则参考 DefaultSortColumnEnum
+     * 枚举类型，编写规则参考 {@link DefaultSortColumnEnum}
      **/
     @ApiModelProperty(value = "需要排序的字段名称", example = "createTime")
     private T columnName;
@@ -65,7 +67,8 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
     /**
      * 排序sql后缀
      * <p>
-     * {@code @JsonIgnore} Json序列化和反序列化时忽略该注解所注字段
+     * {@code @JsonIgnore} 序列化和反序列化时忽略该字段，基于Jackson
+     * <p>
      * {@code @ApiModelProperty(hidden = true)} 不在Swagger界面上展示
      **/
     @JsonIgnore
@@ -76,7 +79,8 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
      * 重写 {@code sortSqlSuffix} 属性的get方法
      * <p>
      * 用空格拼接 {@code columnName} 和 {@code order} 字段，
-     * 两者任一为空时返回按创建时间降序排序的sql后缀
+     *
+     * @return 两者任一为空时返回按创建时间降序排序的sql后缀
      **/
     public String getSortSqlSuffix() {
         // 默认按创建时间降序排序
@@ -94,14 +98,16 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
     /**
      * 默认排序字段枚举类，只有创建时间
      * <p>
-     * 枚举值 createTime 代表前端传参取值
+     * 枚举值代表前端传参取值
      * <p>
-     * 枚举名称 create_time 代表参数实际对应的数据库字段名
+     * 枚举名称代表参数实际对应的数据库字段名
      * <p>
      * 也就是说 {@code name} 属性在这里被当作 <strong>实际的数据库字段名</strong> 使用
      * <p>
-     * 如果自定义排序字段枚举类，必须按照上述规则进行编写
-     * 这样能够避免暴露数据库字段名称到前端，增加安全性
+     * {@code value} 属性在这里被当作 <strong>前端传参参数值</strong> 使用
+     * <p>
+     * 如果自定义排序字段枚举类，必须仿照此类进行编写，这样能够避免暴露数据库字段
+     * 名称到前端，增加安全性
      **/
     public enum DefaultSortColumnEnum implements ICommonEnum {
         /**
@@ -113,7 +119,7 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
         /**
          * 枚举值，给前端使用的字段名
          * <p>
-         * {@code @JsonValue} jackson注解，枚举对象序列化时该注解所注属性将被作为value
+         * {@code @JsonValue} 指定序列化时使用该属性作为枚举值，基于 Jackson
          **/
         @JsonValue
         private final String value;
@@ -133,9 +139,9 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
         /**
          * 根据枚举值寻找枚举对象
          * <p>
-         * {@code @JsonCreator} jackson注解，将使用此方法进行反序列化
+         * {@code @JsonCreator} 指定使用此方法进行反序列化，基于Jackson
          *
-         * @return DefaultSortColumnEnum 找到的枚举对象
+         * @return 找到的枚举对象，没找到抛出异常
          * @throws com.lwh147.common.core.exception.CommonException
          **/
         @JsonCreator
@@ -145,13 +151,13 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
                     return e;
                 }
             }
-            throw CommonExceptionEnum.CLIENT_ARGUMENT_NOT_VALID_ERROR.toException("【" + value + "】不是允许的排序字段");
+            throw CommonExceptionEnum.CLIENT_ARGUMENT_NOT_VALID_ERROR.toException("[" + value + "]不是允许的排序字段");
         }
 
         /**
          * 判断枚举值是否存在
          *
-         * @return DefaultSortColumnEnum 匹配的枚举对象，不存在返回null
+         * @return 匹配的枚举对象，不存在返回null
          **/
         public static DefaultSortColumnEnum exist(String value) {
             for (DefaultSortColumnEnum e : DefaultSortColumnEnum.values()) {
