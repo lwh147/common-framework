@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 
 import java.util.ArrayList;
@@ -21,28 +20,28 @@ import java.util.Map;
  **/
 public class JacksonUtil {
     /**
-     * 默认使用的ObjectMapper配置项：
+     * 默认使用的ObjectMapper
      * <p>
      * json与java对象属性不全对应时也进行转换
-     * java对象为空时也进行转换
-     * <p>
-     * 注意！需要使用注解进行单独配置的项：
-     * <p>
-     * 空值不转换 @JsonInclude(JsonInclude.Include.NON_NULL)
-     * <p>
-     * 日期转换格式 @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
-     * <p>
-     * 可能存在精度丢失问题的数据需要转换为String @JsonSerialize(using = ToStringSerializer.class)
      **/
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     /**
      * 格式化（缩进）的json字符串判断标记
      * <p>
      * 含有回车说明是格式化的json
      **/
     public static final String FORMATTED_JSON_MARK = "\n";
+
+    static {
+        // 设置json与java对象属性不全对应时也进行转换
+        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        /*
+         * 需要单独使用注解进行配置的项：
+         * 空值不转换 @JsonInclude(JsonInclude.Include.NON_NULL)
+         * 日期时间格式化 @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
+         * 序列化为String @JsonSerialize(using = ToStringSerializer.class)
+         */
+    }
 
     /**
      * 将格式化的json字符串取消格式化
