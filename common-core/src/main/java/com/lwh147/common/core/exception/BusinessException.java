@@ -35,7 +35,7 @@ public class BusinessException extends RuntimeException implements ICommonExcept
      * <p>
      * 只包含简单的错误码和错误描述
      * <p>
-     * 属于第一种嵌套异常情况，自身就是错误原因
+     * 适用于第一种嵌套异常情况，自身就是错误原因
      * <p>
      * 错误详情与错误描述一致
      *
@@ -54,7 +54,7 @@ public class BusinessException extends RuntimeException implements ICommonExcept
      * <p>
      * 包含错误码、错误描述以及错误详情
      * <p>
-     * 属于第一种嵌套异常情况，自身就是错误原因
+     * 适用于第一种嵌套异常情况，自身就是错误原因
      *
      * @param ice           异常枚举类行为规范接口对象
      * @param detailMessage 错误原因的详细描述

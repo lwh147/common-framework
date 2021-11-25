@@ -27,6 +27,9 @@ import java.util.Objects;
  *            <p>
  *            详细参考内部类 {@link DefaultSortColumnEnum}
  * @author lwh
+ * @apiNote 必须作为<strong>请求体</strong>接受参数，否则数据绑定时
+ * 枚举类型不能被识别，报 {@link IllegalArgumentException}
+ * 错误
  * @date 2021/10/22 10:44
  **/
 @Data
