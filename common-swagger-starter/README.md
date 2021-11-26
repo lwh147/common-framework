@@ -29,9 +29,9 @@
 | paths          | List\<String> | 否       | 路径匹配规则，可以配置多个，默认匹配所有 |
 | excluded-paths | List\<String> | 否       | 排除的匹配规则，可配置多个，默认无 |
 | version        | String        | 否       | API版本号，默认为 `1.0.0` |
-| title          | String        | 否       | 页面简介标题，默认为 `${spring.appliction.name}` |
+| title          | String        | 否       | 页面简介标题，默认为 `${spring.appliction.name:app_name}` |
 | description    | String        | 否       | 页面内容描述，默认为 `接口文档` |
-| contact.name   | String        | 否       | 联系人姓名，默认为 `本页管理员` |
+| contact.name   | String        | 否       | 联系人姓名，默认为 `管理员` |
 | contact.url    | String        | 否       | 联系人主页，默认为百度主页 |
 | contact.email  | String        | 否       | 联系人邮箱，默认为空 |
 

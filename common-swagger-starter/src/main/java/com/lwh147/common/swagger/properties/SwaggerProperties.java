@@ -14,7 +14,7 @@ import java.util.List;
  * @date 2021/11/22 17:06
  **/
 @Data
-@ConfigurationProperties(prefix = SwaggerProperties.SPRINGFOX_PREFIX)
+@ConfigurationProperties(prefix = "springfox.documentation")
 public class SwaggerProperties {
     /**
      * 是否开启Swagger，共用Springfox的配置项，缺省默认开启
@@ -39,7 +39,7 @@ public class SwaggerProperties {
     /**
      * 页面标题，默认为配置中的应用名
      **/
-    @Value("${spring.application.name}")
+    @Value("${spring.application.name:app-name}")
     private String title;
     /**
      * 文档描述，默认为：接口文档
@@ -54,9 +54,9 @@ public class SwaggerProperties {
     @Data
     public static class Contact {
         /**
-         * 联系人姓名，默认为：本站管理员
+         * 联系人姓名，默认为：管理员
          **/
-        private String name = "本站管理员";
+        private String name = "管理员";
         /**
          * 联系人网页地址，默认为百度
          **/
@@ -74,10 +74,6 @@ public class SwaggerProperties {
         }
     }
 
-    /**
-     * 共用的springfox配置前缀
-     **/
-    public static final String SPRINGFOX_PREFIX = "springfox.documentation";
     /**
      * 默认排除的扫描路径
      **/

@@ -1,6 +1,13 @@
 package com.lwh147.common.mybatisplus.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lwh147.common.core.constant.DateTimeConstant;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -16,11 +23,35 @@ import java.util.Date;
  * 基础实体类不区分关系表和数据表，所以只有必须字段，同时也可以增加灵活度
  * 如果修改时间和更新时间觉得也没必要那可也直接选择继承 {@link Model} 类
  *
+ * @param <T> 继承了 {@code BaseModel} 的实体类
  * @author lwh
  * @date 2021/11/25 17:17
  **/
-public class BaseModel {
-    private Long id;
-    private Date createTime;
-    private Date updateTime;
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class BaseModel<T extends BaseModel<?>> extends Model<T> {
+    /**
+     * 主键，雪花算法生成
+     **/
+    @TableField(ID)
+    @TableId(type = IdType.ASSIGN_ID)
+    protected Long id;
+    /**
+     * 创建时间
+     * <p>
+     * {@code @JsonFormat} 指定序列化和反序列化时采用的日期时间格式，基于Jackson
+     **/
+    @TableField(CREATE_TIME)
+    @JsonFormat(timezone = DateTimeConstant.DEFAULT_TIMEZONE, pattern = DateTimeConstant.DEFAULT_DATETIME_FORMAT)
+    protected Date createTime;
+    /**
+     * 修改时间
+     **/
+    @TableField(UPDATE_TIME)
+    @JsonFormat(timezone = DateTimeConstant.DEFAULT_TIMEZONE, pattern = DateTimeConstant.DEFAULT_DATETIME_FORMAT)
+    protected Date updateTime;
+
+    public static final String ID = "id";
+    public static final String CREATE_TIME = "create_time";
+    public static final String UPDATE_TIME = "update_time";
 }

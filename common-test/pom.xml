@@ -16,7 +16,6 @@
     <packaging>jar</packaging>
 
     <properties>
-        <!-- 编码和java版本设置 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
@@ -27,17 +26,17 @@
     <dependencies>
         <dependency>
             <groupId>com.lwh147</groupId>
-            <artifactId>common-swagger-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.lwh147</groupId>
             <artifactId>common-core</artifactId>
         </dependency>
         <dependency>
             <groupId>com.lwh147</groupId>
             <artifactId>common-web-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.lwh147</groupId>
+            <artifactId>common-swagger-starter</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

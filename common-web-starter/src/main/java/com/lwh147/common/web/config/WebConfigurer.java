@@ -1,5 +1,8 @@
 package com.lwh147.common.web.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.lwh147.common.web.config.filter.RequestEncodingFilter;
 import com.lwh147.common.web.exception.ExceptionResolver;
 import com.lwh147.common.web.logger.RequestLoggerInterceptor;
@@ -8,12 +11,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,5 +98,31 @@ public class WebConfigurer implements WebMvcConfigurer {
                 .excludePathPatterns(whiteList)
                 .addPathPatterns("/**");
         log.debug("配置并开启日志记录拦截器，白名单：{}", Arrays.toString(whiteList.toArray()));
+    }
+
+    /**
+     * 配置Jackson的全局序列化策略：
+     * <p>
+     * 1.将Long类型序列化为String类型
+     * <p>
+     * 2.将BigDecimal类型序列化为String类型
+     */
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        // 新建转换器
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        // 添加并设置转换策略
+        ObjectMapper objectMapper = converter.getObjectMapper();
+        SimpleModule simpleModule = new SimpleModule();
+        // 将所有Long转换成String
+        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+        simpleModule.addSerializer(long.class, ToStringSerializer.instance);
+        // 将所有BigDecimal转换成String
+        simpleModule.addSerializer(BigDecimal.class, ToStringSerializer.instance);
+        objectMapper.registerModule(simpleModule);
+        converter.setObjectMapper(objectMapper);
+        // 添加转换器
+        converters.add(0, converter);
     }
 }
