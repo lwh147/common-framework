@@ -2,6 +2,7 @@ package com.lwh147.common.test.controller;
 
 import com.lwh147.common.core.model.PageQuery;
 import com.lwh147.common.core.model.RespBody;
+import com.lwh147.common.test.pojo.Test;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -45,5 +46,19 @@ public class TestController {
     public String test4(@PathVariable("id") String id) {
         log.debug("收到delete请求并处理");
         return id;
+    }
+
+    @GetMapping("common/testDateGet")
+    @ApiOperation(value = "测试Get date请求参数")
+    public Test test5(Test test) {
+        log.debug("收到date请求并处理");
+        return test;
+    }
+
+    @PostMapping("common/testDatePost")
+    @ApiOperation(value = "测试Post date请求参数")
+    public Test test6(@RequestBody Test test) {
+        log.debug("收到date请求并处理");
+        return test;
     }
 }

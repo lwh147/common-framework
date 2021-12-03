@@ -32,7 +32,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
     /**
      * 当前应用名称
      **/
-    @Value("${spring.application.name}")
+    @Value("${spring.application.name:appName}")
     private String appName;
     /**
      * 异常转换器池单例对象

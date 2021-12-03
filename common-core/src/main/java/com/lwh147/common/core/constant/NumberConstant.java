@@ -1,7 +1,7 @@
 package com.lwh147.common.core.constant;
 
 /**
- * 数字相关常量类
+ * 数字常量类
  *
  * @author lwh
  * @date 2021/11/17 14:57

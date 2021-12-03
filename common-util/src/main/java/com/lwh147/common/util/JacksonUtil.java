@@ -8,7 +8,6 @@ import com.lwh147.common.core.exception.CommonExceptionEnum;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Jackson工具类
@@ -22,39 +21,19 @@ public class JacksonUtil {
     /**
      * 默认使用的ObjectMapper
      * <p>
-     * json与java对象属性不全对应时也进行转换
+     * json与java对象属性不全对应时也进行反序列化
      **/
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    /**
-     * 格式化（缩进）的json字符串判断标记
-     * <p>
-     * 含有回车说明是格式化的json
-     **/
-    public static final String FORMATTED_JSON_MARK = "\n";
 
+    /*
+     * 常用注解：
+     * 空值不转换 @JsonInclude(JsonInclude.Include.NON_NULL)
+     * 日期时间格式化 @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
+     * 序列化为String或配置自定义序列化策略 @JsonSerialize(using = ToStringSerializer.class)
+     */
     static {
-        // 设置json与java对象属性不全对应时也进行转换
+        // json与java对象属性不全对应时也进行反序列化
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        /*
-         * 需要单独使用注解进行配置的项：
-         * 空值不转换 @JsonInclude(JsonInclude.Include.NON_NULL)
-         * 日期时间格式化 @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
-         * 序列化为String @JsonSerialize(using = ToStringSerializer.class)
-         */
-    }
-
-    /**
-     * 将格式化的json字符串取消格式化
-     *
-     * @param json json字符串
-     * @return 无格式json字符串
-     **/
-    public static String unFormatJson(String json) {
-        if (json.contains(FORMATTED_JSON_MARK)) {
-            // 如果带有格式化字符则取消格式化
-            return toJson(parseObject(json, Map.class));
-        }
-        return json;
     }
 
     /**

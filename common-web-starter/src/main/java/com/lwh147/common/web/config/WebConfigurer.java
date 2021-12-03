@@ -1,5 +1,6 @@
 package com.lwh147.common.web.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -8,6 +9,7 @@ import com.lwh147.common.web.exception.ExceptionResolver;
 import com.lwh147.common.web.logger.RequestLoggerInterceptor;
 import com.lwh147.common.web.logger.filter.RequestReplaceFilter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +22,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.annotation.Nonnull;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Web相关配置，拦截器、过滤器、全局异常处理器等
@@ -33,6 +37,10 @@ import java.util.List;
 @Slf4j
 @Configuration
 public class WebConfigurer implements WebMvcConfigurer {
+    @Value("${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}")
+    private String dateFormat;
+    @Value("${spring.jackson.time-zone:GMT+8}")
+    private String timeZone;
     @Resource
     private ExceptionResolver exceptionResolver;
     @Resource
@@ -106,6 +114,10 @@ public class WebConfigurer implements WebMvcConfigurer {
      * 1.将Long类型序列化为String类型
      * <p>
      * 2.将BigDecimal类型序列化为String类型
+     * <p>
+     * 3.设置默认时区为：GMT+8，默认日期时间格式为：yyyy-MM-dd HH:mm:ss
+     * <p>
+     * 4.json与java对象属性不全对应时也进行反序列化，不报错
      */
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -114,12 +126,19 @@ public class WebConfigurer implements WebMvcConfigurer {
         // 添加并设置转换策略
         ObjectMapper objectMapper = converter.getObjectMapper();
         SimpleModule simpleModule = new SimpleModule();
+
         // 将所有Long转换成String
         simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
         simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
         simpleModule.addSerializer(long.class, ToStringSerializer.instance);
         // 将所有BigDecimal转换成String
         simpleModule.addSerializer(BigDecimal.class, ToStringSerializer.instance);
+        // json与java对象属性不全对应时也进行反序列化
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // 日期时间格式
+        objectMapper.setDateFormat(new SimpleDateFormat(dateFormat));
+        objectMapper.setTimeZone(TimeZone.getTimeZone(timeZone));
+
         objectMapper.registerModule(simpleModule);
         converter.setObjectMapper(objectMapper);
         // 添加转换器

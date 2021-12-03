@@ -2,7 +2,6 @@ package com.lwh147.common.web.logger.filter;
 
 import com.lwh147.common.core.constant.NumberConstant;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
-import com.lwh147.common.util.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ReadListener;
@@ -54,8 +53,7 @@ public class RepeatableReadRequestWrapper extends HttpServletRequestWrapper {
                      */
                     sb.append(buffer, 0, charRead);
                 }
-                // 取消格式化
-                this.body = JacksonUtil.unFormatJson(sb.toString());
+                this.body = sb.toString();
             } else {
                 this.body = null;
             }
