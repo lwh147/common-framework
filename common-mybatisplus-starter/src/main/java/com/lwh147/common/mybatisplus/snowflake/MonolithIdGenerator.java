@@ -1,24 +1,25 @@
-package com.lwh147.common.mybatisplus.config.snowflake;
+package com.lwh147.common.mybatisplus.snowflake;
 
 import cn.hutool.core.lang.Snowflake;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import com.lwh147.common.mybatisplus.snowflake.service.Worker;
 
 /**
- * 单实例下的ID生成策略
+ * 单体应用模式下的ID生成策略
  *
  * @author lwh
  * @date 2021/11/26 14:30
  **/
-public class IdGeneratorSingle implements IdentifierGenerator {
+public class MonolithIdGenerator implements IdentifierGenerator {
     /**
-     * 默认单实例下的雪花算法对象
+     * 雪花算法对象
      **/
     private final Snowflake snowflake;
 
     /**
-     * 单实例模式下默认都是0
+     * 单体模式下数据中心统一为 0
      **/
-    public IdGeneratorSingle() {
+    public MonolithIdGenerator() {
         this.snowflake = new Snowflake(Worker.DEFAULT_WORKER_ID, Worker.DEFAULT_DATA_CENTER_ID);
     }
 

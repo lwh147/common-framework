@@ -1,4 +1,4 @@
-package com.lwh147.common.mybatisplus.config.snowflake;
+package com.lwh147.common.mybatisplus.snowflake.service;
 
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import lombok.AllArgsConstructor;
@@ -9,19 +9,19 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 当前实例的工作机器ID和其所属数据中心ID封装类
+ * 当前服务的工作机器ID和其所属数据中心ID封装类
  * <p>
- * 单实例模式下默认都是0
+ * 单体应用模式下默认全部设置为0
  * <p>
- * 多实例模式下各实例之间互相竞争获取自己的工作机器ID和所属数据中心ID
+ * 微服务模式下各服务实例之间排队依次获取自己的工作机器ID和所属数据中心ID
  *
  * @author lwh
  * @date 2021/11/26 9:11
  **/
 @Data
 @EqualsAndHashCode
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Worker implements Serializable {
     /**
      * 工作机器ID，0-31
@@ -33,7 +33,7 @@ public class Worker implements Serializable {
     private Long dataCenterId;
 
     /**
-     * ID
+     * 下一个节点
      **/
     public synchronized void next() {
         if (this.workerId < MAX_WORKER_ID) {
@@ -42,7 +42,7 @@ public class Worker implements Serializable {
             this.dataCenterId++;
             this.workerId = DEFAULT_WORKER_ID;
         } else {
-            throw CommonExceptionEnum.COMMON_ERROR.toException("服务实例已达上限");
+            throw CommonExceptionEnum.COMMON_ERROR.toException("微服务实例数量已达上限");
         }
     }
 

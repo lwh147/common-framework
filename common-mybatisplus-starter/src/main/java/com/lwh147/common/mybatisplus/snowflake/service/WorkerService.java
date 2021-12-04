@@ -1,11 +1,11 @@
-package com.lwh147.common.mybatisplus.config.snowflake;
+package com.lwh147.common.mybatisplus.snowflake.service;
 
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
 /**
- * 获取当前实例的工作机器ID和其所属数据中心ID的服务类
+ * 微服务模式下获取当前实例的工作机器ID和其所属数据中心ID的服务类
  *
  * @author lwh
  * @date 2021/11/25 16:32

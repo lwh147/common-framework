@@ -10,9 +10,9 @@ import java.util.regex.Pattern;
  **/
 public class RegExpConstant {
     /**
-     * 匹配回车、换行、制表符
+     * 匹配回车或换行
      **/
-    public static final Pattern ENTER_PATTERN = Pattern.compile("[\r\n\t]");
+    public static final Pattern ENTER_PATTERN = Pattern.compile("[\r\n]");
 
     private RegExpConstant() {
     }

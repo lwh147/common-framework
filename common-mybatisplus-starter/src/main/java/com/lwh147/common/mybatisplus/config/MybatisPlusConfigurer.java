@@ -1,9 +1,8 @@
 package com.lwh147.common.mybatisplus.config;
 
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
-import com.lwh147.common.mybatisplus.config.properties.MybatisPlusProperties;
-import com.lwh147.common.mybatisplus.config.snowflake.IdGeneratorMulti;
-import com.lwh147.common.mybatisplus.config.snowflake.IdGeneratorSingle;
+import com.lwh147.common.mybatisplus.snowflake.MicroserviceIdGenerator;
+import com.lwh147.common.mybatisplus.snowflake.MonolithIdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -13,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.Resource;
 
 /**
- * 配置 MybaitsPlus
+ * MybaitsPlus 配置类
  *
  * @author lwh
  * @date 2021/11/25 16:47
@@ -33,11 +32,11 @@ public class MybatisPlusConfigurer {
     @Bean
     @ConditionalOnMissingBean(IdentifierGenerator.class)
     public IdentifierGenerator idGenerator() {
-        if (mybatisPlusProperties.getSingle()) {
-            log.debug("配置并开启自定义ID生成策略[单实例模式]");
-            return new IdGeneratorSingle();
+        if (mybatisPlusProperties.getEnabled()) {
+            log.debug("配置并开启自定义ID生成策略[微服务应用模式]");
+            return new MicroserviceIdGenerator();
         }
-        log.debug("配置并开启自定义ID生成策略[多实例模式]");
-        return new IdGeneratorMulti();
+        log.debug("配置并开启自定义ID生成策略[单体应用模式]");
+        return new MonolithIdGenerator();
     }
 }
