@@ -16,8 +16,7 @@
         <module>common-core</module>
         <module>common-util</module>
         <module>common-web-starter</module>
-        <module>common-redis-starter</module>
-        <module>common-jetcache-starter</module>
+        <module>common-cache-starter</module>
         <module>common-swagger-starter</module>
         <module>common-stream-starter</module>
         <module>common-mybatisplus-starter</module>
@@ -65,17 +64,12 @@
             </dependency>
             <dependency>
                 <groupId>com.lwh147</groupId>
-                <artifactId>common-jetcache-starter</artifactId>
+                <artifactId>common-cache-starter</artifactId>
                 <version>${common.framework.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.lwh147</groupId>
                 <artifactId>common-mybatisplus-starter</artifactId>
-                <version>${common.framework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.lwh147</groupId>
-                <artifactId>common-redis-starter</artifactId>
                 <version>${common.framework.version}</version>
             </dependency>
             <dependency>

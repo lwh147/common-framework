@@ -160,12 +160,13 @@ public class DateTimeUtil {
      * 距离现在多久
      *
      * @param datetime 指定日期时间
-     * @return 距离现在的时长描述，如几分钟前，几分钟后等
+     * @return 距离现在的时长描述
+     * <p>
+     * 如果参数为过去，则返回刚刚、几分钟前、几周前，以此类推
+     * <p>
+     * 如果参数为未来，则返回倒计时，格式从少到多为：56、01:56、11:01:56、1天 11:01:01
      */
     public static String fromNow(Date datetime) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(datetime);
-
         long time = datetime.getTime() / DateTimeConstant.MILLISECONDS_OF_SECOND;
         long now = new Date().getTime() / DateTimeConstant.MILLISECONDS_OF_SECOND;
         long ago = now - time;
@@ -173,9 +174,21 @@ public class DateTimeUtil {
         if (ago < 0) {
             ago = -ago;
             if (ago < DateTimeConstant.SECONDS_OF_MINUTE) {
-                return ago + "秒后";
+                return String.format("%02d", ago);
             }
-            return null;
+            if (ago < DateTimeConstant.SECONDS_OF_HOUR) {
+                return String.format("%02d:%02d", ago / DateTimeConstant.SECONDS_OF_MINUTE,
+                        ago % DateTimeConstant.SECONDS_OF_MINUTE);
+            }
+            if (ago < DateTimeConstant.SECONDS_OF_DAY) {
+                return String.format("%02d:%02d:%02d", ago / DateTimeConstant.SECONDS_OF_HOUR,
+                        ago % DateTimeConstant.SECONDS_OF_HOUR / DateTimeConstant.SECONDS_OF_MINUTE,
+                        ago % DateTimeConstant.SECONDS_OF_MINUTE);
+            }
+            return String.format("%d天 %02d:%02d:%02d", ago / DateTimeConstant.SECONDS_OF_DAY,
+                    ago % DateTimeConstant.SECONDS_OF_DAY / DateTimeConstant.SECONDS_OF_HOUR,
+                    ago % DateTimeConstant.SECONDS_OF_HOUR / DateTimeConstant.SECONDS_OF_MINUTE,
+                    ago % DateTimeConstant.SECONDS_OF_MINUTE);
         } else {
             if (ago < DateTimeConstant.SECONDS_OF_MINUTE) {
                 return "刚刚";
@@ -189,77 +202,16 @@ public class DateTimeUtil {
             if (ago < DateTimeConstant.SECONDS_OF_WEEK) {
                 return ago / DateTimeConstant.SECONDS_OF_DAY + "天前";
             }
-            return "";
+            if (ago < DateTimeConstant.SECONDS_OF_MONTH) {
+                return ago / DateTimeConstant.SECONDS_OF_WEEK + "周前";
+            }
+            if (ago < DateTimeConstant.SECONDS_OF_YEAR) {
+                return ago / DateTimeConstant.SECONDS_OF_MONTH + "月前";
+            }
+            return ago / DateTimeConstant.SECONDS_OF_YEAR + "年前";
         }
-    }
-
-    /**
-     * 距离截止日期还有多长时间
-     *
-     * @param date
-     * @return
-     */
-    public static String fromDeadline(Date date) {
-        long deadline = date.getTime() / 1000;
-        long now = (new Date().getTime()) / 1000;
-        long remain = deadline - now;
-        if (remain <= HOUR)
-            return "只剩下" + remain / MINUTE + "分钟";
-        else if (remain <= DAY)
-            return "只剩下" + remain / HOUR + "小时"
-                    + (remain % HOUR / MINUTE) + "分钟";
-        else {
-            long day = remain / DAY;
-            long hour = remain % DAY / HOUR;
-            long minute = remain % DAY % HOUR / MINUTE;
-            return "只剩下" + day + "天" + hour + "小时" + minute + "分钟";
-        }
-
-    }
-
-    /**
-     * 距离今天的绝对时间
-     *
-     * @param date
-     * @return
-     */
-    public static String toToday(Date date) {
-        long time = date.getTime() / 1000;
-        long now = (new Date().getTime()) / 1000;
-        long ago = now - time;
-        if (ago <= HOUR)
-            return ago / MINUTE + "分钟";
-        else if (ago <= DAY)
-            return ago / HOUR + "小时" + (ago % HOUR / MINUTE) + "分钟";
-        else if (ago <= DAY * 2)
-            return "昨天" + (ago - DAY) / HOUR + "点" + (ago - DAY)
-                    % HOUR / MINUTE + "分";
-        else if (ago <= DAY * 3) {
-            long hour = ago - DAY * 2;
-            return "前天" + hour / HOUR + "点" + hour % HOUR / MINUTE
-                    + "分";
-        } else if (ago <= MONTH) {
-            long day = ago / DAY;
-            long hour = ago % DAY / HOUR;
-            long minute = ago % DAY % HOUR / MINUTE;
-            return day + "天前" + hour + "点" + minute + "分";
-        } else if (ago <= YEAR) {
-            long month = ago / MONTH;
-            long day = ago % MONTH / DAY;
-            long hour = ago % MONTH % DAY / HOUR;
-            long minute = ago % MONTH % DAY % HOUR / MINUTE;
-            return month + "个月" + day + "天" + hour + "点" + minute + "分前";
-        } else {
-            long year = ago / YEAR;
-            long month = ago % YEAR / MONTH;
-            long day = ago % YEAR % MONTH / DAY;
-            return year + "年前" + month + "月" + day + "天";
-        }
-
     }
 
     private DateTimeUtil() {
-
     }
-
 }

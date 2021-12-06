@@ -13,9 +13,8 @@
 common-framework ----------------------------- 基础开发框架根模块(root)
 ├─ common-core --------------------------------- 开发框架公共核心组件库
 ├─ common-util --------------------------------- 开发框架工具组件库
-├─ common-jetcache-starter --------------------- Jetcache配置starter
+├─ common-cache-starter ------------------------ cache配置starter
 ├─ common-mybatisplus-starter ------------------ MybatisPlus配置starter
-├─ common-redis-starter ------------------------ Redis配置starter
 ├─ common-stream-starter ----------------------- 消息中间件配置starter
 ├─ common-swagger-starter ---------------------- Swagger配置starter
 ├─ common-web-starter -------------------------- 开发框架Web配置starter
@@ -52,9 +51,8 @@ common-framework
 
 * [common-core](./common-core/README.md)
 * [common-util](./common-util/README.md)
-* [common-jetcache-starter](./common-jetcache-starter/README.md)
+* [common-cache-starter](./common-cache-starter/README.md)
 * [common-mybatisplus-starter](./common-mybatisplus-starter/README.md)
-* [common-redis-starter](./common-redis-starter/README.md)
 * [common-stream-starter](./common-stream-starter/README.md)
 * [common-swagger-starter](./common-swagger-starter/README.md)
 * [common-web-starter](./common-web-starter/README.md)

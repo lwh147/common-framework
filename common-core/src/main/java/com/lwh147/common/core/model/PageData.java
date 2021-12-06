@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
 @Data
 @Builder
 @EqualsAndHashCode
+@NoArgsConstructor
 @ApiModel(description = "通用分页数据结构")
 public class PageData<T> implements Serializable {
     /**
