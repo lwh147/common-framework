@@ -24,8 +24,7 @@ public interface ICommonEnum {
     /**
      * 返回枚举值，保持与序列化结果的一致性
      * <p>
-     * 枚举类的 {@code toString()} 默认返回枚举对象的 {@code name}
-     * （不是属性 {@code name}）
+     * 枚举类的 {@link Enum#toString()} 默认返回枚举对象的 {@code name}
      *
      * @return 枚举值
      **/

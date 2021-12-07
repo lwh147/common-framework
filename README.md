@@ -27,6 +27,7 @@ common-framework ----------------------------- 基础开发框架根模块(root)
 JDK ---------------------- 1.8
 编码 --------------------- UTF-8
 交互数据格式 -------------- JSON
+JSON工具库 --------------- Jackson 2.11.1
 SpringBoot --------------- 2.3.2.RELEASE
 SpringCloud -------------- Hoxton.SR9
 注册中心 ------------------ Nacos 2.2.6.RELEASE
@@ -43,6 +44,8 @@ JDBC -------------------- 8.0.16
 
 > 本框架默认字符编码为UTF-8（文件相关的请求和响应除外），支持的数据交互格式为JSON，即请求和响应统一使用JSON格式
 
+> JSON工具库均使用Jackson，不支持配置为FastJson或其他JSON工具
+
 ## 简单使用
 
 你的项目中需要哪个模块的内容就引入哪个模块的jar包即可，开箱即用，如果需要进行相关配置，请前往对应模块的参考文档查看
@@ -56,7 +59,6 @@ common-framework
 * [common-stream-starter](./common-stream-starter/README.md)
 * [common-swagger-starter](./common-swagger-starter/README.md)
 * [common-web-starter](./common-web-starter/README.md)
-* [common-test](./common-test/README.md)
 
 ## 开发规约
 

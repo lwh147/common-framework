@@ -12,10 +12,7 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.serializer.*;
 
 import javax.annotation.Resource;
 import java.time.Duration;
@@ -33,7 +30,7 @@ public class SpringRedisAutoConfiguration {
     private RedisConnectionFactory redisConnectionFactory;
 
     /**
-     * 自定义 RedisTemplate 覆盖默认的redisTemplate
+     * 自定义 RedisTemplate，覆盖默认的 RedisTemplate
      */
     @Bean
     @Primary
@@ -42,14 +39,15 @@ public class SpringRedisAutoConfiguration {
         // 新建RedisTemplate
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
+
         // value序列化策略采用Jackson
-        Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper om = new ObjectMapper();
         // json与java对象属性不全对应时也进行反序列化
         om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        jackson2JsonRedisSerializer.setObjectMapper(om);
+        GenericJackson2JsonRedisSerializer jackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer(om);
+
         // String序列化工具
-        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
+        GenericToStringSerializer<String> stringSerializer = new GenericToStringSerializer<>(String.class);
 
         // key采用String序列化工具
         template.setKeySerializer(stringSerializer);

@@ -28,12 +28,13 @@ import java.text.MessageFormat;
  * <p>
  * 如上文所描述，错误详情和错误原因在 {@link Throwable} 中已经存在，而
  * {@link RuntimeException} 继承了它，所以本类继承自 {@link RuntimeException}
- * 复用 {@code detailMessage} 和 {@code cause} 属性，进一步添加 {@code source}、
- * {@code code}、{@code description} 三个属性分别记录错误来源、错误码和错误描述
+ * 复用 {@code detailMessage} 和 {@code cause} 属性，进一步添加 {@link CommonException#source}、
+ * {@link CommonException#code}、{@link CommonException#description} 三个属性分别记录
+ * 错误来源、错误码和错误描述
  * <p>
  *
  * @author lwh
- * @apiNote 只能由实现了 {@code ICommonExceptionEnum} 接口的异常枚举类构造产生此异常对象
+ * @apiNote 只能由实现了 {@link ICommonExceptionEnum} 接口的异常枚举类构造产生此异常对象
  * @date 2021/10/22 10:47
  **/
 @Data

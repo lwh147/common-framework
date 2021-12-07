@@ -8,4 +8,5 @@
 
 ## 待办
 
-* Lettuce client 集群、Sentinel、连接池配置
+* LettuceClient 集群、Sentinel、连接池配置
+* JetCache 方法注解扫描包路径配置

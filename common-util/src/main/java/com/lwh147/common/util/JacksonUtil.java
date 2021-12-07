@@ -20,8 +20,6 @@ import java.util.List;
 public class JacksonUtil {
     /**
      * 默认使用的ObjectMapper
-     * <p>
-     * json与java对象属性不全对应时也进行反序列化
      **/
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -37,23 +35,23 @@ public class JacksonUtil {
     }
 
     /**
-     * 使用默认OM配置将java对象转json的方法
+     * 使用默认OM配置将Java对象转JSON的方法
      *
      * @param object 待序列化对象
-     * @return json字符串
+     * @return JSON字符串
      **/
-    public static String toJson(Object object) {
-        return toJson(object, OBJECT_MAPPER);
+    public static String toJSON(Object object) {
+        return toJSON(object, OBJECT_MAPPER);
     }
 
     /**
-     * 使用自定义OM配置将java对象转json的方法
+     * 使用自定义OM配置将Java对象转JSON的方法
      *
      * @param object       待序列化对象
      * @param objectMapper 自定义OM配置
-     * @return json字符串
+     * @return JSON字符串
      **/
-    public static String toJson(Object object, ObjectMapper objectMapper) {
+    public static String toJSON(Object object, ObjectMapper objectMapper) {
         String res;
         try {
             res = objectMapper.writeValueAsString(object);
@@ -65,10 +63,10 @@ public class JacksonUtil {
     }
 
     /**
-     * 使用默认OM配置反序列化json的方法
+     * 使用默认OM配置反序列化JSON的方法
      *
      * @param <T>      目标对象
-     * @param json     待反序列化的json
+     * @param json     待反序列化的JSON
      * @param javaType 目标对象类
      * @return 目标对象
      **/
@@ -77,10 +75,10 @@ public class JacksonUtil {
     }
 
     /**
-     * 使用自定义OM配置反序列化json的方法
+     * 使用自定义OM配置反序列化JSON的方法
      *
      * @param <T>          目标对象
-     * @param json         待反序列化的json
+     * @param json         待反序列化的JSON
      * @param objectMapper 自定义OM配置
      * @param javaType     目标对象类
      * @return 目标对象
@@ -97,10 +95,10 @@ public class JacksonUtil {
     }
 
     /**
-     * 使用默认OM配置反序列化json为List的方法
+     * 使用默认OM配置反序列化JSON为 {@link List} 的方法
      *
      * @param <T>      目标数组元素对象
-     * @param json     待反序列化的json
+     * @param json     待反序列化的JSON
      * @param itemType 目标数组元素对象类
      * @return 目标对象数组
      **/
@@ -109,10 +107,10 @@ public class JacksonUtil {
     }
 
     /**
-     * 使用自定义OM配置反序列化json为List的方法
+     * 使用自定义OM配置反序列化JSON为 {@link List} 的方法
      *
      * @param <T>          目标数组元素对象
-     * @param json         待反序列化的json
+     * @param json         待反序列化的JSON
      * @param objectMapper 自定义OM配置
      * @param itemType     目标数组元素对象类
      * @return 目标对象数组

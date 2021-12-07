@@ -8,7 +8,7 @@ package com.lwh147.common.core.exception;
  **/
 public interface ICommonException {
     /**
-     * 复用了父类属性，所以必须重写toString
+     * 复用了父类属性，所以必须重写 {@link Object#toString()}
      *
      * @return 完整的异常信息
      **/

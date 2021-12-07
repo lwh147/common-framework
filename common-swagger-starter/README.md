@@ -11,6 +11,7 @@
 引入jar包即可
 
 ```xml
+
 <dependency>
     <groupId>com.lwh147</groupId>
     <artifactId>common-swagger-starter</artifactId>
@@ -38,4 +39,4 @@
 ## 待办
 
 * 分组API配置支持
-* Model的枚举属性展示方式优化
+* Model的枚举属性展示方式优化，目前Swagger是采用Enum.names()方式进行展示的，应该展示values()

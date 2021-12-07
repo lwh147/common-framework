@@ -25,7 +25,7 @@ import java.util.Objects;
  * <p>
  * 上下文中不存在Swagger配置Bean
  * <p>
- * springfox.documentation.enabled 配置项缺省或配置为 @{code true}
+ * springfox.documentation.enabled 配置项缺省或配置为 {@code true}
  *
  * @author lwh
  * @date 2021/11/19 16:55

@@ -82,7 +82,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
         PrintWriter pw = null;
         try {
             pw = response.getWriter();
-            pw.write(JacksonUtil.toJson(respBody));
+            pw.write(JacksonUtil.toJSON(respBody));
             pw.flush();
         } catch (IOException e) {
             throw CommonExceptionEnum.COMMON_ERROR.toException("写入响应体失败: " + e.getMessage(), e);

@@ -70,7 +70,7 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
     /**
      * 排序sql后缀
      * <p>
-     * {@code @JsonIgnore} 序列化和反序列化时忽略该字段，基于Jackson
+     * {@link JsonIgnore} 序列化和反序列化时忽略该字段，基于Jackson
      * <p>
      * {@code @ApiModelProperty(hidden = true)} 不在Swagger界面上展示
      **/
@@ -79,9 +79,9 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
     private String sortSqlSuffix;
 
     /**
-     * 重写 {@code sortSqlSuffix} 属性的get方法
+     * 重写 {@link PageQuery#sortSqlSuffix} 属性的get方法
      * <p>
-     * 用空格拼接 {@code columnName} 和 {@code order} 字段，
+     * 用空格拼接 {@link PageQuery#columnName} 和 {@link PageQuery#order} 字段，
      *
      * @return 两者任一为空时返回按创建时间降序排序的sql后缀
      **/
@@ -122,7 +122,7 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
         /**
          * 枚举值，给前端使用的字段名
          * <p>
-         * {@code @JsonValue} 指定序列化时使用该属性作为枚举值，基于 Jackson
+         * {@link JsonValue} 指定序列化时使用该属性作为枚举值，基于 Jackson
          **/
         @JsonValue
         private final String value;
@@ -142,7 +142,7 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
         /**
          * 根据枚举值寻找枚举对象
          * <p>
-         * {@code @JsonCreator} 指定使用此方法进行反序列化，基于Jackson
+         * {@link JsonCreator} 指定使用此方法进行反序列化，基于Jackson
          *
          * @return 找到的枚举对象，没找到抛出异常
          * @throws com.lwh147.common.core.exception.CommonException
@@ -160,7 +160,7 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
         /**
          * 判断枚举值是否存在
          *
-         * @return 匹配的枚举对象，不存在返回null
+         * @return 匹配的枚举对象，不存在返回 {@code null}
          **/
         public static DefaultSortColumnEnum exist(String value) {
             for (DefaultSortColumnEnum e : DefaultSortColumnEnum.values()) {

@@ -24,7 +24,7 @@ public enum OrderEnum implements ICommonEnum {
     /**
      * 枚举值
      * <p>
-     * {@code @JsonValue} 指定序列化时使用该属性作为枚举值，基于 Jackson
+     * {@link JsonValue} 指定序列化时使用该属性作为枚举值，基于 Jackson
      **/
     @JsonValue
     private final String value;
@@ -44,7 +44,7 @@ public enum OrderEnum implements ICommonEnum {
     /**
      * 根据枚举值寻找枚举对象
      * <p>
-     * {@code @JsonCreator} 指定使用此方法进行反序列化，基于Jackson
+     * {@link JsonCreator} 指定使用此方法进行反序列化，基于Jackson
      *
      * @return 找到的枚举对象
      * @throws com.lwh147.common.core.exception.CommonException

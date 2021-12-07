@@ -8,10 +8,10 @@ import java.util.Date;
 /**
  * 日期时间工具类
  * <p>
- * 如不做特殊说明则返回的Date类型时间均为0点
+ * 如不做特殊说明则返回的 {@link Date} 时间均为0点
  *
  * @author lwh
- * @date 2021/5/3 20:23
+ * @date 2021/12/3 20:23
  **/
 public class DateTimeUtil {
     /**
@@ -50,7 +50,7 @@ public class DateTimeUtil {
     }
 
     /**
-     * 获取amount天后的日期
+     * 获取 {@code amount} 天后的日期
      *
      * @param amount 天数，为负表示amount天前
      * @return 目标日期
@@ -60,10 +60,10 @@ public class DateTimeUtil {
     }
 
     /**
-     * 获取指定日期amount天后的日期
+     * 获取指定日期 {@code amount} 天后的日期
      *
      * @param date   指定日期
-     * @param amount 天数，为负表示amount天前
+     * @param amount 天数，为负表示 {@code amount} 天前
      * @return 目标日期
      **/
     public static Date getDateAfterTheDay(Date date, int amount) {
@@ -128,7 +128,7 @@ public class DateTimeUtil {
     }
 
     /**
-     * 获取amount个月后最后一天的日期
+     * 获取 {@code amount} 个月后最后一天的日期
      *
      * @param amount 月数，为负表示前amount月
      * @return 目标日期
@@ -143,9 +143,9 @@ public class DateTimeUtil {
     }
 
     /**
-     * 获取amount个月后第一天的日期
+     * 获取 {@code amount} 个月后第一天的日期
      *
-     * @param amount 月数，为负表示前amount月
+     * @param amount 月数，为负表示前 {@code amount} 月
      * @return 目标日期
      **/
     public static Date getFirstDayOfMonthLater(int amount) {
@@ -168,7 +168,7 @@ public class DateTimeUtil {
      */
     public static String fromNow(Date datetime) {
         long time = datetime.getTime() / DateTimeConstant.MILLISECONDS_OF_SECOND;
-        long now = new Date().getTime() / DateTimeConstant.MILLISECONDS_OF_SECOND;
+        long now = System.currentTimeMillis() / DateTimeConstant.MILLISECONDS_OF_SECOND;
         long ago = now - time;
 
         if (ago < 0) {

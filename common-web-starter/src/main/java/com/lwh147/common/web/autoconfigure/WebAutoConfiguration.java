@@ -1,5 +1,6 @@
 package com.lwh147.common.web.autoconfigure;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -21,7 +22,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,9 +112,9 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
     /**
      * 配置Jackson的全局序列化策略：
      * <p>
-     * 1.将Long类型序列化为String类型
+     * 1.将 {@link Long} 转换成String
      * <p>
-     * 2.将BigDecimal类型序列化为String类型
+     * 2.将 {@link java.math.BigDecimal} 转换成PlainString，不采用科学计数法，完整打印数值
      * <p>
      * 3.设置默认时区为：GMT+8，默认日期时间格式为：yyyy-MM-dd HH:mm:ss
      * <p>
@@ -128,13 +128,13 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         ObjectMapper objectMapper = converter.getObjectMapper();
         SimpleModule simpleModule = new SimpleModule();
 
-        // 将所有Long转换成String
+        // 将Long转换成String
         simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
         simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
         simpleModule.addSerializer(long.class, ToStringSerializer.instance);
-        // 将所有BigDecimal转换成String
-        simpleModule.addSerializer(BigDecimal.class, ToStringSerializer.instance);
-        // json与java对象属性不全对应时也进行反序列化
+        // 将BigDecimal转换成PlainString，不采用科学计数法，完整打印数值
+        objectMapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+        // JSON与Java对象属性不全对应时也进行反序列化
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         // 日期时间格式
         objectMapper.setDateFormat(new SimpleDateFormat(dateFormat));
