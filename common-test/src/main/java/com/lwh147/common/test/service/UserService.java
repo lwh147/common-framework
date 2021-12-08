@@ -1,7 +1,5 @@
 package com.lwh147.common.test.service;
 
-import com.alicp.jetcache.anno.CacheInvalidate;
-import com.alicp.jetcache.anno.CacheUpdate;
 import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lwh147.common.core.model.PageData;
@@ -27,22 +25,23 @@ public class UserService {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
-    @Cached(name = CACHE_NAME, key = "#user.id")
+    @Cached
     public String add(User user) {
+        redisTemplate.opsForValue().set(user.getId().toString(), user);
         return "SUCCESS";
     }
 
-    @CacheInvalidate(name = CACHE_NAME, key = "#id")
     public String delete(Long id) {
+        redisTemplate.delete(id.toString());
         return "SUCCESS";
     }
 
-    @Cached(name = CACHE_NAME, key = "#id")
     public User getById(Long id) {
-        return new User(1L, "张三", "男", 18, "我是新增的用户", new Date());
+        User user = new User(1L, "张三", "男", 18, "我是新增的用户", new Date());
+        redisTemplate.opsForValue().set(user.getId().toString(), user);
+        return user;
     }
 
-    @Cached(name = CACHE_NAME, key = "#userQuery")
     public PageData<User> query(UserQuery userQuery) {
         List<User> userList = new ArrayList<>();
         userList.add(new User(1L, "张三", "男", 18, "我是新增的用户", new Date()));
@@ -52,11 +51,13 @@ public class UserService {
         page.setCurrent(1);
         page.setPages(1);
         page.setSize(1);
-        return PageData.fromPage(page);
+        PageData<User> result = PageData.fromPage(page);
+        redisTemplate.opsForValue().set(userQuery.toString(), result);
+        return result;
     }
 
-    @CacheUpdate(name = CACHE_NAME, key = "#user.id", value = "#user")
     public String update(User user) {
+        redisTemplate.opsForValue().set(user.getId().toString(), user);
         return "SUCCESS";
     }
 }

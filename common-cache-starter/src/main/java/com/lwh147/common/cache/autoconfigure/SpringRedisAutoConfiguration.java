@@ -1,7 +1,6 @@
 package com.lwh147.common.cache.autoconfigure;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lwh147.common.cache.policy.JacksonSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -12,13 +11,19 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.*;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import javax.annotation.Resource;
-import java.time.Duration;
 
 /**
  * Spring Data Redis 配置
+ * <p>
+ * key采用自定义序列化策略 {@link com.lwh147.common.cache.policy.CacheKeyConverter}
+ * value采用Jackson序列化策略
+ * <p>
+ * {@link RedisTemplate} 和 {@link RedisCacheManager} 均默认永不过期
  *
  * @author lwh
  * @date 2021/12/6 11:13
@@ -40,31 +45,21 @@ public class SpringRedisAutoConfiguration {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
 
-        // value序列化策略采用Jackson
-        ObjectMapper om = new ObjectMapper();
-        // json与java对象属性不全对应时也进行反序列化
-        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        GenericJackson2JsonRedisSerializer jackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer(om);
-
-        // String序列化工具
-        GenericToStringSerializer<String> stringSerializer = new GenericToStringSerializer<>(String.class);
-
         // key采用String序列化工具
-        template.setKeySerializer(stringSerializer);
+        template.setKeySerializer(JacksonSerializer.STRING_SERIALIZER);
         // hash的key也采用String序列化工具
-        template.setHashKeySerializer(stringSerializer);
+        template.setHashKeySerializer(JacksonSerializer.STRING_SERIALIZER);
         // String类型的数据采用String序列化工具
-        template.setStringSerializer(stringSerializer);
+        template.setStringSerializer(JacksonSerializer.STRING_SERIALIZER);
         // value采用Jackson序列化工具
-        template.setValueSerializer(jackson2JsonRedisSerializer);
+        template.setValueSerializer(JacksonSerializer.JACKSON_SERIALIZER);
         // hash的value也采用Jackson序列化工具
-        template.setHashValueSerializer(jackson2JsonRedisSerializer);
+        template.setHashValueSerializer(JacksonSerializer.JACKSON_SERIALIZER);
         // 默认序列化工具为Jackson
-        template.setDefaultSerializer(jackson2JsonRedisSerializer);
+        template.setDefaultSerializer(JacksonSerializer.JACKSON_SERIALIZER);
 
         template.afterPropertiesSet();
 
-        log.debug("配置并注入RedisTemplate<String, Object>，key序列化工具为：StringRedisSerializer, value序列化工具为：Jackson2JsonRedisSerializer");
         return template;
     }
 
@@ -75,25 +70,16 @@ public class SpringRedisAutoConfiguration {
     public RedisCacheManager cacheManager() {
         // String序列化工具
         RedisSerializer<String> stringSerializer = new StringRedisSerializer();
-        // value序列化策略采用Jackson
-        Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        ObjectMapper om = new ObjectMapper();
-        // json与java对象属性不全对应时也进行反序列化
-        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        jackson2JsonRedisSerializer.setObjectMapper(om);
         // 生成默认配置
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
         // 修改默认配置
         redisCacheConfiguration = redisCacheConfiguration
-                // 设置缓存过期时间为3小时
-                .entryTtl(Duration.ofHours(3))
                 // 采用String序列化工具
-                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(stringSerializer))
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(JacksonSerializer.STRING_SERIALIZER))
                 // value序列化策略采用Jackson
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(JacksonSerializer.JACKSON_SERIALIZER))
                 // 不缓存null值
                 .disableCachingNullValues();
-        log.debug("配置CacheManager，key序列化工具为：StringRedisSerializer, value序列化工具为：Jackson2JsonRedisSerializer，默认过期时间3小时");
         return RedisCacheManager
                 .builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory))
                 .cacheDefaults(redisCacheConfiguration)

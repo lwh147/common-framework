@@ -53,7 +53,7 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
             String requestBody = ((RepeatableReadRequestWrapper) request).getBody();
             // 不为空时追加请求体信息打印
             if (Objects.nonNull(requestBody)) {
-                template += "\n" + WebConstant.REQUEST_BODY + ": {}";
+                template += "\n" + WebConstant.REQUEST_BODY + ": {}\n";
                 log.info(template, String.format("%6s", method), url, requestBody);
                 // 同时写入上下文
                 ContextHolder.set(WebConstant.REQUEST_BODY, requestBody);

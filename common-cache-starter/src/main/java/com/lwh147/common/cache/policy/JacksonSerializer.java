@@ -3,6 +3,7 @@ package com.lwh147.common.cache.policy;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * Jackson序列化器
@@ -14,21 +15,23 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
  **/
 public class JacksonSerializer {
     private static final ObjectMapper OM;
-    private static final GenericJackson2JsonRedisSerializer SERIALIZER;
+    public static final StringRedisSerializer STRING_SERIALIZER;
+    public static final GenericJackson2JsonRedisSerializer JACKSON_SERIALIZER;
 
     static {
         OM = new ObjectMapper();
         // json与java对象属性不全对应时也进行反序列化
         OM.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        SERIALIZER = new GenericJackson2JsonRedisSerializer(OM);
+        JACKSON_SERIALIZER = new GenericJackson2JsonRedisSerializer(OM);
+        STRING_SERIALIZER = new StringRedisSerializer();
     }
 
     public static byte[] serialize(Object o) {
-        return SERIALIZER.serialize(o);
+        return JACKSON_SERIALIZER.serialize(o);
     }
 
     public static Object deserialize(byte[] bytes) {
-        return SERIALIZER.deserialize(bytes);
+        return JACKSON_SERIALIZER.deserialize(bytes);
     }
 
     private JacksonSerializer() {

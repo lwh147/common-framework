@@ -37,6 +37,8 @@ import java.util.TimeZone;
 @Slf4j
 @Configuration
 public class WebAutoConfiguration implements WebMvcConfigurer {
+    @Resource
+    private BannerPrinter bannerPrinter;
     @Value("${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}")
     private String dateFormat;
     @Value("${spring.jackson.time-zone:GMT+8}")
@@ -106,7 +108,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(requestLoggerInterceptor)
                 .excludePathPatterns(whiteList)
                 .addPathPatterns("/**");
-        log.debug("配置并开启日志记录拦截器，白名单：{}", Arrays.toString(whiteList.toArray()));
+        log.debug("配置并开启日志记录拦截器，白名单{}", Arrays.toString(whiteList.toArray()));
     }
 
     /**
