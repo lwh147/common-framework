@@ -14,7 +14,7 @@ import java.util.List;
  * @date 2021/11/22 17:06
  **/
 @Data
-@ConfigurationProperties(prefix = "springfox.documentation")
+@ConfigurationProperties(prefix = "swagger")
 public class SwaggerProperties {
     /**
      * 是否开启Swagger，共用Springfox的配置项，缺省默认开启

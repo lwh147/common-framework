@@ -24,6 +24,8 @@ import javax.annotation.Resource;
  * value采用Jackson序列化策略
  * <p>
  * {@link RedisTemplate} 和 {@link RedisCacheManager} 均默认永不过期
+ * <p>
+ * 默认使用数据库0，与JetCache的方法缓存区分
  *
  * @author lwh
  * @date 2021/12/6 11:13

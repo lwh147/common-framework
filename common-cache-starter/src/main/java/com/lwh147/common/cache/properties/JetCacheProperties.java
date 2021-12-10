@@ -21,15 +21,23 @@ public class JetCacheProperties {
      **/
     private Integer localLimit = 1024;
     /**
-     * 本地缓存过期时间，默认1分钟 60s
+     * 本地缓存过期时间，默认60s
      **/
     private Integer localExpiredIn = 60;
     /**
-     * 远程缓存过期时间，默认3分钟 180s
+     * 远程缓存过期时间，默认180s
      **/
     private Integer remoteExpiredIn = 180;
     /**
      * 缓存使用情况统计时间间隔，默认 15 分钟
      **/
     private Integer statIntervalMinutes = 15;
+    /**
+     * 缓存刷新时间间隔，默认60s
+     **/
+    private Integer refresh = 60;
+    /**
+     * 停止刷新缓存的等待时间，默认180s
+     **/
+    private Integer stopRefreshAfterLastAccess = 180;
 }

@@ -100,7 +100,6 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         whiteList.add("/error");
         whiteList.add("/csrf");
         whiteList.add("/swagger-resources/**");
-        whiteList.add("/swagger-ui/**");
         whiteList.add("/static/**");
         whiteList.add("/webjars/**");
         whiteList.add("/favicon.ico");

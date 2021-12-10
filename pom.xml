@@ -13,14 +13,14 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>common-cache-starter</module>
         <module>common-core</module>
+        <module>common-mybatisplus-starter</module>
+        <module>common-stream-starter</module>
+        <module>common-swagger-starter</module>
+        <module>common-test</module>
         <module>common-util</module>
         <module>common-web-starter</module>
-        <module>common-cache-starter</module>
-        <module>common-swagger-starter</module>
-        <module>common-stream-starter</module>
-        <module>common-mybatisplus-starter</module>
-        <module>common-test</module>
     </modules>
 
     <properties>
@@ -37,26 +37,24 @@
         <spring-cloud-alibaba.version>2.2.6.RELEASE</spring-cloud-alibaba.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <mysql-connector.version>8.0.16</mysql-connector.version>
-        <p6spy.version>3.9.1</p6spy.version>
         <mybatis-plus.version>3.3.1</mybatis-plus.version>
+        <p6spy.version>3.9.1</p6spy.version>
         <lombok.version>1.18.12</lombok.version>
-        <hutool.version>5.7.14</hutool.version>
-        <springfox.swagger.version>3.0.0</springfox.swagger.version>
-        <swagger.models.version>1.5.21</swagger.models.version>
-        <swagger.annotation.version>1.5.20</swagger.annotation.version>
-        <jjwt.version>0.9.1</jjwt.version>
+        <logback.version>1.2.3</logback.version>
+        <springfox.swagger.version>2.9.2</springfox.swagger.version>
         <redisson.version>3.12.5</redisson.version>
         <jetcache.version>2.6.0</jetcache.version>
-        <logback.version>1.2.3</logback.version>
-        <jackson.annotation.version>2.11.1</jackson.annotation.version>
+        <!-- 需要覆盖基础依赖的子依赖版本管理 -->
+        <io.swagger.version>1.5.24</io.swagger.version>
         <!-- 其它开发工具依赖库版本管理 -->
         <reflections.version>0.9.11</reflections.version>
-        <istack.version>4.0.0</istack.version>
+        <hutool.version>5.7.14</hutool.version>
+        <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- 子模块依赖 -->
+            <!-- 基础框架子模块依赖 -->
             <dependency>
                 <groupId>com.lwh147</groupId>
                 <artifactId>common-core</artifactId>
@@ -119,16 +117,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector.version}</version>
             </dependency>
-            <dependency>
-                <groupId>p6spy</groupId>
-                <artifactId>p6spy</artifactId>
-                <version>${p6spy.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -139,36 +134,55 @@
                 <artifactId>mybatis-plus-extension</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>${p6spy.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
             <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool.version}</version>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox.swagger.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-annotations</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-models</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
-                <artifactId>springfox-boot-starter</artifactId>
+                <artifactId>springfox-swagger-ui</artifactId>
                 <version>${springfox.swagger.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-annotations</artifactId>
-                <version>${swagger.annotation.version}</version>
+                <version>${io.swagger.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-models</artifactId>
-                <version>${swagger.models.version}</version>
+                <version>${io.swagger.version}</version>
             </dependency>
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>${jjwt.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
@@ -179,11 +193,7 @@
                 <artifactId>jetcache-starter-redis-lettuce</artifactId>
                 <version>${jetcache.version}</version>
             </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
+
             <!-- 其它开发工具依赖库 -->
             <dependency>
                 <groupId>org.reflections</groupId>
@@ -191,9 +201,14 @@
                 <version>${reflections.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.sun.istack</groupId>
-                <artifactId>istack-commons-runtime</artifactId>
-                <version>${istack.version}</version>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

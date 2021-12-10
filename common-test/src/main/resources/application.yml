@@ -13,13 +13,13 @@ spring:
 
 logging:
   level:
+    root: info
     com.lwh147.common: debug
 
-springfox:
-  documentation:
-    enabled: true
-    packages:
-      - com.lwh147
-    contact:
-      name: lwh147
-      url: https://github.com/lwh147
+swagger:
+  enabled: true
+  packages:
+    - com.lwh147
+  contact:
+    name: lwh147
+    url: https://github.com/lwh147
