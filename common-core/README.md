@@ -2,9 +2,23 @@
 
 ## 简介
 
+该模块是整个框架的核心部分，主要包含常用的常量封装类、统一响应、统一应答、统一异常以及通用查询条件的封装类
+
 ## 简单使用
 
+如只需要使用到本模块中的封装类，不需要统一异常等配置，只引入Jar包即可
+
+```xml
+<dependency>
+    <groupId>com.lwh147</groupId>
+    <artifactId>common-core</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
+
 ## 配置项
+
+无
 
 ## 待办
 
