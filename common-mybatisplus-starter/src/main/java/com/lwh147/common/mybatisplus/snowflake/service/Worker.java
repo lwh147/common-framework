@@ -11,9 +11,9 @@ import java.io.Serializable;
 /**
  * 当前服务的工作机器ID和其所属数据中心ID封装类
  * <p>
- * 单体应用模式下默认全部设置为0
+ * 单机模式下默认全部设置为0
  * <p>
- * 微服务模式下各服务实例之间排队依次获取自己的工作机器ID和所属数据中心ID
+ * 集群模式下各工作机器排队依次获取自己的工作机器ID和所属数据中心ID
  *
  * @author lwh
  * @date 2021/11/26 9:11
@@ -42,7 +42,7 @@ public class Worker implements Serializable {
             this.dataCenterId++;
             this.workerId = DEFAULT_WORKER_ID;
         } else {
-            throw CommonExceptionEnum.COMMON_ERROR.toException("微服务实例数量已达上限");
+            throw CommonExceptionEnum.COMMON_ERROR.toException("工作机器数量已达上限");
         }
     }
 

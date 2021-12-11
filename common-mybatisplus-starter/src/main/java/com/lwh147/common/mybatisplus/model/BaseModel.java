@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lwh147.common.core.constant.DateTimeConstant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -23,8 +24,8 @@ import java.util.Date;
  * 但是其它数据表除了必须有上述字段外通常也必须具备逻辑删除和版本控制字段，
  * 为此我也提供了 {@link DataModel}，数据表实体类可以选择继承此类
  * <p>
- * 最后，如果想完全自定义公共字段，那么可以直接继承 {@link Model} 类来
- * 编写自己的实体类基类
+ * 你可以根据情况选择继承该类与否，如果想完全自定义公共字段，那么可以直接
+ * 继承 {@link Model} 类来编写自己的实体类基类
  *
  * @param <T> 继承了 {@code BaseModel} 的实体类
  * @author lwh
@@ -42,15 +43,21 @@ public class BaseModel<T extends BaseModel<?>> extends Model<T> {
     /**
      * 创建时间
      * <p>
+     * 推荐在数据库中配置默认值
+     * <p>
      * {@code @JsonFormat} 指定序列化和反序列化时采用的日期时间格式，基于Jackson
      **/
     @TableField(CREATE_TIME)
+    @DateTimeFormat(pattern = DateTimeConstant.DEFAULT_DATETIME_FORMAT)
     @JsonFormat(timezone = DateTimeConstant.DEFAULT_TIMEZONE, pattern = DateTimeConstant.DEFAULT_DATETIME_FORMAT)
     protected Date createTime;
     /**
      * 修改时间
+     * <p>
+     * 推荐在数据库中配置根据当前时间自动更新
      **/
     @TableField(UPDATE_TIME)
+    @DateTimeFormat(pattern = DateTimeConstant.DEFAULT_DATETIME_FORMAT)
     @JsonFormat(timezone = DateTimeConstant.DEFAULT_TIMEZONE, pattern = DateTimeConstant.DEFAULT_DATETIME_FORMAT)
     protected Date updateTime;
 

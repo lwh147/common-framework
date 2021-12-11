@@ -10,7 +10,7 @@ import lombok.ToString;
 /**
  * 数据实体类，在基础实体类上增加逻辑删除和版本控制
  * <p>
- * 对于基础数据表的删除和修改需要严格控制
+ * 你可以根据情况选择继承该类与否
  *
  * @param <T> 继承了 {@code DataModel} 的实体类
  * @author lwh
@@ -23,7 +23,7 @@ public class DataModel<T extends DataModel<?>> extends BaseModel<T> {
     /**
      * 逻辑删除
      **/
-    @TableLogic
+    @TableLogic(value = "-1", delval = "1")
     @TableField(DELETED)
     protected Integer deleted;
     /**

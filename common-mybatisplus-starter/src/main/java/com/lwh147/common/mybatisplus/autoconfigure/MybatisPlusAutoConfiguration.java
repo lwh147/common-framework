@@ -1,10 +1,17 @@
 package com.lwh147.common.mybatisplus.autoconfigure;
 
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
-import com.lwh147.common.mybatisplus.snowflake.MicroserviceIdGenerator;
-import com.lwh147.common.mybatisplus.snowflake.MonolithIdGenerator;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.lwh147.common.mybatisplus.properties.SnowflakeProperties;
+import com.lwh147.common.mybatisplus.snowflake.ClusterIdGenerator;
+import com.lwh147.common.mybatisplus.snowflake.StandaloneIdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,24 +26,62 @@ import javax.annotation.Resource;
  **/
 @Slf4j
 @Configuration
-@EnableConfigurationProperties(MybatisPlusProperties.class)
+@EnableConfigurationProperties(SnowflakeProperties.class)
 public class MybatisPlusAutoConfiguration {
+    @Resource
+    private SnowflakeProperties snowflakeProperties;
     @Resource
     private MybatisPlusProperties mybatisPlusProperties;
 
     /**
-     * 雪花算法ID生成策略配置，生效条件：
+     * 自定义雪花算法ID生成器配置，生效条件：
+     * <p>
+     * 配置中开启
      * <p>
      * 未配置其它ID生成器
      **/
     @Bean
     @ConditionalOnMissingBean(IdentifierGenerator.class)
+    @ConditionalOnProperty(name = "snowflake.enabled", havingValue = "true", matchIfMissing = true)
     public IdentifierGenerator idGenerator() {
-        if (mybatisPlusProperties.getEnabled()) {
-            log.debug("配置并开启自定义ID生成策略[微服务应用模式]");
-            return new MicroserviceIdGenerator();
+        if (SnowflakeProperties.STANDALONE.equals(snowflakeProperties.getDataCenter())) {
+            log.debug("配置并开启雪花算法ID生成器[单机模式]");
+            return new StandaloneIdGenerator();
+        } else if (SnowflakeProperties.CLUSTER.equals(snowflakeProperties.getDataCenter())) {
+            log.debug("配置并开启雪花算法ID生成器[集群模式]");
+            return new ClusterIdGenerator();
+        } else {
+            log.warn("配置项[snowflake.data-center]取值错误");
+            log.debug("配置并开启雪花算法ID生成器[单机模式]");
+            return new StandaloneIdGenerator();
         }
-        log.debug("配置并开启自定义ID生成策略[单体应用模式]");
-        return new MonolithIdGenerator();
+    }
+
+    /**
+     * 新版配置方法
+     **/
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        this.paginationInnerInterceptor(interceptor);
+        this.optimisticLockerInterceptor(interceptor);
+        return interceptor;
+    }
+
+    /**
+     * 配置开启自动分页
+     **/
+    private void paginationInnerInterceptor(MybatisPlusInterceptor interceptor) {
+        PaginationInnerInterceptor pageInterceptor = new PaginationInnerInterceptor(DbType.MYSQL);
+        pageInterceptor.setDialect();
+        interceptor.addInnerInterceptor(pageInterceptor);
+    }
+
+    /**
+     * 配置开启乐观锁
+     **/
+    private void optimisticLockerInterceptor(MybatisPlusInterceptor interceptor) {
+        OptimisticLockerInnerInterceptor optimisticLockerInterceptor = new OptimisticLockerInnerInterceptor();
+        interceptor.addInnerInterceptor(optimisticLockerInterceptor);
     }
 }

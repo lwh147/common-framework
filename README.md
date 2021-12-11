@@ -36,8 +36,7 @@ spring-boot-dependencies ---------------------- 2.3.2.RELEASE
 spring-cloud-dependencies --------------------- Hoxton.SR9
 spring-cloud-alibaba-dependencies ------------- 2.2.6.RELEASE
 mysql-connector-java -------------------------- 8.0.16
-mybaits-plus-boot-starter --------------------- 3.3.1
-p6spy ----------------------------------------- 3.9.1
+mybaits-plus-boot-starter --------------------- 3.4.2
 lombok ---------------------------------------- 1.18.12
 logback-classic ------------------------------- 1.2.3
 sprignfox-swagger2 ---------------------------- 2.9.2

@@ -37,8 +37,7 @@
         <spring-cloud-alibaba.version>2.2.6.RELEASE</spring-cloud-alibaba.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <mysql-connector.version>8.0.16</mysql-connector.version>
-        <mybatis-plus.version>3.3.1</mybatis-plus.version>
-        <p6spy.version>3.9.1</p6spy.version>
+        <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <lombok.version>1.18.12</lombok.version>
         <logback.version>1.2.3</logback.version>
         <springfox.swagger.version>2.9.2</springfox.swagger.version>
@@ -49,7 +48,6 @@
         <!-- 其它开发工具依赖库版本管理 -->
         <reflections.version>0.9.11</reflections.version>
         <hutool.version>5.7.14</hutool.version>
-        <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
     <dependencyManagement>
@@ -136,12 +134,6 @@
             </dependency>
 
             <dependency>
-                <groupId>p6spy</groupId>
-                <artifactId>p6spy</artifactId>
-                <version>${p6spy.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
@@ -204,11 +196,6 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>${jjwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
