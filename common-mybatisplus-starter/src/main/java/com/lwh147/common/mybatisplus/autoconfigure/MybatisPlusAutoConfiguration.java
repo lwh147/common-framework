@@ -1,15 +1,17 @@
 package com.lwh147.common.mybatisplus.autoconfigure;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.DB2Dialect;
+import com.lwh147.common.mybatisplus.properties.MybatisPlusProperties;
 import com.lwh147.common.mybatisplus.properties.SnowflakeProperties;
 import com.lwh147.common.mybatisplus.snowflake.ClusterIdGenerator;
 import com.lwh147.common.mybatisplus.snowflake.StandaloneIdGenerator;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -26,12 +28,11 @@ import javax.annotation.Resource;
  **/
 @Slf4j
 @Configuration
-@EnableConfigurationProperties(SnowflakeProperties.class)
+@MapperScan(basePackages = "com.lwh147.common")
+@EnableConfigurationProperties({SnowflakeProperties.class, MybatisPlusProperties.class})
 public class MybatisPlusAutoConfiguration {
     @Resource
     private SnowflakeProperties snowflakeProperties;
-    @Resource
-    private MybatisPlusProperties mybatisPlusProperties;
 
     /**
      * 自定义雪花算法ID生成器配置，生效条件：
@@ -63,7 +64,9 @@ public class MybatisPlusAutoConfiguration {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        // 配置分页插件
         this.paginationInnerInterceptor(interceptor);
+        // 配置乐观锁
         this.optimisticLockerInterceptor(interceptor);
         return interceptor;
     }
@@ -73,7 +76,7 @@ public class MybatisPlusAutoConfiguration {
      **/
     private void paginationInnerInterceptor(MybatisPlusInterceptor interceptor) {
         PaginationInnerInterceptor pageInterceptor = new PaginationInnerInterceptor(DbType.MYSQL);
-        pageInterceptor.setDialect();
+        pageInterceptor.setDialect(new DB2Dialect());
         interceptor.addInnerInterceptor(pageInterceptor);
     }
 
