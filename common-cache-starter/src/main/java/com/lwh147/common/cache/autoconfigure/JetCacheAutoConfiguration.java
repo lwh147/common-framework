@@ -16,7 +16,6 @@ import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -44,7 +43,6 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableMethodCache(basePackages = "com.lwh147")
 @EnableConfigurationProperties(JetCacheProperties.class)
-@AutoConfigureBefore(com.alicp.jetcache.autoconfigure.JetCacheAutoConfiguration.class)
 public class JetCacheAutoConfiguration {
     @Resource
     private RedisProperties redisProperties;
@@ -99,7 +97,7 @@ public class JetCacheAutoConfiguration {
     }
 
     /**
-     * JetCache全局配置
+     * JetCache全局配置，会覆盖JetCache的默认配置
      **/
     @Bean
     public GlobalCacheConfig config(SpringConfigProvider configProvider, RedisClient redisClient) {

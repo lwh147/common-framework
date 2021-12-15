@@ -1,5 +1,6 @@
 package com.lwh147.common.core.model;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -77,6 +78,19 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
     private String sortSqlSuffix;
+
+    /**
+     * 分页信息转化为 Mybatis-Plus 的分页信息封装类 {@link Page}
+     * <p>
+     * 为了防止发生反省丢失问题，需要指定泛型类类型作为参数
+     *
+     * @param e   实体类的类对象
+     * @param <E> 泛型类
+     * @return Mybatis-Plus 的分页信息封装类 {@link Page}
+     **/
+    public <E> Page<E> toPage(Class<E> e) {
+        return new Page<>(current, size);
+    }
 
     /**
      * 重写 {@link PageQuery#sortSqlSuffix} 属性的get方法

@@ -38,6 +38,7 @@
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <mysql-connector.version>8.0.16</mysql-connector.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
+        <druid.version>1.2.6</druid.version>
         <lombok.version>1.18.12</lombok.version>
         <logback.version>1.2.3</logback.version>
         <springfox.swagger.version>2.9.2</springfox.swagger.version>
@@ -131,6 +132,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-extension</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
             </dependency>
 
             <dependency>

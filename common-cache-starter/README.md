@@ -53,3 +53,4 @@ JetCache配置项前缀为 `jetcache` ，所有可配置项如下：
 * LettuceClient 集群、Sentinel、连接池配置
 * JetCache 方法注解扫描包路径配置
 * JetCache 缓存刷新记录停止刷新时间的键重复问题
+* Redission

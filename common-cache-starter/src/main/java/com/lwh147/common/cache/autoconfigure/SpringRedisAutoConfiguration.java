@@ -49,16 +49,8 @@ public class SpringRedisAutoConfiguration {
 
         // key采用String序列化工具
         template.setKeySerializer(JacksonSerializer.STRING_SERIALIZER);
-        // hash的key也采用String序列化工具
-        template.setHashKeySerializer(JacksonSerializer.STRING_SERIALIZER);
-        // String类型的数据采用String序列化工具
-        template.setStringSerializer(JacksonSerializer.STRING_SERIALIZER);
         // value采用Jackson序列化工具
         template.setValueSerializer(JacksonSerializer.JACKSON_SERIALIZER);
-        // hash的value也采用Jackson序列化工具
-        template.setHashValueSerializer(JacksonSerializer.JACKSON_SERIALIZER);
-        // 默认序列化工具为Jackson
-        template.setDefaultSerializer(JacksonSerializer.JACKSON_SERIALIZER);
 
         template.afterPropertiesSet();
 

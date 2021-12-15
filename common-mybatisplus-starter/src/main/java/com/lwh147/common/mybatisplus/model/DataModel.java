@@ -23,7 +23,7 @@ public class DataModel<T extends DataModel<?>> extends BaseModel<T> {
     /**
      * 逻辑删除
      **/
-    @TableLogic(value = "-1", delval = "1")
+    @TableLogic(value = "0", delval = "1")
     @TableField(DELETED)
     protected Integer deleted;
     /**

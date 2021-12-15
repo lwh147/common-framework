@@ -1,5 +1,6 @@
 package com.lwh147.common.mybatisplus.properties;
 
+import com.lwh147.common.mybatisplus.properties.enums.SnowflakeIdType;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -13,20 +14,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "snowflake")
 public class SnowflakeProperties {
     /**
-     * 是否开启雪花算法ID生成，默认：true
+     * 是否开启雪花算法ID生成，默认为 {@code true}
      **/
     private Boolean enabled = true;
     /**
-     * 单机(standalone)模式还是集群(cluster)模式，默认为：standalone
+     * 雪花算法ID生成类型，默认为 {@link SnowflakeIdType#STANDALONE}
      **/
-    private String dataCenter = STANDALONE;
-
+    private SnowflakeIdType idType = SnowflakeIdType.STANDALONE;
     /**
-     * 单机模式
+     * 工作机器ID，仅在 {@link SnowflakeIdType#CUSTOMIZED} 模式下有效
      **/
-    public static final String STANDALONE = "standalone";
+    private Long workerId;
     /**
-     * 集群模式
+     * 数据中心ID，仅在 {@link SnowflakeIdType#CUSTOMIZED} 模式下有效
      **/
-    public static final String CLUSTER = "cluster";
+    private Long dataCenterId;
 }

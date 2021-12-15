@@ -17,7 +17,7 @@ import java.util.List;
 @ConfigurationProperties(prefix = "swagger")
 public class SwaggerProperties {
     /**
-     * 是否开启Swagger，共用Springfox的配置项，缺省默认开启
+     * 是否开启Swagger，缺省默认开启
      **/
     private Boolean enabled = true;
     /**

@@ -1,7 +1,9 @@
-package com.lwh147.common.test.pojo;
+package com.lwh147.common.test.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lwh147.common.core.constant.DateTimeConstant;
+import com.lwh147.common.mybatisplus.model.DataModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -21,9 +23,10 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @ApiModel(description = "用户实体")
-public class User implements Serializable {
+@TableName("user")
+public class User extends DataModel<User> implements Serializable {
     @ApiModelProperty(value = "id", required = true, example = "1")
     private Long id;
     @ApiModelProperty(value = "name", required = true, example = "李四")
@@ -37,4 +40,7 @@ public class User implements Serializable {
     @ApiModelProperty(value = "创建时间", required = true, example = "2021-12-09 16:13:00")
     @JsonFormat(timezone = DateTimeConstant.DEFAULT_TIMEZONE, pattern = DateTimeConstant.DEFAULT_DATETIME_FORMAT)
     private Date createTime;
+    @ApiModelProperty(value = "更新时间", required = true, example = "2021-12-09 16:13:00")
+    @JsonFormat(timezone = DateTimeConstant.DEFAULT_TIMEZONE, pattern = DateTimeConstant.DEFAULT_DATETIME_FORMAT)
+    private Date updateTime;
 }

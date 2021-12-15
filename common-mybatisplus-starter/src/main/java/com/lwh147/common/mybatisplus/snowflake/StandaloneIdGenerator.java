@@ -17,17 +17,23 @@ public class StandaloneIdGenerator implements IdentifierGenerator {
     private final Snowflake snowflake;
 
     /**
-     * 单机模式下数据中心统一为 0
+     * 单机模式下数据中心统一为 {@code 0}
      **/
     public StandaloneIdGenerator() {
         this.snowflake = new Snowflake(Worker.DEFAULT_WORKER_ID, Worker.DEFAULT_DATA_CENTER_ID);
     }
 
+    /**
+     * 重写MybatisPlus的Id生成方法
+     **/
     @Override
     public Number nextId(Object entity) {
         return snowflake.nextId();
     }
 
+    /**
+     * 需要手动生成ID时调用
+     **/
     public Long nextId() {
         return snowflake.nextId();
     }
