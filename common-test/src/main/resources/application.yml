@@ -1,0 +1,66 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useSSL=false&characterEncoding=utf8&serverTimeZone=GMT%2B8
+    username: root
+    password: 123456
+    druid:
+      # 开启防火墙和日志记录
+      filters: wall, slf4j
+      initial-size: 0
+      min-idle: 0
+      max-active: 12
+      max-wait: 6000
+      time-between-eviction-runs-millis: 2000
+      min-evictable-idle-time-millis: 600000
+      max-evictable-idle-time-millis: 900000
+      validation-query: select 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      keep-alive: true
+
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+    timeout: 6000
+    #    database: 0
+    #    ssl: false
+    #    client-name: default
+    lettuce:
+      pool:
+        min-idle: 0
+        max-idle: 12
+        max-active: 12
+        max-wait: 6000
+
+#jetcache:
+#  database: 1
+#  local-limit: 1024
+#  remote-expired-in: 180
+#  local-expired-in: 60
+#  stat-interval-minutes: 15
+#  refresh: 60
+#  stop-refresh-after-last-access: 180
+
+mybatis-plus:
+  executorType: reuse
+#  enable-optimistic-locker: true
+#  page:
+#    enabled: true
+#    db-type: mysql
+#    enable-optimize-join: true
+#  typeAliasesPackage: com.lwh147.common.test
+#  mapper-locations: classpath*:mapper/**/*.xml
+#  global-config:
+#    db-config:
+#      logic-delete-field: deleted
+#      logic-delete-value: 1
+#      logic-not-delete-value: 0
+#  configuration:
+#    map-underscore-to-camel-case: true

@@ -1,0 +1,49 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: common-test
+
+  cloud:
+    nacos:
+      config:
+        enabled: false
+        server-addr: ${NACOS_IP:localhost}
+        namespace: ${NACOS_NAMESPACE:public}
+        file-extension: yaml
+        extension-configs:
+          - data-id: common.yaml
+            group: COMMON_GROUP
+            refresh: true
+      discovery:
+        enabled: false
+        server-addr: ${NACOS_IP:localhost}
+        namespace: ${NACOS_NAMESPACE:public}
+
+logging:
+  level:
+    root: info
+    com.lwh147.common: debug
+  file:
+    name: ./logs/${spring.application.name}.log
+
+swagger:
+  enabled: true
+  #  paths: /user/.*
+  #  excluded-paths: ^/error$
+  #  version: 1.0.0
+  #  title: common-test
+  #  description: 接口文档
+  packages:
+    - com.lwh147
+  contact:
+    name: lwh147
+    url: https://github.com/lwh147
+#    email: 1479351399@qq.com
+
+snowflake:
+  enabled: true
+  id-type: cluster
+#  worker-id: 0
+#  data-center-id: 0
