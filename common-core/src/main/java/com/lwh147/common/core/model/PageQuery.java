@@ -2,9 +2,9 @@ package com.lwh147.common.core.model;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lwh147.common.core.enums.DefaultSortColumnEnum;
-import com.lwh147.common.core.enums.ICommonEnum;
-import com.lwh147.common.core.enums.OrderEnum;
+import com.lwh147.common.core.enums.DefaultSrotOrderEnum;
+import com.lwh147.common.core.enums.column.DefaultSortColumnEnum;
+import com.lwh147.common.core.enums.column.IColumnEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -20,11 +20,11 @@ import java.util.Objects;
  * 通用分页请求结构
  *
  * @param <T> 排序字段名称<strong>枚举对象</strong>，必须实现
- *            {@link ICommonEnum} 接口
+ *            {@link IColumnEnum} 接口
  *            <p>
  *            使用枚举是为了限制用户输入，<strong>防止SQL注入</strong>
  *            <p>
- *            详细参考内部类 {@link DefaultSortColumnEnum}
+ *            详细参考 {@link DefaultSortColumnEnum}
  * @author lwh
  * @apiNote 必须作为<strong>请求体</strong>接受参数，否则数据绑定时
  * 枚举类型不能被识别，报 {@link IllegalArgumentException}
@@ -34,7 +34,7 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode
 @ApiModel(description = "通用分页请求结构")
-public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable {
+public class PageQuery<T extends Enum<T> & IColumnEnum> implements Serializable {
     /**
      * 页码
      **/
@@ -64,7 +64,7 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
      * 排序类型
      **/
     @ApiModelProperty(value = "排序类型，升序：ASC，降序：DESC", example = "DESC")
-    private OrderEnum order;
+    private DefaultSrotOrderEnum order;
 
     /**
      * 排序sql后缀
@@ -100,7 +100,7 @@ public class PageQuery<T extends Enum<T> & ICommonEnum> implements Serializable 
     public String getSortSqlSuffix() {
         // 默认按创建时间降序排序
         String column = DefaultSortColumnEnum.CREATE_TIME.getName();
-        String order = OrderEnum.DESC.getValue();
+        String order = DefaultSrotOrderEnum.DESC.getValue();
         if (Objects.nonNull(this.columnName) && Objects.nonNull(this.order)) {
             // 排序条件不为空，获取用户指定的排序条件
             column = this.columnName.getName();

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 单独存储用户请求上下文信息，方便日志记录
+ * 存储用户请求上下文信息
  * <p>
  * 使用 {@link ThreadLocal} 避免多线程问题
  *
@@ -32,13 +32,6 @@ public class ContextHolder {
     }
 
     /**
-     * 删除Map
-     **/
-    public static void remove() {
-        THREAD_LOCAL_MAP.remove();
-    }
-
-    /**
      * 设置上下文信息
      *
      * @param key   键
@@ -58,6 +51,23 @@ public class ContextHolder {
     public static String get(String key) {
         Map<String, String> map = getMap();
         return map.getOrDefault(key, null);
+    }
+
+    /**
+     * 删除key
+     *
+     * @param key 要删除的key
+     **/
+    public static void remove(String key) {
+        Map<String, String> map = getMap();
+        map.remove(key);
+    }
+
+    /**
+     * 删除Map
+     **/
+    public static void remove() {
+        THREAD_LOCAL_MAP.remove();
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.lwh147.common.core.model;
 
-import com.lwh147.common.core.enums.DefaultSortColumnEnum;
+import com.lwh147.common.core.enums.column.DefaultSortColumnEnum;
 
 /**
  * 使用默认排序条件的默认分页查询条件封装类，如果只需要默认的按创建时间排序

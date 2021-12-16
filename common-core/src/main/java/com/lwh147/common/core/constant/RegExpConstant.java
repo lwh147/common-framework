@@ -15,24 +15,24 @@ public class RegExpConstant {
     public static final Pattern ENTER_PATTERN = Pattern.compile("[\r\n]");
 
     /**
-     * 只能由字母、数字、下划线组成
+     * 6-16位字符串，允许出现字母、数字、下划线，可用作用户名
      **/
-    public static final Pattern USERNAME_PATTERN = Pattern.compile("^\\w+$");
+    public static final Pattern USERNAME_PATTERN = Pattern.compile("^\\w{6,16}$");
     /**
-     * 6-16位字符串，允许出现数字、字母、下划线或 ~ ` ! @ # $ % ^ & * + - . /
+     * 6-16位字符串，允许出现数字、字母、下划线或 ~ ` ! @ # $ % ^ & * + - . /，可用作密码
      **/
     public static final Pattern SIX_TO_SIXTEEN_DIGITS_PATTERN = Pattern.compile("^[\\w~`!@#$%^&*+\\-./]{6,16}$");
     /**
-     * 6位纯数字
+     * 6位纯数字，可用作支付密码
      **/
     public static final Pattern SIX_DIGITS_NUMBER_PATTERN = Pattern.compile("^\\d{6}$");
 
     /**
-     * 大于等于0的整数，允许出现前导0
+     * 大于等于0的整数，允许出现前导0，可用作物品数量
      **/
     public static final Pattern INTEGER_BE_ZERO_PATTERN = Pattern.compile("^\\d+$");
     /**
-     * 大于等于0的数，包含小数，允许出现前导0
+     * 大于等于0的数，包含小数，允许出现前导0，可用作金额
      **/
     public static final Pattern INTEGER_FLOAT_BE_ZERO_PATTERN = Pattern.compile("^\\d+(\\.?\\d+)?$");
 
