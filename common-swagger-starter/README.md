@@ -22,20 +22,20 @@
 
 ## 配置项
 
-配置前缀： `swagger`
+配置前缀 `swagger`
 
-| 配置项名称      | 类型          |  是否必填 | 备注 |
-| -------------  | ------------  | -------- | --------------------------------------------- |
-| `enabled` | Bool          | 否       | 是否开启Swagger，默认 `true` |
-| `packages` | List\<String> | 否       | 扫描包路径，可以配置多个，默认全部扫描 |
-| `paths` | List\<String> | 否       | 路径匹配规则，可以配置多个，默认匹配所有 |
-| `excluded-paths` | List\<String> | 否       | 排除的匹配规则，可配置多个，默认无 |
-| `version` | String        | 否       | API版本号，默认为 `1.0.0` |
-| `title` | String        | 否       | 页面简介标题，默认为 `${spring.appliction.name:app_name}` |
-| `description` | String        | 否       | 页面内容描述，默认为 `接口文档` |
-| `contact.name` | String        | 否       | 联系人姓名，默认为 `管理员` |
-| `contact.url` | String        | 否       | 联系人主页，默认为百度主页 |
-| `contact.email` | String        | 否       | 联系人邮箱，默认为空 |
+| 配置项名称 | 类型 | 默认值 | 说明 |
+| --------- | ---- | ----- | ---- |
+| `enabled` | `Bool` | `true` | 是否开启Swagger |
+| `packages` | `List<String>` | - | 扫描包路径，可以配置多个 |
+| `paths` | `List<String>` | - | 路径匹配规则，可以配置多个 |
+| `excluded-paths` | `List<String>` | `^/error$` | 排除的匹配规则，可配置多个 |
+| `version` | `String` | `1.0.0` | API版本号 |
+| `title` | `String` | `${spring.appliction.name:app_name}` | 页面简介标题 |
+| `description` | `String` | `接口文档` | 页面内容描述 |
+| `contact.name` | `String` | `管理员` | 联系人姓名 |
+| `contact.url` | `String` | `www.baidu.com` | 联系人主页 |
+| `contact.email` | `String` | - | 联系人邮箱 |
 
 ## 待办
 

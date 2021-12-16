@@ -1,4 +1,4 @@
-package com.lwh147.common.mybatisplus.snowflake.service;
+package com.lwh147.common.mybatisplus.snowflake;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +9,6 @@ import java.io.Serializable;
 
 /**
  * 工作节点类，封装了工作机器ID和其所属数据中心ID
- * <p>
- * 单机模式下默认全部设置为0
- * <p>
- * 集群模式下各工作机器竞争抢占注册自己的工作机器ID和所属数据中心ID
  *
  * @author lwh
  * @date 2021/11/26 9:11
@@ -53,6 +49,17 @@ public class Worker implements Serializable {
      **/
     public String generateCacheKey() {
         return "(" + dataCenterId + "," + workerId + ")";
+    }
+
+    /**
+     * 格式为：(dataCenterId, workerId)
+     **/
+    @Override
+    public String toString() {
+        return "Worker(" +
+                "dataCenterId=" + this.dataCenterId +
+                ", workerId=" + this.workerId +
+                ')';
     }
 
     /**

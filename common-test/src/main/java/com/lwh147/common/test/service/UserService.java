@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lwh147.common.core.model.PageData;
 import com.lwh147.common.test.entity.User;
 import com.lwh147.common.test.mapper.UserMapper;
-import com.lwh147.common.test.pojo.UserQuery;
+import com.lwh147.common.test.pojo.query.UserQuery;
+import com.lwh147.common.test.pojo.vo.UserVO;
+import com.lwh147.common.util.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -45,14 +47,14 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     }
 
     @Cached(name = USER_CACHE_NAME, key = "#id", cacheType = CacheType.BOTH)
-    public User getById(Long id) {
-        return this.userMapper.selectById(id);
+    public UserVO getById(Long id) {
+        return BeanUtil.convert(this.userMapper.getById(id), UserVO.class);
     }
 
     @Cached(name = USER_PAGE_CACHE_NAME, key = "#userQuery", cacheType = CacheType.BOTH)
-    public PageData<User> query(UserQuery userQuery) {
-        Page<User> pageInfo = userQuery.toPage(User.class);
-        this.baseMapper.selectPage(pageInfo, null);
+    public PageData<UserVO> query(UserQuery userQuery) {
+        Page<UserVO> pageInfo = userQuery.toPage(UserVO.class);
+        this.userMapper.query(pageInfo, userQuery);
         return PageData.fromPage(pageInfo);
     }
 

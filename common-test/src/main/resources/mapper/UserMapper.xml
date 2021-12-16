@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lwh147.common.test.mapper.UserMapper">
-    <select id="selectById" parameterType="Long" resultType="com.lwh147.common.test.entity.User">
+    <select id="getById" parameterType="Long" resultType="com.lwh147.common.test.entity.User">
         SELECT *
         FROM `user`
-        WHERE deleted = 0
+        WHERE id = #{id}
+          AND deleted = 0
+    </select>
+
+    <select id="query" resultType="com.lwh147.common.test.pojo.vo.UserVO">
+        SELECT id, name, profile
+        FROM `user`
+        <where>
+            <if test="condition.name != null and condition.name != ''">
+                AND `name` LIKE concat('%', #{condition.name}, '%')
+            </if>
+            AND deleted = 0
+        </where>
+        ORDER BY ${condition.sortSqlSuffix}
     </select>
 </mapper>

@@ -29,12 +29,12 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
- * JetCache 配置类
+ * JetCache 自动配置类
  * <p>
  * 默认不启用 CreateCache 方式，基于缓存客户端对象的缓存操作方式推荐使用 {@link RedisTemplate}
  * 或直接使用基于 Lettuce 的 Redis 客户端 {@link RedisClient}
  * <p>
- * 默认使用数据库1，与单独操作缓存时使用的数据库分离
+ * 默认使用数据库1，与 {@link RedisTemplate} 使用的数据库进行区分
  *
  * @author lwh
  * @date 2021/11/25 16:47
@@ -82,6 +82,7 @@ public class JetCacheAutoConfiguration {
 
         RedisURI uri = uriBuilder.build();
         log.debug("建立Redis连接[{}]", uri.toURI().toString());
+
         // 创建基于Lettuce的Redis客户端
         RedisClient client = RedisClient.create(uri);
         client.setOptions(ClientOptions

@@ -13,7 +13,6 @@ import com.lwh147.common.mybatisplus.properties.enums.SnowflakeIdType;
 import com.lwh147.common.mybatisplus.snowflake.ClusterIdGenerator;
 import com.lwh147.common.mybatisplus.snowflake.CustomizedIdGenerator;
 import com.lwh147.common.mybatisplus.snowflake.StandaloneIdGenerator;
-import com.lwh147.common.mybatisplus.snowflake.service.SnowflakeService;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -26,7 +25,7 @@ import javax.annotation.Resource;
 import java.util.Objects;
 
 /**
- * MybaitsPlus 配置类
+ * MybaitsPlus 自动配置类
  *
  * @author lwh
  * @date 2021/11/25 16:47
@@ -110,17 +109,5 @@ public class MybatisPlusAutoConfiguration {
         BlockAttackInnerInterceptor blockAttackInnerInterceptor = new BlockAttackInnerInterceptor();
         interceptor.addInnerInterceptor(blockAttackInnerInterceptor);
         return interceptor;
-    }
-
-    /**
-     * 雪花算法对象生成服务Bean创建，仅在集群模式下生效
-     *
-     * @return {@link SnowflakeService}
-     **/
-    @Bean
-    @ConditionalOnProperty(name = "snowflake.id-type", havingValue = "cluster")
-    public SnowflakeService snowflakeServiceRegister() {
-        log.debug("创建SnowflakeService");
-        return new SnowflakeService();
     }
 }

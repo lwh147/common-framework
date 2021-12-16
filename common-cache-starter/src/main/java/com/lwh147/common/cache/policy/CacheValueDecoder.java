@@ -3,7 +3,7 @@ package com.lwh147.common.cache.policy;
 import java.util.function.Function;
 
 /**
- * 自定义缓存value解码策略
+ * 自定义JetCache缓存value解码策略
  *
  * @author lwh
  * @date 2021/12/7 9:33

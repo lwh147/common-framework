@@ -8,7 +8,7 @@ spring:
       # 开启防火墙和日志记录
       filters: wall, slf4j
       initial-size: 0
-      min-idle: 3
+      min-idle: 0
       max-active: 12
       max-wait: 6000
       time-between-eviction-runs-millis: 2000
@@ -34,7 +34,7 @@ spring:
     #    client-name: default
     lettuce:
       pool:
-        min-idle: 3
+        min-idle: 0
         max-idle: 12
         max-active: 12
         max-wait: 6000

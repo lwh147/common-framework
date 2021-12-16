@@ -3,7 +3,7 @@ package com.lwh147.common.cache.policy;
 import java.util.function.Function;
 
 /**
- * 自定义缓存key转换器
+ * 自定义JetCache缓存key转换器
  * <p>
  * 将key转换为json的方式效率低，可读性差
  * <p>

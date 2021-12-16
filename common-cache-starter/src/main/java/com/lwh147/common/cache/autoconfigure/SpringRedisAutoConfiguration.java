@@ -20,8 +20,8 @@ import javax.annotation.Resource;
 /**
  * Spring Data Redis 配置
  * <p>
- * key采用自定义序列化策略 {@link com.lwh147.common.cache.policy.CacheKeyConverter}
- * value采用Jackson序列化策略
+ * value采用Jackson序列化策略，key采用自定义序列化策略
+ * {@link com.lwh147.common.cache.policy.CacheKeyConverter}
  * <p>
  * {@link RedisTemplate} 和 {@link RedisCacheManager} 均默认永不过期
  * <p>

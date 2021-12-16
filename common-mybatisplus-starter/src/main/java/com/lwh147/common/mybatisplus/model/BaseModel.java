@@ -37,8 +37,7 @@ public class BaseModel<T extends BaseModel<?>> extends Model<T> {
     /**
      * 主键，雪花算法生成
      **/
-    @TableField(ID)
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(value = ID, type = IdType.ASSIGN_ID)
     protected Long id;
     /**
      * 创建时间

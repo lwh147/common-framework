@@ -4,9 +4,10 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * Jackson序列化器
+ * 自定义Jackson序列化器
  * <p>
- * 封装了 {@link GenericJackson2JsonRedisSerializer}
+ * 内部封装了 {@link GenericJackson2JsonRedisSerializer} 进行序列化和反序列化，
+ * 采用泛型是为了防止反序列化时出现类型转换的相关问题
  *
  * @author lwh
  * @date 2021/12/7 11:01
