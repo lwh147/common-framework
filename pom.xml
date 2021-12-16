@@ -19,7 +19,6 @@
         <module>common-stream-starter</module>
         <module>common-swagger-starter</module>
         <module>common-test</module>
-        <module>common-util</module>
         <module>common-web-starter</module>
     </modules>
 
@@ -38,7 +37,7 @@
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <mysql-connector.version>8.0.16</mysql-connector.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
-        <druid.version>1.2.6</druid.version>
+        <druid.version>1.2.8</druid.version>
         <lombok.version>1.18.12</lombok.version>
         <logback.version>1.2.3</logback.version>
         <springfox.swagger.version>2.9.2</springfox.swagger.version>
@@ -56,12 +55,12 @@
             <!-- 基础框架子模块依赖 -->
             <dependency>
                 <groupId>com.lwh147</groupId>
-                <artifactId>common-core</artifactId>
+                <artifactId>common-cache-starter</artifactId>
                 <version>${common.framework.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.lwh147</groupId>
-                <artifactId>common-cache-starter</artifactId>
+                <artifactId>common-core</artifactId>
                 <version>${common.framework.version}</version>
             </dependency>
             <dependency>
@@ -81,17 +80,12 @@
             </dependency>
             <dependency>
                 <groupId>com.lwh147</groupId>
-                <artifactId>common-util</artifactId>
+                <artifactId>common-test</artifactId>
                 <version>${common.framework.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.lwh147</groupId>
                 <artifactId>common-web-starter</artifactId>
-                <version>${common.framework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.lwh147</groupId>
-                <artifactId>common-test</artifactId>
                 <version>${common.framework.version}</version>
             </dependency>
             <!-- 开发框架基础依赖库 -->

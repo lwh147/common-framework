@@ -1,4 +1,4 @@
-package com.lwh147.common.core.model;
+package com.lwh147.common.core.reponse;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lwh147.common.core.exception.ICommonException;

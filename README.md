@@ -13,14 +13,13 @@
 
 ```text
 common-framework ----------------------------- 通用开发框架根模块(root)
-├─ common-core --------------------------------- 开发框架公共核心组件库
-├─ common-util --------------------------------- 开发框架工具组件库
 ├─ common-cache-starter ------------------------ 缓存框架配置starter
+├─ common-core --------------------------------- 开发框架公共核心组件库
 ├─ common-mybatisplus-starter ------------------ MybatisPlus配置starter
 ├─ common-stream-starter ----------------------- 消息中间件配置starter
 ├─ common-swagger-starter ---------------------- Swagger配置starter
-├─ common-web-starter -------------------------- Web配置starter
 ├─ common-test --------------------------------- 测试模块
+├─ common-web-starter -------------------------- Web配置starter
 ```
 
 ### 技术选型
@@ -37,6 +36,7 @@ spring-cloud-dependencies --------------------- Hoxton.SR9
 spring-cloud-alibaba-dependencies ------------- 2.2.6.RELEASE
 mysql-connector-java -------------------------- 8.0.16
 mybaits-plus-boot-starter --------------------- 3.4.2
+druid-spring-boot-starter --------------------- 1.2.8
 lombok ---------------------------------------- 1.18.12
 logback-classic ------------------------------- 1.2.3
 sprignfox-swagger2 ---------------------------- 2.9.2
@@ -53,14 +53,13 @@ hutool-all ------------------------------------ 5.7.14
 
 你的项目中需要哪个模块的功能就引入哪个模块的jar包即可，开箱即用，如果需要进行相关配置，请前往对应模块的参考文档查看
 
-* [common-core](./common-core/README.md)
-* [common-util](./common-util/README.md)
 * [common-cache-starter](./common-cache-starter/README.md)
+* [common-core](./common-core/README.md)
 * [common-mybatisplus-starter](./common-mybatisplus-starter/README.md)
 * [common-stream-starter](./common-stream-starter/README.md)
 * [common-swagger-starter](./common-swagger-starter/README.md)
-* [common-web-starter](./common-web-starter/README.md)
 * [common-test](./common-test/README.md)
+* [common-web-starter](./common-web-starter/README.md)
 
 ## 开发规约
 

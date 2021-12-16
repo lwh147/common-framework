@@ -1,4 +1,4 @@
-package com.lwh147.common.util;
+package com.lwh147.common.core.util;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

@@ -28,15 +28,7 @@
             <groupId>com.lwh147</groupId>
             <artifactId>common-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.lwh147</groupId>
-            <artifactId>common-util</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>

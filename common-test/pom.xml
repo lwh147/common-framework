@@ -26,10 +26,6 @@
     <dependencies>
         <dependency>
             <groupId>com.lwh147</groupId>
-            <artifactId>common-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.lwh147</groupId>
             <artifactId>common-web-starter</artifactId>
         </dependency>
         <dependency>

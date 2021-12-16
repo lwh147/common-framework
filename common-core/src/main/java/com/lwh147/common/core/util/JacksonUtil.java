@@ -1,4 +1,4 @@
-package com.lwh147.common.util;
+package com.lwh147.common.core.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
