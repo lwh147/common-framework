@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Bean转换工具类，基于 {@link BeanUtils}封装
+ * Bean转换工具类，基于 {@link BeanUtils} 封装
  *
  * @author lwh
  * @date 2021/12/3 20:23
@@ -131,11 +131,17 @@ public class BeanUtil extends BeanUtils {
     /**
      * 回调接口
      *
-     * @param <S> 源对象
-     * @param <T> 目标对象
+     * @param <S> 源对象类型
+     * @param <T> 目标对象类型
      */
     @FunctionalInterface
     public interface CallBack<S, T> {
+        /**
+         * 自定义拷贝回调方法
+         *
+         * @param s 源对象
+         * @param t 目标对象
+         **/
         void callBack(S s, T t);
     }
 

@@ -22,6 +22,13 @@ public interface UserMapper extends BaseMapper<User> {
      **/
     User getById(@Param("id") Long id);
 
+    /**
+     * 根据查询条件分页查询用户
+     *
+     * @param page      分页信息
+     * @param condition 查询条件
+     * @return 分页结果
+     **/
     Page<UserVO> query(@Param("page") Page<UserVO> page,
                        @Param("condition") UserQuery condition);
 }
