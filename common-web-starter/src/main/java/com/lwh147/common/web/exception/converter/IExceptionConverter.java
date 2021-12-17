@@ -11,10 +11,10 @@ import com.lwh147.common.core.exception.ICommonException;
  **/
 public interface IExceptionConverter<T extends Exception> {
     /**
-     * 转换方法，将捕获到的异常类转换为自定义异常
+     * 转换方法，将接受的异常类转换为自定义异常类型
      *
      * @param e 异常对象
-     * @return {@link ICommonException}
+     * @return 自定义异常类型
      **/
     ICommonException convert(T e);
 }

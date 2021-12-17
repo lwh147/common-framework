@@ -2,7 +2,6 @@ package com.lwh147.common.cache.autoconfigure;
 
 import com.alicp.jetcache.CacheBuilder;
 import com.alicp.jetcache.anno.CacheConsts;
-import com.alicp.jetcache.anno.config.EnableMethodCache;
 import com.alicp.jetcache.anno.support.GlobalCacheConfig;
 import com.alicp.jetcache.anno.support.SpringConfigProvider;
 import com.alicp.jetcache.embedded.EmbeddedCacheBuilder;
@@ -41,7 +40,6 @@ import java.util.concurrent.TimeUnit;
  **/
 @Slf4j
 @Configuration
-@EnableMethodCache(basePackages = "com.lwh147")
 @EnableConfigurationProperties(JetCacheProperties.class)
 public class JetCacheAutoConfiguration {
     @Resource

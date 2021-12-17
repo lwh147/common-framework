@@ -1,10 +1,10 @@
-package com.lwh147.common.test.api;
+package c.l.c.test.api;
 
+import c.l.c.test.pojo.dto.UserAddDTO;
+import c.l.c.test.pojo.dto.UserUpdateDTO;
+import c.l.c.test.pojo.query.UserQuery;
+import c.l.c.test.pojo.vo.UserVO;
 import com.lwh147.common.core.model.PageData;
-import com.lwh147.common.test.pojo.dto.UserAddDTO;
-import com.lwh147.common.test.pojo.dto.UserUpdateDTO;
-import com.lwh147.common.test.pojo.query.UserQuery;
-import com.lwh147.common.test.pojo.vo.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;

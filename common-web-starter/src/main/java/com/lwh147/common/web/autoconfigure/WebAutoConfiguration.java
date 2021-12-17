@@ -9,8 +9,11 @@ import com.lwh147.common.web.autoconfigure.filter.RequestEncodingFilter;
 import com.lwh147.common.web.exception.ExceptionResolver;
 import com.lwh147.common.web.logger.RequestLoggerInterceptor;
 import com.lwh147.common.web.logger.filter.RequestReplaceFilter;
+import com.lwh147.common.web.properties.WebProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,13 +39,14 @@ import java.util.TimeZone;
  **/
 @Slf4j
 @Configuration
+@EnableConfigurationProperties(WebProperties.class)
 public class WebAutoConfiguration implements WebMvcConfigurer {
-    @Resource
-    private BannerPrinter bannerPrinter;
     @Value("${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}")
     private String dateFormat;
     @Value("${spring.jackson.time-zone:GMT+8}")
     private String timeZone;
+    @Resource
+    private WebProperties webProperties;
     @Resource
     private ExceptionResolver exceptionResolver;
     @Resource
@@ -53,12 +57,22 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
     private RequestLoggerInterceptor requestLoggerInterceptor;
 
     /**
+     * 优先注入BannerPrinter完成Banner的打印
+     *
+     * @param bannerPrinter 非必须，如果不存在则说明配置为不打印
+     **/
+    public WebAutoConfiguration(@Autowired(required = false) BannerPrinter bannerPrinter) {
+    }
+
+    /**
      * 配置全局异常处理器
      **/
     @Override
     public void configureHandlerExceptionResolvers(@Nonnull List<HandlerExceptionResolver> resolvers) {
-        log.debug("配置并开启全局异常处理");
-        resolvers.add(exceptionResolver);
+        if (webProperties.getGlobalExceptionHandler().getEnabled()) {
+            log.debug("配置并开启全局异常处理器");
+            resolvers.add(exceptionResolver);
+        }
     }
 
     /**
@@ -119,7 +133,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
      * <p>
      * 3.设置默认时区为：GMT+8，默认日期时间格式为：yyyy-MM-dd HH:mm:ss
      * <p>
-     * 4.json与java对象属性不全对应时也进行反序列化，不报错
+     * 4.json与java对象属性不全对应时也进行反序列化
      */
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {

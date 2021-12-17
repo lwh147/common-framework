@@ -8,7 +8,7 @@
 
 ## 简单使用
 
-引入Maven依赖，配置文件中添加Redis连接配置即可默认开启三者：
+添加Maven依赖
 
 ```xml
 
@@ -19,7 +19,7 @@
 </dependency>
 ```
 
-配置文件：
+配置文件中添加Redis连接配置
 
 ```yml
 spring:
@@ -30,7 +30,28 @@ spring:
     timeout: 3000
 ```
 
-推荐使用JetCache的方法注解进行方法缓存，使用RedisTemplate进行手动缓存操作
+SpringBoot应用程序启动类注解 `@SpringBootApplication` 增加 `com.lwh147.common` 基础扫描包路径
+
+```java
+import com.alicp.jetcache.anno.CreateCache;
+import com.alicp.jetcache.anno.config.EnableCreateCacheAnnotation;
+import com.alicp.jetcache.anno.config.EnableMethodCache;
+
+@SpringBootApplication(scanBasePackages = {
+        "com.lwh147.common",
+        ...
+        })
+// SpringDataRedis和Redisson可直接使用，JetCache需要根据使用方式选择添加下面的注解
+@EnableCreateCacheAnnotation  // 开启创建缓存实例
+@EnableMethodCache(basePackage = "...") // 开启方法缓存
+public class TestApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(TestApplication.class, args);
+    }
+}
+```
+
+推荐方法缓存使用JetCache（包括缓存自动刷新功能），简单的缓存操作使用RedisTemplate，异步缓存操作使用JetCached的缓存实例对象
 
 ## 配置项
 
@@ -58,5 +79,4 @@ Redisson目前没有进行任何定制化配置，使用的就是自动配置生
 
 * 由MybatisPlus引入时是否开启问题
 * LettuceClient 集群、Sentinel、连接池配置
-* JetCache 方法注解扫描包路径配置
 * JetCache 缓存刷新记录停止刷新时间的键重复问题

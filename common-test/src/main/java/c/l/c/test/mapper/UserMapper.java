@@ -1,10 +1,11 @@
-package com.lwh147.common.test.mapper;
+package c.l.c.test.mapper;
 
+import c.l.c.test.entity.User;
+import c.l.c.test.pojo.query.UserQuery;
+import c.l.c.test.pojo.vo.UserVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lwh147.common.test.entity.User;
-import com.lwh147.common.test.pojo.query.UserQuery;
-import com.lwh147.common.test.pojo.vo.UserVO;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -13,6 +14,7 @@ import org.apache.ibatis.annotations.Param;
  * @author lwh
  * @date 2021/12/13 11:20
  **/
+@Mapper
 public interface UserMapper extends BaseMapper<User> {
     /**
      * 根据Id查询用户

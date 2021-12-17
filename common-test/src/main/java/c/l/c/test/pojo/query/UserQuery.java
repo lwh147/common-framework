@@ -1,4 +1,4 @@
-package com.lwh147.common.test.pojo.query;
+package c.l.c.test.pojo.query;
 
 import com.lwh147.common.core.model.DefaultPageQuery;
 import io.swagger.annotations.ApiModel;

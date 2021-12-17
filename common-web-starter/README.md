@@ -6,7 +6,7 @@
 
 ## 简单使用
 
-引入jar包，SpringBoot程序启动类注解 `@SpringBootApplication` 增加 `com.lwh147.common` 基础扫描包路径即可
+添加Maven依赖
 
 ```xml
 <dependency>
@@ -16,11 +16,28 @@
 </dependency>
 ```
 
+SpringBoot程序启动类注解 `@SpringBootApplication` 增加 `com.lwh147.common` 基础扫描包路径即可
+
+```java
+@SpringBootApplication(scanBasePackages = {
+        "com.lwh147.common",
+        ...
+})
+public class TestApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(TestApplication.class, args);
+    }
+}
+```
+
 ## 配置项
 
-无
+配置前缀 `web`
+
+| 配置项名称 | 类型 | 默认值 | 说明 |
+| --------- | ---- | ----- | ---- |
+| `enable-banner-print` | `Boolean` | `true` | 是否打印Banner |
+| `global-exception-handler.enabled` | `Boolean` | `true` | 是否开启全局异常处理 |
+| `global-exception-handler.converter-scan-custom-package` | `String` | - | 自定义的异常转换器扫描包路径 |
 
 ## 待办
-
-* 响应日志记录器切面扫描包路径
-* 异常转换器扫描包路径

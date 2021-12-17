@@ -1,5 +1,9 @@
-package com.lwh147.common.test.service;
+package c.l.c.test.service;
 
+import c.l.c.test.entity.User;
+import c.l.c.test.mapper.UserMapper;
+import c.l.c.test.pojo.query.UserQuery;
+import c.l.c.test.pojo.vo.UserVO;
 import com.alicp.jetcache.anno.CacheInvalidate;
 import com.alicp.jetcache.anno.CacheType;
 import com.alicp.jetcache.anno.Cached;
@@ -7,10 +11,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lwh147.common.core.model.PageData;
 import com.lwh147.common.core.util.BeanUtil;
-import com.lwh147.common.test.entity.User;
-import com.lwh147.common.test.mapper.UserMapper;
-import com.lwh147.common.test.pojo.query.UserQuery;
-import com.lwh147.common.test.pojo.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

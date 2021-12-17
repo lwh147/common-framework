@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>common-test</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <description>test</description>
 
     <packaging>jar</packaging>
@@ -41,10 +42,10 @@
             <artifactId>common-mybatisplus-starter</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-web</artifactId>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>

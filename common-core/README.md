@@ -6,7 +6,7 @@
 
 ## 简单使用
 
-引入Jar包即可
+添加Maven依赖
 
 ```xml
 <dependency>

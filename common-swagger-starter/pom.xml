@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>common-swagger-starter</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <description>Common swagger configuration</description>
 
     <packaging>jar</packaging>

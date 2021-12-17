@@ -6,6 +6,7 @@ import com.lwh147.common.core.exception.ICommonException;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -27,7 +28,7 @@ public class ExceptionConverterPoolSingleton {
     /**
      * 异常转换器池，根据转换器所接收的异常类型进行存储
      * <p>
-     * 每个异常转换器类实际上也只会实例化产生一个转换器对象
+     * 每个异常转换器实际上也只会实例化产生一个转换器对象
      **/
     private final Map<Type, IExceptionConverter> pool;
     /**
@@ -36,11 +37,41 @@ public class ExceptionConverterPoolSingleton {
     private static ExceptionConverterPoolSingleton exceptionConverter;
 
     /**
+     * 禁止外部实例化
+     **/
+    private ExceptionConverterPoolSingleton(@Nullable String customPackage) {
+        this.pool = new HashMap<>(16);
+        // 扫描基础包路径
+        final String defaultPackageName = "com.lwh147.common.web.exception.converter";
+        Reflections reflections;
+        if (Objects.nonNull(customPackage)) {
+            // 添加用户自定义扫描包路径
+            log.debug("自定义的异常转换器扫描包路径[{}]", customPackage);
+            reflections = new Reflections(defaultPackageName, customPackage);
+        } else {
+            reflections = new Reflections(defaultPackageName);
+        }
+        Set<Class<? extends IExceptionConverter>> subTypes = reflections.getSubTypesOf(IExceptionConverter.class);
+        for (Class<? extends IExceptionConverter> cls : subTypes) {
+            // 实例化转换器对象并根据其转换的异常类型放入转换器池中
+            this.pool.put(getType(cls), newInstance(cls));
+        }
+        // 有循环，输出前先判断
+        if (log.isDebugEnabled()) {
+            log.debug("扫描到的异常转换器：");
+            for (Map.Entry<Type, IExceptionConverter> e : pool.entrySet()) {
+                log.debug("Converter: {}, Type: {}", e.getClass().toString(), e.getKey().toString());
+            }
+        }
+    }
+
+    /**
      * 通过此方法获取该类的唯一实例对象
      *
-     * @return {@link ExceptionConverterPoolSingleton} 异常转换器池对象
+     * @param customPackage 用户自定义的异常转换器扫描包路径
+     * @return {@link ExceptionConverterPoolSingleton} 异常转换器池
      **/
-    public static ExceptionConverterPoolSingleton newInstance() {
+    public static ExceptionConverterPoolSingleton newInstance(@Nullable String customPackage) {
         // 不为null直接返回
         if (Objects.nonNull(exceptionConverter)) {
             return exceptionConverter;
@@ -56,31 +87,9 @@ public class ExceptionConverterPoolSingleton {
             }
             // 调用构造方法实例化对象
             log.debug("开始初始化异常转换器池...");
-            exceptionConverter = new ExceptionConverterPoolSingleton();
+            exceptionConverter = new ExceptionConverterPoolSingleton(customPackage);
             log.debug("异常转换器池初始化完成");
             return exceptionConverter;
-        }
-    }
-
-    /**
-     * 禁止外部实例化
-     **/
-    private ExceptionConverterPoolSingleton() {
-        this.pool = new HashMap<>(16);
-        // 扫描基础包路径下实现了IExceptionConverter接口的转换器类
-        final String packageName = "com.lwh147.common.web.exception.converter";
-        Reflections reflections = new Reflections(packageName);
-        Set<Class<? extends IExceptionConverter>> subTypes = reflections.getSubTypesOf(IExceptionConverter.class);
-        for (Class<? extends IExceptionConverter> cls : subTypes) {
-            // 实例化转换器对象并根据其转换的异常类型放入转换器池中
-            this.pool.put(getType(cls), newInstance(cls));
-        }
-        // 有循环，输出前先判断
-        if (log.isDebugEnabled()) {
-            log.debug("扫描到的异常转换器：");
-            for (Map.Entry<Type, IExceptionConverter> e : pool.entrySet()) {
-                log.debug("Converter: {}, Type: {}", e.getClass().toString(), e.getKey().toString());
-            }
         }
     }
 

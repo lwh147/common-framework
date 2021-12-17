@@ -6,7 +6,7 @@ Mybaits-Plus的启动类封装，主要封装了雪花算法Id生成器以及Myb
 
 ## 简单使用
 
-引入jar包即可，如果需要进行相关配置，请查看下面的 [配置项](#peizhixiang) 一节
+添加Maven依赖
 
 ```xml
 <dependency>
@@ -15,6 +15,24 @@ Mybaits-Plus的启动类封装，主要封装了雪花算法Id生成器以及Myb
     <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
+
+SpringBoot程序启动类注解 `@SpringBootApplication` 增加 `com.lwh147.common` 基础扫描包路径即可
+
+```java
+@SpringBootApplication(scanBasePackages = {
+        "com.lwh147.common",
+        ...
+})
+public class TestApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(TestApplication.class, args);
+    }
+}
+```
+
+具体配置请查看下面的 [配置项](#peizhixiang) 一节
+
+> 需要手动添加@MapperScan指定扫描包路径或为Mapper接口打@Mapper注解
 
 <div id="peizhixiang"/>
 

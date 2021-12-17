@@ -6,6 +6,7 @@ import com.lwh147.common.core.exception.ICommonException;
 import com.lwh147.common.core.reponse.RespBody;
 import com.lwh147.common.core.util.JacksonUtil;
 import com.lwh147.common.web.exception.converter.ExceptionConverterPoolSingleton;
+import com.lwh147.common.web.properties.WebProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -21,7 +24,7 @@ import java.io.PrintWriter;
 import java.util.Objects;
 
 /**
- * 全局异常处理
+ * 全局异常处理器
  *
  * @author lwh
  * @date 2021/11/10 15:36
@@ -30,14 +33,31 @@ import java.util.Objects;
 @Component
 public class ExceptionResolver implements HandlerExceptionResolver {
     /**
-     * 当前应用名称
+     * 应用名称
      **/
     @Value("${spring.application.name:appName}")
     private String appName;
     /**
-     * 异常转换器池单例对象
+     * Web配置
      **/
-    private final ExceptionConverterPoolSingleton poolSingleton = ExceptionConverterPoolSingleton.newInstance();
+    @Resource
+    private WebProperties webProperties;
+    /**
+     * 单例的异常转换器池
+     **/
+    private ExceptionConverterPoolSingleton poolSingleton;
+
+    /**
+     * 在PostConstruct阶段完成异常转换器池的创建和初始化
+     * <p>
+     * 因为需要注入 {@link ExceptionResolver#webProperties} ，所以不
+     * 能在声明时直接赋值 或 在构造器中初始化
+     **/
+    @PostConstruct
+    private void postConstruct() {
+        // 此时 webProperties 已完成注入
+        poolSingleton = ExceptionConverterPoolSingleton.newInstance(webProperties.getGlobalExceptionHandler().getConverterScanCustomPackage());
+    }
 
     @Override
     public ModelAndView resolveException(@Nullable HttpServletRequest httpServletRequest, @Nullable HttpServletResponse httpServletResponse, Object o, @Nullable Exception e) {
@@ -94,7 +114,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
     }
 
     /**
-     * 记录日志并打印错误调用栈信息
+     * 记录日志并打印异常调用栈信息
      *
      * @param ice 自定义异常
      **/

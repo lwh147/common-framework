@@ -14,7 +14,6 @@ import com.lwh147.common.mybatisplus.snowflake.ClusterIdGenerator;
 import com.lwh147.common.mybatisplus.snowflake.CustomizedIdGenerator;
 import com.lwh147.common.mybatisplus.snowflake.StandaloneIdGenerator;
 import lombok.extern.slf4j.Slf4j;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -32,7 +31,6 @@ import java.util.Objects;
  **/
 @Slf4j
 @Configuration
-@MapperScan(basePackages = "com.lwh147.common")
 @EnableConfigurationProperties({SnowflakeProperties.class, MybatisPlusProperties.class})
 public class MybatisPlusAutoConfiguration {
     @Resource

@@ -2,26 +2,42 @@ package com.lwh147.common.web.autoconfigure;
 
 import com.lwh147.common.core.constant.NumberConstant;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
+import java.net.URL;
 import java.util.Objects;
 
 /**
- * 打印AppInfoBanner
+ * Banner打印
+ * <p>
+ * 默认开启
  *
  * @author lwh
  * @date 2021/12/7 16:49
  **/
 @Slf4j
 @Component
+@ConditionalOnProperty(name = "web.enable-banner-print", havingValue = "true", matchIfMissing = true)
 public class BannerPrinter {
+    /**
+     * Banner存储文件名
+     **/
     private static final String FILE = "AppInfoBanner.txt";
 
+    /**
+     * PostConstruct阶段完成Banner的打印
+     **/
     @PostConstruct
     public void print() {
-        File file = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource(FILE)).getPath());
+        URL url = this.getClass().getClassLoader().getResource(FILE);
+        if (Objects.isNull(url)) {
+            log.warn("未找到{}文件", FILE);
+            return;
+        }
+        File file = new File(url.getPath());
         if (file.exists()) {
             try {
                 FileReader fileReader = new FileReader(file);
@@ -40,6 +56,8 @@ public class BannerPrinter {
             } catch (IOException e) {
                 log.warn("{}文件读取失败", FILE, e);
             }
+        } else {
+            log.warn("未找到{}文件", FILE);
         }
     }
 }

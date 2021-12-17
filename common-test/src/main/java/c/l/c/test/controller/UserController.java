@@ -1,14 +1,14 @@
-package com.lwh147.common.test.controller;
+package c.l.c.test.controller;
 
+import c.l.c.test.api.UserApi;
+import c.l.c.test.entity.User;
+import c.l.c.test.pojo.dto.UserAddDTO;
+import c.l.c.test.pojo.dto.UserUpdateDTO;
+import c.l.c.test.pojo.query.UserQuery;
+import c.l.c.test.pojo.vo.UserVO;
+import c.l.c.test.service.UserService;
 import com.lwh147.common.core.model.PageData;
 import com.lwh147.common.core.util.BeanUtil;
-import com.lwh147.common.test.api.UserApi;
-import com.lwh147.common.test.entity.User;
-import com.lwh147.common.test.pojo.dto.UserAddDTO;
-import com.lwh147.common.test.pojo.dto.UserUpdateDTO;
-import com.lwh147.common.test.pojo.query.UserQuery;
-import com.lwh147.common.test.pojo.vo.UserVO;
-import com.lwh147.common.test.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -1,4 +1,4 @@
-package com.lwh147.common.test.pojo.dto;
+package c.l.c.test.pojo.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
