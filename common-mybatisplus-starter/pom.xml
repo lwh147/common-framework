@@ -27,7 +27,7 @@
     <dependencies>
         <dependency>
             <groupId>com.lwh147</groupId>
-            <artifactId>common-cache-starter</artifactId>
+            <artifactId>common-core</artifactId>
         </dependency>
 
         <dependency>
@@ -53,6 +53,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
         </dependency>
     </dependencies>
 </project>

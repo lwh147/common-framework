@@ -4,9 +4,6 @@ import c.l.c.test.entity.User;
 import c.l.c.test.mapper.UserMapper;
 import c.l.c.test.pojo.query.UserQuery;
 import c.l.c.test.pojo.vo.UserVO;
-import com.alicp.jetcache.anno.CacheInvalidate;
-import com.alicp.jetcache.anno.CacheType;
-import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lwh147.common.core.model.PageData;
@@ -41,17 +38,17 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         return this.baseMapper.insert(user) == 1;
     }
 
-    @CacheInvalidate(name = USER_CACHE_NAME, key = "#id")
+    // @CacheInvalidate(name = USER_CACHE_NAME, key = "#id")
     public Boolean delete(Long id) {
         return this.baseMapper.deleteById(id) == 1;
     }
 
-    @Cached(name = USER_CACHE_NAME, key = "#id", cacheType = CacheType.BOTH)
+    // @Cached(name = USER_CACHE_NAME, key = "#id", cacheType = CacheType.BOTH)
     public UserVO getById(Long id) {
         return BeanUtil.convert(this.userMapper.getById(id), UserVO.class);
     }
 
-    @Cached(name = USER_PAGE_CACHE_NAME, key = "#userQuery", cacheType = CacheType.BOTH)
+    // @Cached(name = USER_PAGE_CACHE_NAME, key = "#userQuery", cacheType = CacheType.BOTH)
     public PageData<UserVO> query(UserQuery userQuery) {
         Page<UserVO> pageInfo = userQuery.toPage(UserVO.class);
         this.userMapper.query(pageInfo, userQuery);

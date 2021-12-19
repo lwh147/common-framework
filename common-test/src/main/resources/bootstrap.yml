@@ -9,7 +9,7 @@ spring:
     nacos:
       config:
         enabled: false
-        server-addr: ${NACOS_IP:localhost}
+        server-addr: ${NACOS_IP:182.92.106.123}
         namespace: ${NACOS_NAMESPACE:public}
         file-extension: yaml
         extension-configs:
@@ -18,7 +18,7 @@ spring:
             refresh: true
       discovery:
         enabled: false
-        server-addr: ${NACOS_IP:localhost}
+        server-addr: ${NACOS_IP:182.92.106.123}
         namespace: ${NACOS_NAMESPACE:public}
 
 logging:
@@ -36,14 +36,20 @@ swagger:
   #  title: common-test
   #  description: 接口文档
   packages:
-    - com.lwh147
+    - c.l.c.test.controller
   contact:
     name: lwh147
     url: https://github.com/lwh147
 #    email: 1479351399@qq.com
 
 snowflake:
-  enabled: true
-  id-type: cluster
+#  enabled: true
+  id-type: standalone
 #  worker-id: 0
 #  data-center-id: 0
+
+#web:
+#  enable-banner-print: false
+#  global-exception-handler:
+#    enabled: true
+#    converter-scan-custom-package: m.lwh147.common.test
