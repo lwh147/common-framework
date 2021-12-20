@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lwh147.common.core.model.PageData;
 import com.lwh147.common.core.util.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,8 +30,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     @Resource
     private UserMapper userMapper;
-    @Resource
-    private RedisTemplate<String, Object> redisTemplate;
 
     public Boolean add(User user) {
         return this.baseMapper.insert(user) == 1;

@@ -24,20 +24,20 @@ spring:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
 
-#  redis:
-#    host: localhost
-#    port: 6379
-#    password: 123456
-#    timeout: 6000
-#    #    database: 0
-#    #    ssl: false
-#    #    client-name: default
-#    lettuce:
-#      pool:
-#        min-idle: 0
-#        max-idle: 12
-#        max-active: 12
-#        max-wait: 6000
+  redis:
+    host: 182.92.106.123
+    port: 6379
+    password: lWH720626`.
+    timeout: 6000
+    #    database: 0
+    #    ssl: false
+    #    client-name: default
+    lettuce:
+      pool:
+        min-idle: 0
+        max-idle: 12
+        max-active: 12
+        max-wait: 6000
 
 #jetcache:
 #  database: 1
