@@ -7,8 +7,8 @@ spring:
     druid:
       # 开启防火墙和日志记录
       filters: wall, slf4j
-      initial-size: 0
-      min-idle: 0
+      initial-size: 1
+      min-idle: 1
       max-active: 12
       max-wait: 6000
       time-between-eviction-runs-millis: 2000
@@ -25,16 +25,16 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
 
   redis:
-    host: 182.92.106.123
+    host: localhost
     port: 6379
-    password: lWH720626`.
+    password: 123456
     timeout: 6000
     #    database: 0
     #    ssl: false
     #    client-name: default
     lettuce:
       pool:
-        min-idle: 0
+        min-idle: 1
         max-idle: 12
         max-active: 12
         max-wait: 6000
