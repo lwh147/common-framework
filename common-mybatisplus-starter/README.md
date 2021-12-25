@@ -9,6 +9,7 @@ Mybaits-Plus的启动类封装，主要封装了雪花算法Id生成器以及Myb
 添加Maven依赖
 
 ```xml
+
 <dependency>
     <groupId>com.lwh147</groupId>
     <artifactId>common-mybatisplus-starter</artifactId>
@@ -16,13 +17,14 @@ Mybaits-Plus的启动类封装，主要封装了雪花算法Id生成器以及Myb
 </dependency>
 ```
 
-SpringBoot程序启动类注解 `@SpringBootApplication` 增加 `com.lwh147.common` 基础扫描包路径即可
+SpringBoot程序启动类注解 `@SpringBootApplication` 增加 `com.lwh147.common` 基础扫描包路径
 
 ```java
+
 @SpringBootApplication(scanBasePackages = {
         "com.lwh147.common",
         ...
-})
+        })
 public class TestApplication {
     public static void main(String[] args) {
         SpringApplication.run(TestApplication.class, args);
@@ -30,9 +32,18 @@ public class TestApplication {
 }
 ```
 
-具体配置请查看下面的 [配置项](#peizhixiang) 一节
+手动添加@MapperScan指定扫描包路径或在Mapper接口上打@Mapper注解
 
-> 需要手动添加@MapperScan指定扫描包路径或为Mapper接口打@Mapper注解
+在配置文件中增加如下配置：
+
+```yml
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+```
+
+具体配置请查看下面的 [配置项](#peizhixiang) 一节
 
 <div id="peizhixiang"/>
 
@@ -76,13 +87,17 @@ public class TestApplication {
 | `data-center-id` | `Long` | - | 工作机器ID，仅在用户指定模式（customized）模式下有效 |
 | `worker-id` | `Long` | - | 数据中心ID，仅在用户指定模式（customized）模式下有效 |
 
+> 如果需要使用集群模式（cluster）下的雪花算法ID生成类型，则需要增加Maven依赖，引入 `common-cache-starter` 模块
+
 ### MybatisPlus插件配置
 
 配置前缀 `mybatis-plus`
 
 | 配置项名称 | 类型 | 默认值 | 说明 |
 |-------|-------|-------|-------|
-| `enableOptimisticLocker` | `Boolean` | `true` | 是否开启乐观锁 |
+| `enable-optimistic-locker` | `Boolean` | `true` | 是否开启乐观锁 |
+| `enable-block-attack-check` | `Boolean` | `true` | 是否开启防止全表更新与删除策略 |
+| `enable-illegal-sql-check` | `Boolean` | `false` | 是否拦截垃圾sql |
 | `page.enabled` | `Boolean` | `true` | 是否开启分页 |
 | `page.dbType` | `enum DbType` | `mysql` | 数据库类型 |
 | `page.enableOptimizeJoin` | `Boolean` | `true` | 是否开启左连接优化 |

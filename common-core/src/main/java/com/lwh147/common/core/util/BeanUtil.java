@@ -51,7 +51,7 @@ public class BeanUtil extends BeanUtils {
      * @param targetClass 目标对象类
      * @param <S>         源对象类型
      * @param <T>         目标对象类型
-     * @return 目标对象
+     * @return 目标对象，可能为null
      */
     public static <S, T> T convert(S source, Class<T> targetClass) {
         return convert(source, targetClass, null);
@@ -65,7 +65,7 @@ public class BeanUtil extends BeanUtils {
      * @param callBack    回调方法
      * @param <S>         源对象类型
      * @param <T>         目标对象类型
-     * @return 目标对象
+     * @return 目标对象，可能为null
      */
     public static <S, T> T convert(S source, Class<T> targetClass, CallBack<S, T> callBack) {
         if (null == source || null == targetClass) {
@@ -91,7 +91,7 @@ public class BeanUtil extends BeanUtils {
      * @param targetClass 目标对象类
      * @param <S>         源对象类型
      * @param <T>         目标对象类型
-     * @return 目标对象list
+     * @return 目标对象list，可能为null
      */
     public static <S, T> List<T> convertList(List<S> sources, Class<T> targetClass) {
         return convertList(sources, targetClass, null);
@@ -105,7 +105,7 @@ public class BeanUtil extends BeanUtils {
      * @param callBack    回调方法
      * @param <S>         源对象类型
      * @param <T>         目标对象类型
-     * @return 目标对象list
+     * @return 目标对象list，可能为null
      */
     public static <S, T> List<T> convertList(List<S> sources, Class<T> targetClass, CallBack<S, T> callBack) {
         if (null == sources || null == targetClass) {

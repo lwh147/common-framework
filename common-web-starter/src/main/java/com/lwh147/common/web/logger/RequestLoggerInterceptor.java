@@ -27,7 +27,7 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler) throws Exception {
+    public boolean preHandle(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler) {
         // 打印请求信息
         this.doLog(request);
         return true;

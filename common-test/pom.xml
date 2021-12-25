@@ -41,6 +41,7 @@
             <groupId>com.lwh147</groupId>
             <artifactId>common-mybatisplus-starter</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

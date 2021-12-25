@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.IllegalSQLInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.IDialect;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.mybatisplus.properties.MybatisPlusProperties;
 import com.lwh147.common.mybatisplus.properties.SnowflakeProperties;
@@ -78,34 +80,50 @@ public class MybatisPlusAutoConfiguration {
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
 
+        // 分页插件
         if (mybatisPlusProperties.getPage().getEnabled()) {
-            // 配置分页插件
+            // 读取分页配置
             MybatisPlusProperties.Page pageInfo = mybatisPlusProperties.getPage();
             // 指定数据库类型
             PaginationInnerInterceptor pageInterceptor = new PaginationInnerInterceptor(DbType.getDbType(
                     pageInfo.getDbType().getType()));
-            try {
-                // 指定数据库方言
-                pageInterceptor.setDialect(pageInfo.getDbType().getDialect().newInstance());
-            } catch (Exception e) {
-                throw CommonExceptionEnum.COMMON_ERROR.toException("实例化数据库方言类[" + pageInfo.getDbType().getDialect().toString() + "]时发生异常", e);
+            // 如果存在方言则指定方言类型
+            Class<? extends IDialect> dialectClass = pageInfo.getDbType().getDialect();
+            if (Objects.nonNull(dialectClass)) {
+                try {
+                    // 指定数据库方言
+                    pageInterceptor.setDialect(dialectClass.newInstance());
+                } catch (Exception e) {
+                    throw CommonExceptionEnum.COMMON_ERROR.toException("实例化数据库方言类[" + pageInfo.getDbType().getDialect().toString() + "]时发生异常", e);
+                }
             }
             // 左连接优化策略
             pageInterceptor.setOptimizeJoin(pageInfo.getEnableOptimizeJoin());
-            log.debug("配置并开启MybaitsPlus分页插件");
             interceptor.addInnerInterceptor(pageInterceptor);
+            log.debug("配置并开启MybaitsPlus分页插件");
         }
 
+        // 乐观锁
         if (mybatisPlusProperties.getEnableOptimisticLocker()) {
-            // 配置乐观锁
             OptimisticLockerInnerInterceptor optimisticLockerInterceptor = new OptimisticLockerInnerInterceptor();
             interceptor.addInnerInterceptor(optimisticLockerInterceptor);
             log.debug("配置并开启MybaitsPlus乐观锁");
         }
 
         // 防止全表更新与删除
-        BlockAttackInnerInterceptor blockAttackInnerInterceptor = new BlockAttackInnerInterceptor();
-        interceptor.addInnerInterceptor(blockAttackInnerInterceptor);
+        if (mybatisPlusProperties.getEnableBlockAttackCheck()) {
+            BlockAttackInnerInterceptor blockAttackInnerInterceptor = new BlockAttackInnerInterceptor();
+            interceptor.addInnerInterceptor(blockAttackInnerInterceptor);
+            log.debug("配置并开启MybaitsPlus防止全表更新与删除策略");
+        }
+
+        // 拦截垃圾sql
+        if (mybatisPlusProperties.getEnableIllegalSqlCheck()) {
+            IllegalSQLInnerInterceptor illegalSQLInnerInterceptor = new IllegalSQLInnerInterceptor();
+            interceptor.addInnerInterceptor(illegalSQLInnerInterceptor);
+            log.debug("配置并开启MybaitsPlus拦截垃圾sql策略");
+        }
+
         return interceptor;
     }
 }

@@ -19,7 +19,7 @@
 </dependency>
 ```
 
-配置文件中添加Redis连接配置
+配置文件中添加如下配置:
 
 ```yml
 spring:
@@ -28,6 +28,11 @@ spring:
     port: 6379
     password: 123456
     timeout: 3000
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - com.alicp.jetcache.autoconfigure.JetCacheAutoConfiguration
 ```
 
 SpringBoot应用程序启动类注解 `@SpringBootApplication` 增加 `com.lwh147.common` 基础扫描包路径
@@ -77,6 +82,5 @@ Redisson目前没有进行任何定制化配置，使用的就是自动配置生
 
 ## 待办
 
-* 由MybatisPlus引入时是否开启问题
 * LettuceClient 集群、Sentinel、连接池配置
 * JetCache 缓存刷新记录停止刷新时间的键重复问题

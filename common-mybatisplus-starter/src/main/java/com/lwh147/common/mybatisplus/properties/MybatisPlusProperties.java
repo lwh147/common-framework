@@ -19,6 +19,14 @@ public class MybatisPlusProperties {
      **/
     private Boolean enableOptimisticLocker = true;
     /**
+     * 是否防止全表更新与删除，默认为 {@code true}
+     **/
+    private Boolean enableBlockAttackCheck = true;
+    /**
+     * 是否拦截垃圾sql，因过滤规则比较严格，默认为 {@code false}
+     **/
+    private Boolean enableIllegalSqlCheck = false;
+    /**
      * 分页配置
      **/
     @NestedConfigurationProperty

@@ -1,14 +1,12 @@
 package com.lwh147.common.mybatisplus.snowflake;
 
 import cn.hutool.core.lang.Snowflake;
-import com.alicp.jetcache.anno.CacheType;
-import com.alicp.jetcache.anno.CacheUpdate;
-import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -50,7 +48,7 @@ public class ClusterIdGenerator implements IdentifierGenerator {
     /**
      * 工作节点缓存Key
      **/
-    public static final String WORKER_CACHE_KEY = "worker";
+    public static final String WORKER_CACHE_KEY = CACHE_KEY_PREFIX + "worker";
     /**
      * 锁的Key
      **/
@@ -70,6 +68,8 @@ public class ClusterIdGenerator implements IdentifierGenerator {
 
     @Resource
     private RedissonClient redissonClient;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public Number nextId(Object entity) {
@@ -153,11 +153,14 @@ public class ClusterIdGenerator implements IdentifierGenerator {
      *
      * @return 获取到的Worker对象，没获取到返回 {@code null}
      **/
-    @Cached(name = CACHE_KEY_PREFIX,
-            key = WORKER_CACHE_KEY,
-            cacheType = CacheType.REMOTE,
-            expire = -1)
     public Worker getWorker() {
+        // 从缓存中获取
+        Object o = redisTemplate.opsForValue().get(WORKER_CACHE_KEY);
+        if (Objects.nonNull(o)) {
+            // 直接返回获取到的数据
+            return (Worker) o;
+        }
+        // 没有节点
         return null;
     }
 
@@ -166,10 +169,8 @@ public class ClusterIdGenerator implements IdentifierGenerator {
      *
      * @param worker 要更新的Worker对象
      **/
-    @CacheUpdate(name = CACHE_KEY_PREFIX,
-            key = WORKER_CACHE_KEY,
-            value = "#worker")
     public void setWorker(Worker worker) {
+        redisTemplate.opsForValue().set(WORKER_CACHE_KEY, worker);
     }
 
 }
