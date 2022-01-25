@@ -47,7 +47,7 @@ public class ResponseLoggerAdvice implements ResponseBodyAdvice<Object> {
         String requestMethod = ContextHolder.get(WebConstant.REQUEST_METHOD);
         String requestUrl = ContextHolder.get(WebConstant.REQUEST_URL);
         // ===> 代表响应
-        String template = "===> {} {}\n";
+        String template = "==> {} {}\n";
         String requestBody = ContextHolder.get(WebConstant.REQUEST_BODY);
         String responseBody = JacksonUtil.toJSON(body);
         if (Objects.nonNull(requestBody)) {

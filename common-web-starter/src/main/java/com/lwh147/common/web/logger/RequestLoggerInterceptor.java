@@ -46,7 +46,7 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
         String url = request.getRequestURL().toString() + (Objects.isNull(param) ? "" : ("?" + param));
         ContextHolder.set(WebConstant.REQUEST_URL, url);
         // 基础打印模板，<===代表收到请求 请求方法 请求url
-        String template = "<=== {} {}";
+        String template = "<== {} {}";
         // 是否是包装类型
         if (request instanceof RepeatableReadRequestWrapper) {
             // 获取请求体信息
