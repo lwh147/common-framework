@@ -57,7 +57,7 @@ public class JetCacheAutoConfiguration {
 
         if (localhost.equals(redisProperties.getHost())
                 || localhostIp.equals(redisProperties.getHost())) {
-            log.warn("未提供Redis配置或使用本地Redis");
+            log.warn("开启了JetCache但未提供Redis配置或使用本地Redis");
         }
         // 使用Redis主机和端口号获取uri构建对象
         RedisURI.Builder uriBuilder = RedisURI.Builder.redis(redisProperties.getHost(), redisProperties.getPort());

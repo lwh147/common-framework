@@ -77,7 +77,7 @@ public class RespBody<T> implements Serializable {
      * @return 有响应数据的成功响应
      **/
     public static <T> RespBody<T> success(T data) {
-        // 为何这样写？参考PageResp的fromPage方法
+        // 为何这样写？参考PageData的fromPage方法
         RespBodyBuilder<T> builder = builder();
         return builder
                 .success(true)

@@ -2,7 +2,7 @@ package com.lwh147.common.core.model;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lwh147.common.core.enums.DefaultSrotOrderEnum;
+import com.lwh147.common.core.enums.DefaultSortOrderEnum;
 import com.lwh147.common.core.enums.column.DefaultSortColumnEnum;
 import com.lwh147.common.core.enums.column.IColumnEnum;
 import io.swagger.annotations.ApiModel;
@@ -64,7 +64,7 @@ public class PageQuery<T extends Enum<T> & IColumnEnum> implements Serializable 
      * 排序类型
      **/
     @ApiModelProperty(value = "排序类型，升序：ASC，降序：DESC", example = "DESC")
-    private DefaultSrotOrderEnum order;
+    private DefaultSortOrderEnum order;
 
     /**
      * 排序sql后缀
@@ -100,7 +100,7 @@ public class PageQuery<T extends Enum<T> & IColumnEnum> implements Serializable 
     public String getSortSqlSuffix() {
         // 默认按创建时间降序排序
         String column = DefaultSortColumnEnum.CREATE_TIME.getName();
-        String order = DefaultSrotOrderEnum.DESC.getValue();
+        String order = DefaultSortOrderEnum.DESC.getValue();
         if (Objects.nonNull(this.columnName) && Objects.nonNull(this.order)) {
             // 排序条件不为空，获取用户指定的排序条件
             column = this.columnName.getName();

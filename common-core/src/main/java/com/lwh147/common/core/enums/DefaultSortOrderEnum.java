@@ -10,7 +10,7 @@ import com.lwh147.common.core.exception.CommonExceptionEnum;
  * @author lwh
  * @date 2021/11/9 10:30
  **/
-public enum DefaultSrotOrderEnum {
+public enum DefaultSortOrderEnum {
     /**
      * 升序
      **/
@@ -36,7 +36,7 @@ public enum DefaultSrotOrderEnum {
     /**
      * 构造方法，默认私有
      **/
-    DefaultSrotOrderEnum(String value, String name) {
+    DefaultSortOrderEnum(String value, String name) {
         this.value = value;
         this.name = name;
     }
@@ -50,8 +50,8 @@ public enum DefaultSrotOrderEnum {
      * @throws com.lwh147.common.core.exception.CommonException
      **/
     @JsonCreator
-    public static DefaultSrotOrderEnum fromValue(String value) {
-        for (DefaultSrotOrderEnum e : DefaultSrotOrderEnum.values()) {
+    public static DefaultSortOrderEnum fromValue(String value) {
+        for (DefaultSortOrderEnum e : DefaultSortOrderEnum.values()) {
             if (e.getValue().equals(value)) {
                 return e;
             }
@@ -64,8 +64,8 @@ public enum DefaultSrotOrderEnum {
      *
      * @return 匹配的枚举对象，不存在返回null
      **/
-    public static DefaultSrotOrderEnum exist(String value) {
-        for (DefaultSrotOrderEnum e : DefaultSrotOrderEnum.values()) {
+    public static DefaultSortOrderEnum exist(String value) {
+        for (DefaultSortOrderEnum e : DefaultSortOrderEnum.values()) {
             if (e.getValue().equals(value)) {
                 return e;
             }
