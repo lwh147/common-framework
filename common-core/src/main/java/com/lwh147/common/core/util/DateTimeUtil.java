@@ -52,7 +52,7 @@ public class DateTimeUtil {
     /**
      * 获取 {@code amount} 天后的日期
      *
-     * @param amount 天数，为负表示amount天前
+     * @param amount 天数，为负表示 {@code amount} 天前
      * @return 目标日期
      **/
     public static Date getDateAfterToday(int amount) {
@@ -130,7 +130,7 @@ public class DateTimeUtil {
     /**
      * 获取 {@code amount} 个月后最后一天的日期
      *
-     * @param amount 月数，为负表示前amount月
+     * @param amount 月数，为负表示前 {@code amount} 月
      * @return 目标日期
      **/
     public static Date getLastDayOfMonthLater(int amount) {
@@ -164,7 +164,7 @@ public class DateTimeUtil {
      * <p>
      * 如果参数为过去，则返回刚刚、几分钟前、几周前，以此类推
      * <p>
-     * 如果参数为未来，则返回倒计时，格式从少到多为：56、01:56、11:01:56、1天 11:01:01
+     * 如果参数为未来，则返回倒计时，格式为：56、01:56、11:01:56、1天 11:01:01
      */
     public static String fromNow(Date datetime) {
         long time = datetime.getTime() / DateTimeConstant.MILLISECONDS_OF_SECOND;
@@ -210,6 +210,20 @@ public class DateTimeUtil {
             }
             return ago / DateTimeConstant.SECONDS_OF_YEAR + "年前";
         }
+    }
+
+    /**
+     * 日期时间比较
+     * <p>
+     * {@link Date} 类自带的 {@link Date#compareTo(Date)}方法执行较慢
+     *
+     * @param date1 日期时间1
+     * @param date2 日期时间2
+     * @return {@code date1 < date2}，返回 -1；{@code date1 == date2}，返回 0；{@code date1 > date2}，返回 1
+     **/
+    public static int compare(Date date1, Date date2) {
+        long difference = date1.getTime() - date2.getTime();
+        return difference == 0 ? 0 : difference < 0 ? -1 : 1;
     }
 
     private DateTimeUtil() {
