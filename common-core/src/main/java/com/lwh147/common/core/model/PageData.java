@@ -54,13 +54,12 @@ public class PageData<T> implements Serializable {
      * @return 使用 {@link PageData} 封装的通用分页数据结构
      **/
     public static <T> PageData<T> fromPage(Page<T> page) {
-        // 这里必须显式指定builder的泛型为T类型，与page对象的泛型保持一致
-        PageDataBuilder<T> builder = builder();
         /*
-         * 直接调用builder()方法获得的builder会隐式采用Object作为泛型类型从而产生类型不匹配问题
-         * return new PageDataBuilder<>()，builder类型为PageDataBuilder<Object>
+         * 泛型方法调用时可指定泛型类型：PageData.<T>builder()
+         * 这里显式指定builder方法的泛型为T，与page的泛型类型保持一致，避免泛型丢失问题
+         * 如果直接调用builder方法而不指定泛型，会隐式采用Object作为泛型类型从而产生类型不匹配问题
          */
-        return builder
+        return PageData.<T>builder()
                 .size(page.getSize())
                 .current(page.getCurrent())
                 .total(page.getTotal())

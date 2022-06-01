@@ -1,5 +1,6 @@
 package com.lwh147.common.core.util;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
@@ -30,7 +31,9 @@ public class JacksonUtil {
      * 序列化为String或配置自定义序列化策略 @JsonSerialize(using = ToStringSerializer.class)
      */
     static {
-        // json与java对象属性不全对应时也进行反序列化
+        // 将BigDecimal转换成PlainString，不采用科学计数法，完整打印数值
+        OBJECT_MAPPER.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+        // JSON与Java对象属性不全对应时也进行反序列化
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 

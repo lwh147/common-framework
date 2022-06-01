@@ -65,9 +65,7 @@ public class RespBody<T> implements Serializable {
      * @return 无响应数据的成功响应
      **/
     public static RespBody<?> success() {
-        return builder()
-                .success(true)
-                .build();
+        return builder().success(true).build();
     }
 
     /**
@@ -77,10 +75,7 @@ public class RespBody<T> implements Serializable {
      * @return 有响应数据的成功响应
      **/
     public static <T> RespBody<T> success(T data) {
-        // 为何这样写？参考PageData的fromPage方法
-        RespBodyBuilder<T> builder = builder();
-        return builder
-                .success(true)
+        return RespBody.<T>builder().success(true)
                 .data(data)
                 .build();
     }
@@ -92,8 +87,7 @@ public class RespBody<T> implements Serializable {
      * @return 失败响应
      **/
     public static RespBody<?> failure(ICommonException ice) {
-        return builder()
-                .success(false)
+        return builder().success(false)
                 .errorSource(ice.getSource())
                 .errorCode(ice.getCode())
                 .errorMessage(ice.getDescription())

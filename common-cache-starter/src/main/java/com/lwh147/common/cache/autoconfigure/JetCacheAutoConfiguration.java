@@ -83,10 +83,8 @@ public class JetCacheAutoConfiguration {
 
         // 创建基于Lettuce的Redis客户端
         RedisClient client = RedisClient.create(uri);
-        client.setOptions(ClientOptions
-                .builder()
-                .disconnectedBehavior(ClientOptions.DisconnectedBehavior.REJECT_COMMANDS)
-                .build());
+        client.setOptions(ClientOptions.builder()
+                .disconnectedBehavior(ClientOptions.DisconnectedBehavior.REJECT_COMMANDS).build());
         return client;
     }
 
