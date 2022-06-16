@@ -212,20 +212,6 @@ public class DateTimeUtil {
         }
     }
 
-    /**
-     * 日期时间比较
-     * <p>
-     * {@link Date} 类自带的 {@link Date#compareTo(Date)}方法执行较慢
-     *
-     * @param date1 日期时间1
-     * @param date2 日期时间2
-     * @return {@code date1 < date2}，返回 -1；{@code date1 == date2}，返回 0；{@code date1 > date2}，返回 1
-     **/
-    public static int compare(Date date1, Date date2) {
-        long difference = date1.getTime() - date2.getTime();
-        return difference == 0 ? 0 : difference < 0 ? -1 : 1;
-    }
-
     private DateTimeUtil() {
     }
 }

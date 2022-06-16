@@ -1,5 +1,7 @@
 package com.lwh147.common.core.util;
 
+import cn.hutool.core.lang.Snowflake;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -11,9 +13,20 @@ import java.util.regex.Pattern;
  **/
 public class SnowflakeIdUtil {
     /**
+     * 雪花算法对象
+     **/
+    private static final Snowflake sf = new Snowflake(0L, 0L);
+    /**
      * 合法的id校验正则表达式
      **/
     private static final Pattern SNOWFLAKE_ID_PATTERN = Pattern.compile("^[1-9]\\d{18}$");
+
+    /**
+     * 获取一个雪花算法节点
+     **/
+    public static long nextId() {
+        return sf.nextId();
+    }
 
     /**
      * 检验Id是否合法
