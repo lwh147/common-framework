@@ -64,7 +64,7 @@ public class CommonException extends RuntimeException implements ICommonExceptio
      *
      * @param ice 异常枚举类行为规范接口对象
      **/
-    public CommonException(ICommonExceptionEnum ice) {
+    protected CommonException(ICommonExceptionEnum ice) {
         // 没有错误详情所以使用错误描述作为错误详情
         // 默认cause=this
         super(ice.getDescription());
@@ -82,7 +82,7 @@ public class CommonException extends RuntimeException implements ICommonExceptio
      * @param ice           异常枚举类行为规范接口对象
      * @param detailMessage 错误原因的详细描述
      **/
-    public CommonException(ICommonExceptionEnum ice, String detailMessage) {
+    protected CommonException(ICommonExceptionEnum ice, String detailMessage) {
         // 默认cause=this
         super(detailMessage);
         this.code = ice.getCode();
@@ -101,7 +101,7 @@ public class CommonException extends RuntimeException implements ICommonExceptio
      * @param ice   异常枚举类行为规范接口对象
      * @param cause 错误原因，一个异常对象
      **/
-    public CommonException(ICommonExceptionEnum ice, Throwable cause) {
+    protected CommonException(ICommonExceptionEnum ice, Throwable cause) {
         // 去除获取到的message中可能存在的格式化字符
         super(RegExpConstant.ENTER_PATTERN.matcher(cause.getMessage()).replaceAll(""), cause);
         this.code = ice.getCode();
@@ -119,7 +119,7 @@ public class CommonException extends RuntimeException implements ICommonExceptio
      * @param detailMessage 错误原因的详细描述
      * @param cause         错误原因，一个异常对象
      **/
-    public CommonException(ICommonExceptionEnum ice, String detailMessage, Throwable cause) {
+    protected CommonException(ICommonExceptionEnum ice, String detailMessage, Throwable cause) {
         super(detailMessage, cause);
         this.code = ice.getCode();
         this.description = ice.getDescription();

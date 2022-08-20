@@ -64,15 +64,15 @@ public class JetCacheAutoConfiguration {
         // 使用的数据库，默认：1
         uriBuilder.withDatabase(jetCacheProperties.getDatabase());
         // 密码
-        if (Objects.nonNull(redisProperties.getPassword())) {
+        if (redisProperties.getPassword() != null) {
             uriBuilder.withPassword(redisProperties.getPassword());
         }
         // 客户端名称
-        if (Objects.nonNull(redisProperties.getClientName())) {
+        if (redisProperties.getClientName() != null) {
             uriBuilder.withClientName(redisProperties.getClientName());
         }
         // 超时时间
-        if (Objects.nonNull(redisProperties.getTimeout())) {
+        if (redisProperties.getTimeout() != null) {
             uriBuilder.withTimeout(redisProperties.getTimeout());
         }
         // SSL连接

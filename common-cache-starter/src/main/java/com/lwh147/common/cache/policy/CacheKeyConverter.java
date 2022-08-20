@@ -1,5 +1,8 @@
 package com.lwh147.common.cache.policy;
 
+import com.lwh147.common.core.exception.CommonException;
+import com.lwh147.common.core.exception.CommonExceptionEnum;
+
 import java.util.function.Function;
 
 /**
@@ -23,7 +26,10 @@ public class CacheKeyConverter implements Function<Object, Object> {
 
     @Override
     public Object apply(Object originalKey) {
-        if ((originalKey instanceof String || originalKey instanceof Long || originalKey instanceof Integer)) {
+        if (originalKey == null) {
+            throw CommonExceptionEnum.COMMON_ERROR.toException("缓存key为null");
+        }
+        if (originalKey instanceof String || originalKey instanceof Long || originalKey instanceof Integer) {
             return "@" + originalKey.toString();
         }
         return "@" + Integer.toHexString(originalKey.hashCode());
