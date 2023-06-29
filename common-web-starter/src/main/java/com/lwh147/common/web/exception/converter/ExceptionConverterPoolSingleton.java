@@ -3,6 +3,7 @@ package com.lwh147.common.web.exception.converter;
 import com.lwh147.common.core.constant.RegExpConstant;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.core.exception.ICommonException;
+import com.lwh147.common.core.util.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 
@@ -13,7 +14,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -44,7 +44,7 @@ public class ExceptionConverterPoolSingleton {
         // 扫描基础包路径
         final String defaultPackageName = "com.lwh147.common.web.exception.converter";
         Reflections reflections;
-        if (Objects.nonNull(customPackage)) {
+        if (Strings.isNotBlank(customPackage)) {
             // 添加用户自定义扫描包路径
             log.debug("自定义的异常转换器扫描包路径[{}]", customPackage);
             reflections = new Reflections(defaultPackageName, customPackage);
@@ -73,7 +73,7 @@ public class ExceptionConverterPoolSingleton {
      **/
     public static ExceptionConverterPoolSingleton newInstance(@Nullable String customPackage) {
         // 不为null直接返回
-        if (Objects.nonNull(exceptionConverter)) {
+        if (exceptionConverter != null) {
             return exceptionConverter;
         }
         /*
@@ -82,7 +82,7 @@ public class ExceptionConverterPoolSingleton {
          */
         synchronized (ExceptionConverterPoolSingleton.class) {
             // 双重校验
-            if (Objects.nonNull(exceptionConverter)) {
+            if (exceptionConverter != null) {
                 return exceptionConverter;
             }
             // 调用构造方法实例化对象
@@ -103,7 +103,7 @@ public class ExceptionConverterPoolSingleton {
     public ICommonException convert(Exception e) {
         // 从转换器池中获取对应类型的转换器
         IExceptionConverter converter = this.pool.get(e.getClass());
-        if (Objects.nonNull(converter)) {
+        if (converter != null) {
             // 不为空则调用其转换方法进行转换
             return converter.convert(e);
         }

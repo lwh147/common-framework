@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.net.URL;
-import java.util.Objects;
 
 /**
  * Banner打印
@@ -33,7 +32,7 @@ public class BannerPrinter {
     @PostConstruct
     public void print() {
         URL url = this.getClass().getClassLoader().getResource(FILE);
-        if (Objects.isNull(url)) {
+        if (url == null) {
             log.warn("未找到{}文件", FILE);
             return;
         }

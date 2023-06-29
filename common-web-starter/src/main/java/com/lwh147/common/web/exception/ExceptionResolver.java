@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Objects;
 
 /**
  * 全局异常处理器
@@ -63,7 +62,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
     public ModelAndView resolveException(@Nullable HttpServletRequest httpServletRequest, @Nullable HttpServletResponse httpServletResponse, Object o, @Nullable Exception e) {
         ICommonException ice;
         // 判断参数是否合法
-        if (Objects.isNull(httpServletRequest) || Objects.isNull(httpServletResponse) || Objects.isNull(e)) {
+        if (httpServletRequest == null || httpServletResponse == null || e == null) {
             throw CommonExceptionEnum.COMMON_ERROR.toException("上下文环境异常: 请求或响应或异常对象为null");
         }
         // 判断是不是自定义异常
@@ -75,7 +74,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
             ice = poolSingleton.convert(e);
         }
         // 微服务系统中，判断是否是下游错误的封装异常
-        if (Objects.isNull(ice.getSource())) {
+        if (ice.getSource() == null) {
             ice.setSource(appName);
         }
         // 打印异常信息记录日志
@@ -99,17 +98,11 @@ public class ExceptionResolver implements HandlerExceptionResolver {
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.setHeader(WebConstant.Header.CONTENT_TYPE, WebConstant.ContentType.APPLICATION_JSON_CHARSET_UTF_8);
         // 写入响应内容
-        PrintWriter pw = null;
-        try {
-            pw = response.getWriter();
+        try (PrintWriter pw = response.getWriter()) {
             pw.write(JacksonUtil.toJSON(respBody));
             pw.flush();
         } catch (IOException e) {
             throw CommonExceptionEnum.COMMON_ERROR.toException("写入响应体失败: " + e.getMessage(), e);
-        } finally {
-            if (Objects.nonNull(pw)) {
-                pw.close();
-            }
         }
     }
 

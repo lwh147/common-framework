@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Objects;
 
 /**
  * 请求日志记录器的拦截器
@@ -43,7 +42,7 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
         String method = request.getMethod();
         ContextHolder.set(WebConstant.REQUEST_METHOD, method);
         String param = request.getQueryString();
-        String url = request.getRequestURL().toString() + (Objects.isNull(param) ? "" : ("?" + param));
+        String url = request.getRequestURL().toString() + (param == null ? "" : ("?" + param));
         ContextHolder.set(WebConstant.REQUEST_URL, url);
         // 基础打印模板，<===代表收到请求 请求方法 请求url
         String template = "<== {} {}";
@@ -52,7 +51,7 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
             // 获取请求体信息
             String requestBody = ((RepeatableReadRequestWrapper) request).getBody();
             // 不为空时追加请求体信息打印
-            if (Objects.nonNull(requestBody)) {
+            if (requestBody != null) {
                 template += "\n" + WebConstant.REQUEST_BODY + ": {}\n";
                 log.info(template, String.format("%6s", method), url, requestBody);
                 // 同时写入上下文

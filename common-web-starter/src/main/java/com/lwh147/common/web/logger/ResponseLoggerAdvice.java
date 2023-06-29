@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 /**
  * 响应日志记录器的切面
@@ -50,7 +49,7 @@ public class ResponseLoggerAdvice implements ResponseBodyAdvice<Object> {
         String template = "==> {} {}\n";
         String requestBody = ContextHolder.get(WebConstant.REQUEST_BODY);
         String responseBody = JacksonUtil.toJSON(body);
-        if (Objects.nonNull(requestBody)) {
+        if (requestBody != null) {
             template += WebConstant.REQUEST_BODY + ": {}\n" + WebConstant.RESPONSE_BODY + ": {}\n";
             log.info(template, String.format("%6s", requestMethod), requestUrl, requestBody, responseBody);
             return;

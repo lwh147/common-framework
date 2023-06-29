@@ -13,7 +13,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 /**
  * 可重复读的请求包装器
@@ -34,7 +33,7 @@ public class RepeatableReadRequestWrapper extends HttpServletRequestWrapper {
         BufferedReader bufferedReader = null;
         try {
             bufferedReader = request.getReader();
-            if (Objects.nonNull(bufferedReader)) {
+            if (bufferedReader != null) {
                 // 真正读取到的数据大小
                 int charRead;
                 // 缓冲数组
@@ -60,7 +59,7 @@ public class RepeatableReadRequestWrapper extends HttpServletRequestWrapper {
         } catch (IOException e) {
             throw CommonExceptionEnum.COMMON_ERROR.toException("读取请求体出错：" + e.getMessage(), e);
         } finally {
-            if (Objects.nonNull(bufferedReader)) {
+            if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
@@ -73,7 +72,7 @@ public class RepeatableReadRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public ServletInputStream getInputStream() {
         // 判空
-        if (Objects.isNull(this.body)) {
+        if (this.body == null) {
             return null;
         }
         // 由String只能构造字节数组输入流

@@ -14,7 +14,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * 通用分页请求结构
@@ -101,7 +100,7 @@ public class PageQuery<T extends Enum<T> & IColumnEnum> implements Serializable 
         // 默认按创建时间降序排序
         String column = DefaultSortColumnEnum.CREATE_TIME.getName();
         String order = DefaultSortOrderEnum.DESC.getValue();
-        if (Objects.nonNull(this.columnName) && Objects.nonNull(this.order)) {
+        if (this.columnName != null && this.order != null) {
             // 排序条件不为空，获取用户指定的排序条件
             column = this.columnName.getName();
             order = this.order.getValue();

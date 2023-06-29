@@ -11,7 +11,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
-import java.util.Objects;
 
 /**
  * 集群模式下雪花算法ID生成器，各工作机器竞争抢占注册自己的工作机器ID和所属数据中心ID
@@ -85,14 +84,14 @@ public class ClusterIdGenerator implements IdentifierGenerator {
      **/
     @PostConstruct
     public void init() {
-        if (Objects.nonNull(this.snowflake)) {
+        if (this.snowflake != null) {
             // 已经初始化，无需操作
             return;
         }
         // 从Redis中获取上一次被注册的节点
         this.worker = this.getWorker();
         log.debug("从Redis中获取到的上一次被注册的节点[{}]", this.worker);
-        if (Objects.isNull(this.worker)) {
+        if (this.worker == null) {
             // 没有被注册的节点
             this.worker = new Worker();
         } else {
@@ -156,7 +155,7 @@ public class ClusterIdGenerator implements IdentifierGenerator {
     public Worker getWorker() {
         // 从缓存中获取
         Object o = redisTemplate.opsForValue().get(WORKER_CACHE_KEY);
-        if (Objects.nonNull(o)) {
+        if (o != null) {
             // 直接返回获取到的数据
             return (Worker) o;
         }

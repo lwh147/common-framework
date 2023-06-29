@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.CollectionUtils;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -17,7 +18,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.annotation.Resource;
-import java.util.Objects;
 
 /**
  * Swagger配置类
@@ -55,19 +55,19 @@ public class SwaggerAutoConfiguration {
         // 默认只排除路径/error
         builder.paths(input -> !input.matches(SwaggerProperties.DEFAULT_EXCLUDED_PATH));
         // 配置指定的扫描基础包
-        if (Objects.nonNull(swaggerProperties.getPackages())) {
+        if (!CollectionUtils.isEmpty(swaggerProperties.getPackages())) {
             for (String pkg : swaggerProperties.getPackages()) {
                 builder.apis(RequestHandlerSelectors.basePackage(pkg));
             }
         }
         // 配置指定的路径匹配规则
-        if (Objects.nonNull(swaggerProperties.getPaths())) {
+        if (!CollectionUtils.isEmpty(swaggerProperties.getPaths())) {
             for (String reg : swaggerProperties.getPaths()) {
                 builder.paths(PathSelectors.regex(reg));
             }
         }
         // 配置指定排除的路径
-        if (Objects.nonNull(swaggerProperties.getExcludedPaths())) {
+        if (!CollectionUtils.isEmpty(swaggerProperties.getExcludedPaths())) {
             for (String reg : swaggerProperties.getExcludedPaths()) {
                 builder.paths(input -> !input.matches(reg));
             }

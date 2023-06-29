@@ -2,7 +2,6 @@ package com.lwh147.common.core.util;
 
 import cn.hutool.core.lang.Snowflake;
 
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -15,7 +14,7 @@ public class SnowflakeIdUtil {
     /**
      * 雪花算法对象
      **/
-    private static final Snowflake sf = new Snowflake(0L, 0L);
+    private static final Snowflake SNOW_FLAKE = new Snowflake(0L, 0L);
     /**
      * 合法的id校验正则表达式
      **/
@@ -25,7 +24,7 @@ public class SnowflakeIdUtil {
      * 获取一个雪花算法节点
      **/
     public static long nextId() {
-        return sf.nextId();
+        return SNOW_FLAKE.nextId();
     }
 
     /**
@@ -34,7 +33,7 @@ public class SnowflakeIdUtil {
      * @param id 类型为String，为null判断为非法
      **/
     public static boolean isLegal(String id) {
-        if (Objects.isNull(id)) {
+        if (Strings.isBlank(id)) {
             return false;
         }
         return id.matches(SNOWFLAKE_ID_PATTERN.pattern());
@@ -46,7 +45,7 @@ public class SnowflakeIdUtil {
      * @param id 类型为Long，为null判断为非法
      **/
     public static boolean isLegal(Long id) {
-        if (Objects.isNull(id)) {
+        if (id == null) {
             return false;
         }
         return isLegal(id.toString());

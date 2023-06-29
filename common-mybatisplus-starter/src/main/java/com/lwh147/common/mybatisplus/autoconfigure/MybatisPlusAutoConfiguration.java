@@ -23,7 +23,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
-import java.util.Objects;
 
 /**
  * MybaitsPlus 自动配置类
@@ -61,7 +60,7 @@ public class MybatisPlusAutoConfiguration {
         } else {
             Long workerId = snowflakeProperties.getWorkerId();
             Long dataCenterId = snowflakeProperties.getDataCenterId();
-            if (Objects.nonNull(workerId) && Objects.nonNull(dataCenterId)) {
+            if (workerId != null && dataCenterId != null) {
                 log.debug("配置并开启雪花算法ID生成器[定制模式]");
                 return new CustomizedIdGenerator(workerId, dataCenterId);
             }
@@ -89,7 +88,7 @@ public class MybatisPlusAutoConfiguration {
                     pageInfo.getDbType().getType()));
             // 如果存在方言则指定方言类型
             Class<? extends IDialect> dialectClass = pageInfo.getDbType().getDialect();
-            if (Objects.nonNull(dialectClass)) {
+            if (dialectClass != null) {
                 try {
                     // 指定数据库方言
                     pageInterceptor.setDialect(dialectClass.newInstance());
@@ -119,8 +118,8 @@ public class MybatisPlusAutoConfiguration {
 
         // 拦截垃圾sql
         if (mybatisPlusProperties.getEnableIllegalSqlCheck()) {
-            IllegalSQLInnerInterceptor illegalSQLInnerInterceptor = new IllegalSQLInnerInterceptor();
-            interceptor.addInnerInterceptor(illegalSQLInnerInterceptor);
+            IllegalSQLInnerInterceptor illegalSqlInterceptor = new IllegalSQLInnerInterceptor();
+            interceptor.addInnerInterceptor(illegalSqlInterceptor);
             log.debug("配置并开启MybaitsPlus拦截垃圾sql策略");
         }
 

@@ -2,12 +2,12 @@ package com.lwh147.common.web.logger.filter;
 
 
 import com.lwh147.common.core.constant.WebConstant;
+import com.lwh147.common.core.util.Strings;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * 可重复读请求对象替换过滤器
@@ -48,7 +48,7 @@ public class RequestReplaceFilter implements Filter {
      **/
     private boolean isRepeatableSupport(HttpServletRequest httpServletRequest) {
         String contentType = httpServletRequest.getContentType();
-        if (Objects.isNull(contentType)) {
+        if (Strings.isBlank(contentType)) {
             return false;
         }
         // 默认使用JSON数据作为交互数据格式
