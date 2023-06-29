@@ -13,7 +13,7 @@ import java.util.Map;
  **/
 public class ContextHolder {
     /**
-     * 线程本地变量，存储该线程处理的请求相关信息
+     * 线程本地变量，该线程独享这份请求上下文
      **/
     private static final ThreadLocal<Map<String, String>> THREAD_LOCAL_MAP = new ThreadLocal<>();
 

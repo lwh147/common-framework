@@ -10,9 +10,9 @@ import java.util.regex.Pattern;
  **/
 public class RegExpConstant {
     /**
-     * 匹配回车或换行
+     * 匹配回车或换行或制表符
      **/
-    public static final Pattern ENTER_PATTERN = Pattern.compile("[\r\n]");
+    public static final Pattern ENTER_PATTERN = Pattern.compile("[\r\n\t]");
 
     /**
      * 6-16位字符串，允许出现字母、数字、下划线，可用作用户名

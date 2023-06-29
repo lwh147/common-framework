@@ -15,4 +15,7 @@ public class CacheValueEncoder implements Function<Object, byte[]> {
     public byte[] apply(Object o) {
         return JacksonSerializer.serialize(o);
     }
+
+    private CacheValueEncoder() {
+    }
 }

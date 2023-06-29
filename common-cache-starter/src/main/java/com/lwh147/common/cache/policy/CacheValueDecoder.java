@@ -15,4 +15,7 @@ public class CacheValueDecoder implements Function<byte[], Object> {
     public Object apply(byte[] bytes) {
         return JacksonSerializer.deserialize(bytes);
     }
+
+    private CacheValueDecoder() {
+    }
 }

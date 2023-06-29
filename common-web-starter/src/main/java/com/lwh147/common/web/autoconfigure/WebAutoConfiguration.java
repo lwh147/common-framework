@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.lwh147.common.core.constant.DateTimeConstant;
 import com.lwh147.common.web.autoconfigure.filter.RequestEncodingFilter;
 import com.lwh147.common.web.exception.ExceptionResolver;
 import com.lwh147.common.web.logger.RequestLoggerInterceptor;
@@ -41,10 +42,10 @@ import java.util.TimeZone;
 @Configuration
 @EnableConfigurationProperties(WebProperties.class)
 public class WebAutoConfiguration implements WebMvcConfigurer {
-    @Value("${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}")
-    private String dateFormat;
-    @Value("${spring.jackson.time-zone:GMT+8}")
-    private String timeZone;
+    @Value("${spring.jackson.date-format:}")
+    private final String dateFormat = DateTimeConstant.DEFAULT_DATETIME_FORMAT;
+    @Value("${spring.jackson.time-zone:}")
+    private final String timeZone = DateTimeConstant.DEFAULT_TIMEZONE;
     @Resource
     private WebProperties webProperties;
     @Resource
