@@ -18,11 +18,13 @@ import java.util.List;
  * @author lwh
  * @date 2021/11/19 9:51
  **/
-public class JacksonUtil {
+public final class JacksonUtils {
     /**
      * 默认使用的ObjectMapper
      **/
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    private JacksonUtils() {}
 
     /*
      * 常用注解：
@@ -38,23 +40,23 @@ public class JacksonUtil {
     }
 
     /**
-     * 使用默认OM配置将Java对象转JSON的方法
+     * 使用默认OM配置将Java对象转JSON字符串的方法
      *
      * @param object 待序列化对象
      * @return JSON字符串
      **/
-    public static String toJSON(Object object) {
-        return toJSON(object, OBJECT_MAPPER);
+    public static String toJsonStr(Object object) {
+        return toJsonStr(object, OBJECT_MAPPER);
     }
 
     /**
-     * 使用自定义OM配置将Java对象转JSON的方法
+     * 使用自定义OM配置将Java对象转JSON字符串的方法
      *
      * @param object       待序列化对象
      * @param objectMapper 自定义OM配置
      * @return JSON字符串
      **/
-    public static String toJSON(Object object, ObjectMapper objectMapper) {
+    public static String toJsonStr(Object object, ObjectMapper objectMapper) {
         String res;
         try {
             res = objectMapper.writeValueAsString(object);
@@ -66,65 +68,65 @@ public class JacksonUtil {
     }
 
     /**
-     * 使用默认OM配置反序列化JSON的方法
+     * 使用默认OM配置反序列化JSON字符串的方法
      *
      * @param <T>      目标对象
-     * @param json     待反序列化的JSON
+     * @param jsonStr  待反序列化的JSON字符串
      * @param javaType 目标对象类
      * @return 目标对象
      **/
-    public static <T> T parseObject(String json, Class<T> javaType) {
-        return parseObject(json, OBJECT_MAPPER, javaType);
+    public static <T> T parseObject(String jsonStr, Class<T> javaType) {
+        return parseObject(jsonStr, OBJECT_MAPPER, javaType);
     }
 
     /**
-     * 使用自定义OM配置反序列化JSON的方法
+     * 使用自定义OM配置反序列化JSON字符串的方法
      *
      * @param <T>          目标对象
-     * @param json         待反序列化的JSON
+     * @param jsonStr      待反序列化的JSON字符串
      * @param objectMapper 自定义OM配置
      * @param javaType     目标对象类
      * @return 目标对象
      **/
-    public static <T> T parseObject(String json, ObjectMapper objectMapper, Class<T> javaType) {
+    public static <T> T parseObject(String jsonStr, ObjectMapper objectMapper, Class<T> javaType) {
         T t;
         try {
-            t = objectMapper.readValue(json, javaType);
+            t = objectMapper.readValue(jsonStr, javaType);
         } catch (Exception e) {
-            throw CommonExceptionEnum.COMMON_ERROR.toException("使用Jackson反序列化json[" + json + "]为["
+            throw CommonExceptionEnum.COMMON_ERROR.toException("使用Jackson反序列化json[" + jsonStr + "]为["
                     + javaType.toString() + "]时发生异常[" + e.getMessage() + "]", e);
         }
         return t;
     }
 
     /**
-     * 使用默认OM配置反序列化JSON为 {@link List} 的方法
+     * 使用默认OM配置反序列化JSON字符串为 {@link List} 的方法
      *
      * @param <T>      目标数组元素对象
-     * @param json     待反序列化的JSON
+     * @param jsonStr  待反序列化的JSON字符串
      * @param itemType 目标数组元素对象类
      * @return 目标对象数组
      **/
-    public static <T> List<T> parseList(String json, Class<T> itemType) {
-        return parseList(json, OBJECT_MAPPER, itemType);
+    public static <T> List<T> parseList(String jsonStr, Class<T> itemType) {
+        return parseList(jsonStr, OBJECT_MAPPER, itemType);
     }
 
     /**
-     * 使用自定义OM配置反序列化JSON为 {@link List} 的方法
+     * 使用自定义OM配置反序列化JSON字符串为 {@link List} 的方法
      *
      * @param <T>          目标数组元素对象
-     * @param json         待反序列化的JSON
+     * @param jsonStr      待反序列化的JSON字符串
      * @param objectMapper 自定义OM配置
      * @param itemType     目标数组元素对象类
      * @return 目标对象数组
      **/
-    public static <T> List<T> parseList(String json, ObjectMapper objectMapper, Class<T> itemType) {
+    public static <T> List<T> parseList(String jsonStr, ObjectMapper objectMapper, Class<T> itemType) {
         List<T> list;
         JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class, itemType);
         try {
-            list = objectMapper.readValue(json, javaType);
+            list = objectMapper.readValue(jsonStr, javaType);
         } catch (Exception e) {
-            throw CommonExceptionEnum.COMMON_ERROR.toException("使用Jackson反序列化json[" + json + "]为["
+            throw CommonExceptionEnum.COMMON_ERROR.toException("使用Jackson反序列化json[" + jsonStr + "]为["
                     + javaType.toString() + "]时发生异常[" + e.getMessage() + "]", e);
         }
         return list;

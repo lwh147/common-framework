@@ -13,7 +13,10 @@ import java.util.Map;
  * @author lwh
  * @date 2021/12/3 20:23
  **/
-public class BeanUtil extends BeanUtils {
+public final class BeanUtil extends BeanUtils {
+
+    private BeanUtil() {}
+
     /**
      * 复制属性
      *
@@ -137,8 +140,7 @@ public class BeanUtil extends BeanUtils {
      * @return 转换得到的目标Bean对象
      **/
     public static <T> T mapToBean(Map<String, ?> map, Class<T> targetClass) {
-
-
+        // TODO
         return null;
     }
 
@@ -157,8 +159,5 @@ public class BeanUtil extends BeanUtils {
          * @param t 目标对象
          **/
         void callBack(S s, T t);
-    }
-
-    private BeanUtil() {
     }
 }

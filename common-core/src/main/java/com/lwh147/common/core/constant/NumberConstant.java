@@ -12,6 +12,5 @@ public class NumberConstant {
      **/
     public static final Integer DEFAULT_BUFFERED_SIZE = 8196;
 
-    private NumberConstant() {
-    }
+    private NumberConstant() {}
 }

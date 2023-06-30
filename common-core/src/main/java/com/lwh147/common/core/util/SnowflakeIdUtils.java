@@ -5,26 +5,28 @@ import cn.hutool.core.lang.Snowflake;
 import java.util.regex.Pattern;
 
 /**
- * SnowflakeIdUtil
+ * 雪花算法工具类
  *
  * @author lwh
  * @date 2021/12/15 16:26
  **/
-public class SnowflakeIdUtil {
+public final class SnowflakeIdUtils {
     /**
      * 雪花算法对象
      **/
-    private static final Snowflake SNOW_FLAKE = new Snowflake(0L, 0L);
+    private static final Snowflake SNOWFLAKE = new Snowflake(0L, 0L);
     /**
      * 合法的id校验正则表达式
      **/
     private static final Pattern SNOWFLAKE_ID_PATTERN = Pattern.compile("^[1-9]\\d{18}$");
 
+    private SnowflakeIdUtils() {}
+
     /**
      * 获取一个雪花算法节点
      **/
     public static long nextId() {
-        return SNOW_FLAKE.nextId();
+        return SNOWFLAKE.nextId();
     }
 
     /**
@@ -74,8 +76,5 @@ public class SnowflakeIdUtil {
 
     public static boolean isUnLegal(long id) {
         return !isLegal(id);
-    }
-
-    private SnowflakeIdUtil() {
     }
 }

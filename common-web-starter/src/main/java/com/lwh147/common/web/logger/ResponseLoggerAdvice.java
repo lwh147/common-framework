@@ -2,7 +2,7 @@ package com.lwh147.common.web.logger;
 
 import com.lwh147.common.core.constant.WebConstant;
 import com.lwh147.common.core.context.ContextHolder;
-import com.lwh147.common.core.util.JacksonUtil;
+import com.lwh147.common.core.util.JacksonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -48,7 +48,7 @@ public class ResponseLoggerAdvice implements ResponseBodyAdvice<Object> {
         // ===> 代表响应
         String template = "==> {} {}\n";
         String requestBody = ContextHolder.get(WebConstant.REQUEST_BODY);
-        String responseBody = JacksonUtil.toJSON(body);
+        String responseBody = JacksonUtils.toJsonStr(body);
         if (requestBody != null) {
             template += WebConstant.REQUEST_BODY + ": {}\n" + WebConstant.RESPONSE_BODY + ": {}\n";
             log.info(template, String.format("%6s", requestMethod), requestUrl, requestBody, responseBody);

@@ -32,9 +32,9 @@ public class ExceptionConverterPoolSingleton {
      **/
     private final Map<Type, IExceptionConverter> pool;
     /**
-     * 该类的单例对象
+     * 该类的单例对象，声明为volatile类型避免延迟初始化的优化问题，详见阿里巴巴开发规范
      **/
-    private static ExceptionConverterPoolSingleton exceptionConverter;
+    private static volatile ExceptionConverterPoolSingleton exceptionConverter;
 
     /**
      * 禁止外部实例化
@@ -82,13 +82,12 @@ public class ExceptionConverterPoolSingleton {
          */
         synchronized (ExceptionConverterPoolSingleton.class) {
             // 双重校验
-            if (exceptionConverter != null) {
-                return exceptionConverter;
+            if (exceptionConverter == null) {
+                // 调用构造方法实例化对象
+                log.debug("开始初始化异常转换器池...");
+                exceptionConverter = new ExceptionConverterPoolSingleton(customPackage);
+                log.debug("异常转换器池初始化完成");
             }
-            // 调用构造方法实例化对象
-            log.debug("开始初始化异常转换器池...");
-            exceptionConverter = new ExceptionConverterPoolSingleton(customPackage);
-            log.debug("异常转换器池初始化完成");
             return exceptionConverter;
         }
     }

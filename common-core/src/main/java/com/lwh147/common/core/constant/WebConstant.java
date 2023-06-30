@@ -15,6 +15,8 @@ public class WebConstant {
     public static final String REQUEST_BODY = "requestBody";
     public static final String RESPONSE_BODY = "responseBody";
 
+    private WebConstant() {}
+
     /**
      * 请求方式
      **/
@@ -24,8 +26,7 @@ public class WebConstant {
         public static final String PUT = "PUT";
         public static final String DELETE = "DELETE";
 
-        private Method() {
-        }
+        private Method() {}
     }
 
     /**
@@ -45,8 +46,7 @@ public class WebConstant {
         public static final String ACCEPT_ENCODING = "Accept-Encoding";
         public static final String CONNECTION = "Connection";
 
-        private Header() {
-        }
+        private Header() {}
     }
 
     /**
@@ -85,10 +85,6 @@ public class WebConstant {
 
         public static final String VIDEO_MP4 = "video/mpeg4";
 
-        private ContentType() {
-        }
-    }
-
-    private WebConstant() {
+        private ContentType() {}
     }
 }

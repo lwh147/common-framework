@@ -18,8 +18,7 @@ import java.util.Optional;
 public final class Strings {
     private static final ThreadLocal<StringBuilder> TEMP_STR = ThreadLocal.withInitial(StringBuilder::new);
 
-    private Strings() {
-    }
+    private Strings() {}
 
     /**
      * Returns a double quoted string.

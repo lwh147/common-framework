@@ -13,7 +13,10 @@ import java.util.Date;
  * @author lwh
  * @date 2021/12/3 20:23
  **/
-public class DateTimeUtil {
+public final class DateTimeUtils {
+
+    private DateTimeUtils() {}
+
     /**
      * 置时间为0点
      *
@@ -210,8 +213,5 @@ public class DateTimeUtil {
             }
             return ago / DateTimeConstant.SECONDS_OF_YEAR + "年前";
         }
-    }
-
-    private DateTimeUtil() {
     }
 }

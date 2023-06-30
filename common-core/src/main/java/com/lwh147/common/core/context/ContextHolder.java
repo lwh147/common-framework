@@ -11,11 +11,16 @@ import java.util.Map;
  * @author lwh
  * @date 2021/11/18 17:40
  **/
-public class ContextHolder {
+public final class ContextHolder {
     /**
      * 线程本地变量，该线程独享这份请求上下文
      **/
     private static final ThreadLocal<Map<String, String>> THREAD_LOCAL_MAP = new ThreadLocal<>();
+
+    /**
+     * 不能实例化
+     **/
+    private ContextHolder() {}
 
     /**
      * 获取整个Map
@@ -68,11 +73,5 @@ public class ContextHolder {
      **/
     public static void remove() {
         THREAD_LOCAL_MAP.remove();
-    }
-
-    /**
-     * 不能实例化
-     **/
-    private ContextHolder() {
     }
 }

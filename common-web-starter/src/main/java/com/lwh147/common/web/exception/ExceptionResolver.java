@@ -4,7 +4,7 @@ import com.lwh147.common.core.constant.WebConstant;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.core.exception.ICommonException;
 import com.lwh147.common.core.reponse.RespBody;
-import com.lwh147.common.core.util.JacksonUtil;
+import com.lwh147.common.core.util.JacksonUtils;
 import com.lwh147.common.web.exception.converter.ExceptionConverterPoolSingleton;
 import com.lwh147.common.web.properties.WebProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -99,7 +99,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
         response.setHeader(WebConstant.Header.CONTENT_TYPE, WebConstant.ContentType.APPLICATION_JSON_CHARSET_UTF_8);
         // 写入响应内容
         try (PrintWriter pw = response.getWriter()) {
-            pw.write(JacksonUtil.toJSON(respBody));
+            pw.write(JacksonUtils.toJsonStr(respBody));
             pw.flush();
         } catch (IOException e) {
             throw CommonExceptionEnum.COMMON_ERROR.toException("写入响应体失败: " + e.getMessage(), e);
