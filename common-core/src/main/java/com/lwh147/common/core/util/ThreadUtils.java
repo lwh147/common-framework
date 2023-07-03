@@ -2,7 +2,6 @@ package com.lwh147.common.core.util;
 
 
 import cn.hutool.core.thread.ThreadFactoryBuilder;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.*;
 
@@ -66,7 +65,6 @@ import java.util.concurrent.*;
  * @date 2021/12/3 20:23
  * @see <a href="https://docs.oracle.com/javase/8/docs/api/index.html">官方文档</a>
  **/
-@Slf4j
 public final class ThreadUtils {
     /**
      * 分配给当前JVM虚拟机的处理器数量，注意是逻辑处理器数量
