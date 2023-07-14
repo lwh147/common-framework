@@ -3,7 +3,10 @@ package com.lwh147.common.core.util;
 
 import cn.hutool.core.thread.ThreadFactoryBuilder;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 线程工具类，统一管理线程池，预防OOM
@@ -11,12 +14,12 @@ import java.util.concurrent.*;
  * <p>
  * ThreadPoolExecutor核心构造方法参数：
  * <pre>
- * {@link ThreadPoolExecutor#corePoolSize} - 核心线程池大小
- * {@link ThreadPoolExecutor#maximumPoolSize} - 最大线程池大小
- * {@link ThreadPoolExecutor#keepAliveTime} - 非核心线程的空闲线程最大存活时间
- * {@link ThreadPoolExecutor#workQueue} - 阻塞任务队列
- * {@link ThreadPoolExecutor#threadFactory} - 新建线程工厂
- * {@link RejectedExecutionHandler} - 当提交任务数超过 {@code maxmumPoolSize + workQueue} 时，任务会交给它来处理
+ * {@code corePoolSize} - 核心线程池大小
+ * {@code maximumPoolSize} - 最大线程池大小
+ * {@code keepAliveTime} - 非核心线程的空闲线程最大存活时间
+ * {@code workQueue} - 阻塞任务队列
+ * {@code threadFactory} - 新建线程工厂
+ * {@code handler} - 当提交任务数超过 {@code maxmumPoolSize + workQueue} 时，任务会交给它来处理
  * </pre>
  * 1. 当线程池中线程数量小于 corePoolSize ，新提交任务将创建一个新线程执行任务，即使此时线程池中存在空闲线程
  * <p>

@@ -1,6 +1,6 @@
 package com.lwh147.common.web.logger;
 
-import com.lwh147.common.core.constant.WebConstant;
+import com.lwh147.common.core.constant.HttpConstant;
 import com.lwh147.common.core.context.ContextHolder;
 import com.lwh147.common.web.logger.filter.RepeatableReadRequestWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -40,10 +40,10 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
     private void doLog(HttpServletRequest request) {
         // 获取基础请求信息并保存到上下文中方便后续使用
         String method = request.getMethod();
-        ContextHolder.set(WebConstant.REQUEST_METHOD, method);
+        ContextHolder.set(HttpConstant.REQUEST_METHOD, method);
         String param = request.getQueryString();
         String url = request.getRequestURL().toString() + (param == null ? "" : ("?" + param));
-        ContextHolder.set(WebConstant.REQUEST_URL, url);
+        ContextHolder.set(HttpConstant.REQUEST_URL, url);
         // 基础打印模板，<===代表收到请求 请求方法 请求url
         String template = "<== {} {}";
         // 是否是包装类型
@@ -52,10 +52,10 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
             String requestBody = ((RepeatableReadRequestWrapper) request).getBody();
             // 不为空时追加请求体信息打印
             if (requestBody != null) {
-                template += "\n" + WebConstant.REQUEST_BODY + ": {}\n";
+                template += "\n" + HttpConstant.REQUEST_BODY + ": {}\n";
                 log.info(template, String.format("%6s", method), url, requestBody);
                 // 同时写入上下文
-                ContextHolder.set(WebConstant.REQUEST_BODY, requestBody);
+                ContextHolder.set(HttpConstant.REQUEST_BODY, requestBody);
                 return;
             }
         }

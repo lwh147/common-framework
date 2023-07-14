@@ -1,6 +1,6 @@
 package com.lwh147.common.web.logger;
 
-import com.lwh147.common.core.constant.WebConstant;
+import com.lwh147.common.core.constant.HttpConstant;
 import com.lwh147.common.core.context.ContextHolder;
 import com.lwh147.common.core.util.JacksonUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -43,18 +43,18 @@ public class ResponseLoggerAdvice implements ResponseBodyAdvice<Object> {
      **/
     private void doLog(Object body) {
         // 从上下文中获取基础请求信息
-        String requestMethod = ContextHolder.get(WebConstant.REQUEST_METHOD);
-        String requestUrl = ContextHolder.get(WebConstant.REQUEST_URL);
+        String requestMethod = ContextHolder.get(HttpConstant.REQUEST_METHOD);
+        String requestUrl = ContextHolder.get(HttpConstant.REQUEST_URL);
         // ===> 代表响应
         String template = "==> {} {}\n";
-        String requestBody = ContextHolder.get(WebConstant.REQUEST_BODY);
+        String requestBody = ContextHolder.get(HttpConstant.REQUEST_BODY);
         String responseBody = JacksonUtils.toJsonStr(body);
         if (requestBody != null) {
-            template += WebConstant.REQUEST_BODY + ": {}\n" + WebConstant.RESPONSE_BODY + ": {}\n";
+            template += HttpConstant.REQUEST_BODY + ": {}\n" + HttpConstant.RESPONSE_BODY + ": {}\n";
             log.info(template, String.format("%6s", requestMethod), requestUrl, requestBody, responseBody);
             return;
         }
-        template += WebConstant.RESPONSE_BODY + ": {}\n";
+        template += HttpConstant.RESPONSE_BODY + ": {}\n";
         log.info(template, String.format("%6s", requestMethod), requestUrl, responseBody);
     }
 }

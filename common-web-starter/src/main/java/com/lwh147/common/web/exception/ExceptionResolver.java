@@ -1,9 +1,9 @@
 package com.lwh147.common.web.exception;
 
-import com.lwh147.common.core.constant.WebConstant;
+import com.lwh147.common.core.constant.HttpConstant;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.core.exception.ICommonException;
-import com.lwh147.common.core.reponse.RespBody;
+import com.lwh147.common.core.response.RespBody;
 import com.lwh147.common.core.util.JacksonUtils;
 import com.lwh147.common.web.exception.converter.ExceptionConverterPoolSingleton;
 import com.lwh147.common.web.properties.WebProperties;
@@ -96,7 +96,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
         RespBody<?> respBody = RespBody.failure(ice);
         // 设置响应头
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        response.setHeader(WebConstant.Header.CONTENT_TYPE, WebConstant.ContentType.APPLICATION_JSON_CHARSET_UTF_8);
+        response.setHeader(HttpConstant.Header.CONTENT_TYPE, HttpConstant.ContentType.APPLICATION_JSON_CHARSET_UTF_8);
         // 写入响应内容
         try (PrintWriter pw = response.getWriter()) {
             pw.write(JacksonUtils.toJsonStr(respBody));

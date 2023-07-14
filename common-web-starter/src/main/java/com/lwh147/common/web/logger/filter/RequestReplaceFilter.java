@@ -1,7 +1,7 @@
 package com.lwh147.common.web.logger.filter;
 
 
-import com.lwh147.common.core.constant.WebConstant;
+import com.lwh147.common.core.constant.HttpConstant;
 import com.lwh147.common.core.util.Strings;
 import org.springframework.stereotype.Component;
 
@@ -52,7 +52,7 @@ public class RequestReplaceFilter implements Filter {
             return false;
         }
         // 默认使用JSON数据作为交互数据格式
-        return contentType.contains(WebConstant.ContentType.APPLICATION_JSON);
+        return contentType.contains(HttpConstant.ContentType.APPLICATION_JSON);
     }
 
     @Override

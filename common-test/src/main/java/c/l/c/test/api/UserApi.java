@@ -4,7 +4,7 @@ import c.l.c.test.pojo.dto.UserAddDTO;
 import c.l.c.test.pojo.dto.UserUpdateDTO;
 import c.l.c.test.pojo.query.UserQuery;
 import c.l.c.test.pojo.vo.UserVO;
-import com.lwh147.common.core.model.PageData;
+import com.lwh147.common.core.response.PageData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -66,4 +66,11 @@ public interface UserApi {
     @PutMapping("/user/update")
     @ApiOperation(value = "更新用户")
     Boolean update(@RequestBody UserUpdateDTO userUpdateDTO);
+
+    /**
+     * test
+     **/
+    @GetMapping("/test")
+    @ApiOperation(value = "test")
+    void test();
 }

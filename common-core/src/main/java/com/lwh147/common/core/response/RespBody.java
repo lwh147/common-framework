@@ -1,4 +1,4 @@
-package com.lwh147.common.core.reponse;
+package com.lwh147.common.core.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lwh147.common.core.exception.ICommonException;
@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 
 /**
- * 通用响应体结构
+ * 通用响应体结构封装
  * <p>
  * {@code @JsonInclude(JsonInclude.Include.NON_NULL)} 不为null时序列化，为null时忽略，基于Jackson
  *
@@ -21,7 +21,7 @@ import java.io.Serializable;
 @Data
 @Builder
 @EqualsAndHashCode
-@ApiModel(description = "通用响应结构")
+@ApiModel(description = "通用响应体结构封装")
 public class RespBody<T> implements Serializable {
     /**
      * 成功与否
@@ -31,7 +31,6 @@ public class RespBody<T> implements Serializable {
     /**
      * 业务响应数据
      **/
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @ApiModelProperty(value = "业务响应数据")
     private T data;
     /**

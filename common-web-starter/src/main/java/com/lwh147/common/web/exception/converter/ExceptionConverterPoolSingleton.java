@@ -106,9 +106,9 @@ public class ExceptionConverterPoolSingleton {
             // 不为空则调用其转换方法进行转换
             return converter.convert(e);
         }
-        // 没有找到
-        // 去除获取到的message中可能存在的格式化字符
-        String unformattedMessage = RegExpConstant.ENTER_PATTERN.matcher(e.getMessage()).replaceAll("");
+        // 没有找到，去除获取到的message中可能存在的格式化字符
+        String unformattedMessage = e.getMessage() == null ? "null" : RegExpConstant.ENTER_PATTERN.matcher(e.getMessage())
+                .replaceAll("");
         return CommonExceptionEnum.SYSTEM_UNHANDLED_EXCEPTION_ERROR.toException(e.getClass().toString()
                 + ": " + unformattedMessage, e);
     }

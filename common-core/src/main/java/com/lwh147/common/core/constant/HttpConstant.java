@@ -8,14 +8,14 @@ import java.nio.charset.StandardCharsets;
  * @author lwh
  * @date 2021/11/17 14:57
  **/
-public class WebConstant {
+public class HttpConstant {
     public static final String REQUEST_METHOD = "requestMethod";
     public static final String REQUEST_URL = "requestUrl";
     public static final String REQUEST_PARAM = "requestParam";
     public static final String REQUEST_BODY = "requestBody";
     public static final String RESPONSE_BODY = "responseBody";
 
-    private WebConstant() {}
+    private HttpConstant() {}
 
     /**
      * 请求方式
@@ -53,8 +53,13 @@ public class WebConstant {
      * 请求、响应体类型
      **/
     public static class ContentType {
-        public static final String CHARSET = ";charset=";
-        public static final String CHARSET_UTF_8 = CHARSET + StandardCharsets.UTF_8;
+        /**
+         * 相比较其它类型的请求体，multipart 类型的请求体分为多个部分，而且每部分（part）
+         * 都拥有单独的 Content-Type 属性，假如有两部分，一部分可以是二进制流格式数据，另一
+         * 部分可以是普通的 key=value 格式的数据，也可以是其它媒体格式数据，还可以添加第三
+         * 部分、第四部分等，是唯一比较特殊的请求体类型
+         **/
+        public static final String MULTIPART_FORM_DATA = "multipart/form-data";
 
         public static final String APPLICATION_JSON = "application/json";
         public static final String APPLICATION_XML = "application/xml";
@@ -64,14 +69,7 @@ public class WebConstant {
          * 二进制流
          **/
         public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
-
-        /**
-         * 相比较其它类型请求体，该类型的请求体分为多个部分（multipart），而且每部分（part）
-         * 都拥有单独的 Content-Type 属性，假如有两部分，一部分可以是二进制流格式数据，另一
-         * 部分可以是普通的 key=value 格式的数据，也可以是其它媒体格式数据，还可以添加第三
-         * 部分、第四部分等，是唯一比较特殊的请求体类型
-         **/
-        public static final String MULTIPART_FORM_DATA = "multipart/form-data";
+        private static final String CHARSET_UTF_8 = ";charset=" + StandardCharsets.UTF_8;
 
         public static final String APPLICATION_JSON_CHARSET_UTF_8 = APPLICATION_JSON + CHARSET_UTF_8;
         public static final String APPLICATION_XML_CHARSET_UTF_8 = APPLICATION_XML + CHARSET_UTF_8;

@@ -7,7 +7,7 @@ import c.l.c.test.pojo.dto.UserUpdateDTO;
 import c.l.c.test.pojo.query.UserQuery;
 import c.l.c.test.pojo.vo.UserVO;
 import c.l.c.test.service.UserService;
-import com.lwh147.common.core.model.PageData;
+import com.lwh147.common.core.response.PageData;
 import com.lwh147.common.core.util.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,5 +50,9 @@ public class UserController implements UserApi {
     @Override
     public Boolean update(@Valid UserUpdateDTO userUpdateDTO) {
         return this.userService.update(BeanUtil.convert(userUpdateDTO, User.class));
+    }
+
+    @Override
+    public void test() {
     }
 }
