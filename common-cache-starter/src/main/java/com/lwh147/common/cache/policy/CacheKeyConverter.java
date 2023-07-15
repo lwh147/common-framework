@@ -25,7 +25,7 @@ import java.util.function.Function;
  **/
 public class CacheKeyConverter implements Function<Object, Object> {
     public static final CacheKeyConverter INSTANCE = new CacheKeyConverter();
-    public static final Class<?>[] ClASS_CAN_BE_KEY = {String.class, Short.class, Integer.class, Long.class, Boolean.class, Byte.class, Character.class, Float.class, Double.class};
+    public static final Class<?>[] CLASS_CAN_BE_KEY = {String.class, Short.class, Integer.class, Long.class, Boolean.class, Byte.class, Character.class, Float.class, Double.class};
 
     private CacheKeyConverter() {
     }
@@ -42,6 +42,6 @@ public class CacheKeyConverter implements Function<Object, Object> {
     }
 
     private boolean canBeKey(Object obj) {
-        return Arrays.stream(ClASS_CAN_BE_KEY).anyMatch(clazz -> clazz.equals(obj.getClass()));
+        return Arrays.stream(CLASS_CAN_BE_KEY).anyMatch(clazz -> clazz.equals(obj.getClass()));
     }
 }

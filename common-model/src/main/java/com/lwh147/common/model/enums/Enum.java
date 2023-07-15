@@ -1,4 +1,4 @@
-package com.lwh147.common.core.enums;
+package com.lwh147.common.model.enums;
 
 /**
  * 一般枚举类行为规范接口

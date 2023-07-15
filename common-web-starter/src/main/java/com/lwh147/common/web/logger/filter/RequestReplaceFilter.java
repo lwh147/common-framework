@@ -1,8 +1,8 @@
 package com.lwh147.common.web.logger.filter;
 
 
-import com.lwh147.common.core.constant.HttpConstant;
-import com.lwh147.common.core.util.Strings;
+import com.lwh147.common.model.constant.HttpConstant;
+import com.lwh147.common.util.Strings;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;

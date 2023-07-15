@@ -1,4 +1,4 @@
-package com.lwh147.common.core.util;
+package com.lwh147.common.util.concurrent;
 
 
 import cn.hutool.core.thread.ThreadFactoryBuilder;

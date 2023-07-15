@@ -1,4 +1,4 @@
-package com.lwh147.common.core.constant;
+package com.lwh147.common.model.constant;
 
 import java.util.regex.Pattern;
 

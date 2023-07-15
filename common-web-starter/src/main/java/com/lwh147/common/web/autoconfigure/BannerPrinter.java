@@ -1,6 +1,6 @@
 package com.lwh147.common.web.autoconfigure;
 
-import com.lwh147.common.core.constant.NumberConstant;
+import com.lwh147.common.model.constant.NumberConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;

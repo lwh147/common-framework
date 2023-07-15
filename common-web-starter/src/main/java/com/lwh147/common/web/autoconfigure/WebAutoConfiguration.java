@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.lwh147.common.core.constant.DateTimeConstant;
+import com.lwh147.common.model.constant.DateTimeConstant;
 import com.lwh147.common.web.autoconfigure.filter.RequestEncodingFilter;
 import com.lwh147.common.web.exception.ExceptionResolver;
 import com.lwh147.common.web.logger.RequestLoggerInterceptor;

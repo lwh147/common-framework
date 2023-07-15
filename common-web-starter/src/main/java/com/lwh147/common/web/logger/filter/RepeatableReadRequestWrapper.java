@@ -1,7 +1,7 @@
 package com.lwh147.common.web.logger.filter;
 
-import com.lwh147.common.core.constant.NumberConstant;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
+import com.lwh147.common.model.constant.NumberConstant;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ReadListener;

@@ -19,6 +19,8 @@
         <module>common-swagger-starter</module>
         <module>common-test</module>
         <module>common-web-starter</module>
+        <module>common-util</module>
+        <module>common-model</module>
     </modules>
 
     <properties>
@@ -64,6 +66,11 @@
             </dependency>
             <dependency>
                 <groupId>com.lwh147</groupId>
+                <artifactId>common-model</artifactId>
+                <version>${common.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lwh147</groupId>
                 <artifactId>common-mybatisplus-starter</artifactId>
                 <version>${common.framework.version}</version>
             </dependency>
@@ -80,6 +87,11 @@
             <dependency>
                 <groupId>com.lwh147</groupId>
                 <artifactId>common-test</artifactId>
+                <version>${common.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lwh147</groupId>
+                <artifactId>common-util</artifactId>
                 <version>${common.framework.version}</version>
             </dependency>
             <dependency>

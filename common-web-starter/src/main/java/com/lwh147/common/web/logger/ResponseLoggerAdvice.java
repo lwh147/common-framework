@@ -1,8 +1,9 @@
 package com.lwh147.common.web.logger;
 
-import com.lwh147.common.core.constant.HttpConstant;
 import com.lwh147.common.core.context.ContextHolder;
-import com.lwh147.common.core.util.JacksonUtils;
+import com.lwh147.common.core.response.RespBody;
+import com.lwh147.common.model.constant.HttpConstant;
+import com.lwh147.common.util.JacksonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -33,7 +34,7 @@ public class ResponseLoggerAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object body, @Nonnull MethodParameter returnType, @Nonnull MediaType selectedContentType, @Nonnull Class<? extends HttpMessageConverter<?>> selectedConverterType, @Nonnull ServerHttpRequest request, @Nonnull ServerHttpResponse response) {
         // 打印日志
         this.doLog(body);
-        return body;
+        return body instanceof RespBody ? body : RespBody.success(body);
     }
 
     /**

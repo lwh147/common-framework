@@ -1,11 +1,10 @@
-package com.lwh147.common.core.util;
+package com.lwh147.common.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lwh147.common.core.exception.CommonExceptionEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +60,7 @@ public final class JacksonUtils {
         try {
             res = objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw CommonExceptionEnum.COMMON_ERROR.toException("使用Jackson序列化对象[" + object.getClass().toString()
-                    + "]时发生异常[" + e.getMessage() + "]", e);
+            throw new RuntimeException("使用Jackson序列化对象时发生异常：" + e.getMessage(), e);
         }
         return res;
     }
@@ -93,8 +91,7 @@ public final class JacksonUtils {
         try {
             t = objectMapper.readValue(jsonStr, javaType);
         } catch (Exception e) {
-            throw CommonExceptionEnum.COMMON_ERROR.toException("使用Jackson反序列化json[" + jsonStr + "]为["
-                    + javaType.toString() + "]时发生异常[" + e.getMessage() + "]", e);
+            throw new RuntimeException("使用Jackson反序列化json字符串时发生异常：" + e.getMessage(), e);
         }
         return t;
     }
@@ -126,8 +123,7 @@ public final class JacksonUtils {
         try {
             list = objectMapper.readValue(jsonStr, javaType);
         } catch (Exception e) {
-            throw CommonExceptionEnum.COMMON_ERROR.toException("使用Jackson反序列化json[" + jsonStr + "]为["
-                    + javaType.toString() + "]时发生异常[" + e.getMessage() + "]", e);
+            throw new RuntimeException("使用Jackson反序列化json字符串时发生异常：" + e.getMessage(), e);
         }
         return list;
     }

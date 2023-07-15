@@ -1,4 +1,4 @@
-package com.lwh147.common.core.enums;
+package com.lwh147.common.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

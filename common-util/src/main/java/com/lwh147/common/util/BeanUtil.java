@@ -1,6 +1,5 @@
-package com.lwh147.common.core.util;
+package com.lwh147.common.util;
 
-import com.lwh147.common.core.exception.CommonExceptionEnum;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ public final class BeanUtil extends BeanUtils {
         try {
             target = targetClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw CommonExceptionEnum.COMMON_ERROR.toException("转换Bean时实例化目标Bean失败", e);
+            throw new RuntimeException("转换Bean时实例化目标Bean异常", e);
         }
         BeanUtils.copyProperties(source, target);
         if (callBack != null) {
@@ -121,7 +120,7 @@ public final class BeanUtil extends BeanUtils {
             try {
                 target = targetClass.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
-                throw CommonExceptionEnum.COMMON_ERROR.toException("转换Bean时实例化目标Bean失败", e);
+                throw new RuntimeException("转换Bean时实例化目标Bean异常", e);
             }
             BeanUtils.copyProperties(source, target);
             if (callBack != null) {
