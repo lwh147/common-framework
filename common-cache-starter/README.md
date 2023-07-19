@@ -11,7 +11,6 @@
 添加Maven依赖
 
 ```xml
-
 <dependency>
     <groupId>com.lwh147</groupId>
     <artifactId>common-cache-starter</artifactId>
@@ -56,7 +55,7 @@ public class TestApplication {
 }
 ```
 
-推荐方法缓存使用JetCache（包括缓存自动刷新功能），简单的缓存操作使用RedisTemplate，异步缓存操作使用JetCached的缓存实例对象
+推荐方法缓存使用JetCache（包括缓存自动刷新功能），简单的缓存操作使用RedisTemplate，异步缓存操作使用JetCache的缓存实例对象
 
 ## 配置项
 

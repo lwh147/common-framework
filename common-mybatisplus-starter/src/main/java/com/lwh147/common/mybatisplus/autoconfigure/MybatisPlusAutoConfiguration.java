@@ -84,8 +84,8 @@ public class MybatisPlusAutoConfiguration {
             // 读取分页配置
             MybatisPlusProperties.Page pageInfo = mybatisPlusProperties.getPage();
             // 指定数据库类型
-            PaginationInnerInterceptor pageInterceptor = new PaginationInnerInterceptor(DbType.getDbType(
-                    pageInfo.getDbType().getType()));
+            PaginationInnerInterceptor pageInterceptor = new PaginationInnerInterceptor(DbType.getDbType(pageInfo
+                    .getDbType().getType()));
             // 如果存在方言则指定方言类型
             Class<? extends IDialect> dialectClass = pageInfo.getDbType().getDialect();
             if (dialectClass != null) {
@@ -93,7 +93,8 @@ public class MybatisPlusAutoConfiguration {
                     // 指定数据库方言
                     pageInterceptor.setDialect(dialectClass.newInstance());
                 } catch (Exception e) {
-                    throw CommonExceptionEnum.COMMON_ERROR.toException("实例化数据库方言类[" + pageInfo.getDbType().getDialect().toString() + "]时发生异常", e);
+                    throw CommonExceptionEnum.COMMON_ERROR.toException("实例化数据库方言类[" + pageInfo.getDbType()
+                            .getDialect().toString() + "]时发生异常", e);
                 }
             }
             // 左连接优化策略

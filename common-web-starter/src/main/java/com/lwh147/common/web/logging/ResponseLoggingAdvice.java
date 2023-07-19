@@ -1,4 +1,4 @@
-package com.lwh147.common.web.logger;
+package com.lwh147.common.web.logging;
 
 import com.lwh147.common.core.context.ContextHolder;
 import com.lwh147.common.core.response.RespBody;
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  **/
 @Slf4j
 @RestControllerAdvice(annotations = RestController.class)
-public class ResponseLoggerAdvice implements ResponseBodyAdvice<Object> {
+public class ResponseLoggingAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(@Nonnull MethodParameter returnType, @Nonnull Class<? extends HttpMessageConverter<?>> converterType) {
         return true;

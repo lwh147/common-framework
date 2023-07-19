@@ -6,10 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.lwh147.common.model.constant.DateTimeConstant;
-import com.lwh147.common.web.autoconfigure.filter.RequestEncodingFilter;
+import com.lwh147.common.web.component.BannerPrinter;
 import com.lwh147.common.web.exception.ExceptionResolver;
-import com.lwh147.common.web.logger.RequestLoggerInterceptor;
-import com.lwh147.common.web.logger.filter.RequestReplaceFilter;
+import com.lwh147.common.web.filter.RequestEncodingFilter;
+import com.lwh147.common.web.filter.RequestReplaceFilter;
+import com.lwh147.common.web.logging.RequestLoggingInterceptor;
 import com.lwh147.common.web.properties.WebProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
     @Resource
     private RequestEncodingFilter requestEncodingFilter;
     @Resource
-    private RequestLoggerInterceptor requestLoggerInterceptor;
+    private RequestLoggingInterceptor requestLoggingInterceptor;
 
     /**
      * 优先注入BannerPrinter完成Banner的打印
@@ -119,7 +120,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         whiteList.add("/webjars/**");
         whiteList.add("/favicon.ico");
 
-        registry.addInterceptor(requestLoggerInterceptor)
+        registry.addInterceptor(requestLoggingInterceptor)
                 .excludePathPatterns(whiteList)
                 .addPathPatterns("/**");
         log.debug("配置并开启日志记录拦截器，白名单{}", Arrays.toString(whiteList.toArray()));

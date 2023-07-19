@@ -9,7 +9,6 @@ Mybaits-Plus的启动类封装，主要封装了雪花算法Id生成器以及Myb
 添加Maven依赖
 
 ```xml
-
 <dependency>
     <groupId>com.lwh147</groupId>
     <artifactId>common-mybatisplus-starter</artifactId>
@@ -20,7 +19,6 @@ Mybaits-Plus的启动类封装，主要封装了雪花算法Id生成器以及Myb
 SpringBoot程序启动类注解 `@SpringBootApplication` 增加 `com.lwh147.common` 基础扫描包路径
 
 ```java
-
 @SpringBootApplication(scanBasePackages = {
         "com.lwh147.common",
         ...
@@ -95,7 +93,7 @@ spring:
 
 | 配置项名称 | 类型 | 默认值 | 说明 |
 |-------|-------|-------|-------|
-| `enable-optimistic-locker` | `Boolean` | `true` | 是否开启乐观锁 |
+| `enable-optimistic-locker` | `Boolean` | `false` | 是否开启乐观锁 |
 | `enable-block-attack-check` | `Boolean` | `true` | 是否开启防止全表更新与删除策略 |
 | `enable-illegal-sql-check` | `Boolean` | `false` | 是否拦截垃圾sql |
 | `page.enabled` | `Boolean` | `true` | 是否开启分页 |

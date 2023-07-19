@@ -1,4 +1,4 @@
-package com.lwh147.common.web.logger.filter;
+package com.lwh147.common.web.filter;
 
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.model.constant.NumberConstant;

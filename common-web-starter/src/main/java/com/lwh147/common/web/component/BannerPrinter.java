@@ -1,4 +1,4 @@
-package com.lwh147.common.web.autoconfigure;
+package com.lwh147.common.web.component;
 
 import com.lwh147.common.model.constant.NumberConstant;
 import lombok.extern.slf4j.Slf4j;

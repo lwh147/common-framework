@@ -1,4 +1,4 @@
-package com.lwh147.common.web.autoconfigure.filter;
+package com.lwh147.common.web.filter;
 
 import org.springframework.stereotype.Component;
 

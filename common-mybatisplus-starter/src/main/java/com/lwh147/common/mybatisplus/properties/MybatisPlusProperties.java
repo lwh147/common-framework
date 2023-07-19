@@ -15,9 +15,9 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @ConfigurationProperties(prefix = "mybatis-plus")
 public class MybatisPlusProperties {
     /**
-     * 是否开启乐观锁，默认为 {@code true}
+     * 是否开启乐观锁，默认为 {@code false}
      **/
-    private Boolean enableOptimisticLocker = true;
+    private Boolean enableOptimisticLocker = false;
     /**
      * 是否防止全表更新与删除，默认为 {@code true}
      **/

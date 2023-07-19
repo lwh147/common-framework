@@ -1,8 +1,8 @@
-package com.lwh147.common.web.logger;
+package com.lwh147.common.web.logging;
 
 import com.lwh147.common.core.context.ContextHolder;
 import com.lwh147.common.model.constant.HttpConstant;
-import com.lwh147.common.web.logger.filter.RepeatableReadRequestWrapper;
+import com.lwh147.common.web.filter.RepeatableReadRequestWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  **/
 @Slf4j
 @Component
-public class RequestLoggerInterceptor implements HandlerInterceptor {
-    public RequestLoggerInterceptor() {
+public class RequestLoggingInterceptor implements HandlerInterceptor {
+    public RequestLoggingInterceptor() {
         super();
     }
 

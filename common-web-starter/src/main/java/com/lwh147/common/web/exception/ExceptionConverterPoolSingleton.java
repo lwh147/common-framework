@@ -1,4 +1,4 @@
-package com.lwh147.common.web.exception.converter;
+package com.lwh147.common.web.exception;
 
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.core.exception.ICommonException;
