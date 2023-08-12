@@ -56,7 +56,7 @@ public enum SortOrderEnum implements Enum {
      * @return 枚举值是否存在
      **/
     public static boolean exist(String value) {
-        return from(value) == null;
+        return from(value) != null;
     }
 
     @Override

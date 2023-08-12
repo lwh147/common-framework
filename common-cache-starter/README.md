@@ -59,7 +59,8 @@ public class TestApplication {
 
 ## 配置项
 
-SpringDataRedis按照[官方文档](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.data)进行配置即可
+SpringDataRedis按照[官方文档](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.data)
+进行配置即可
 
 JetCache和Redisson均共享SpringDataRedis关于Redis连接地址、端口、密码、连接池等相关配置项（ `spring.redis.*` ）
 
@@ -83,3 +84,6 @@ Redisson目前没有进行任何定制化配置，使用的就是自动配置生
 
 * LettuceClient 集群、Sentinel、连接池配置
 * JetCache 缓存刷新记录停止刷新时间的键重复问题
+*
+
+缓存序列化策略待定，RedisSerializer，目前采用GenericJackson2JsonRedisSerializer，但考虑到缓存数据通用性，可能需要调整（比如服务A用私有的model作为缓存对象，服务B反序列化时就会有问题）

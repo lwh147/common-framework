@@ -68,7 +68,7 @@ public enum SampleEnum implements Enum {
      * @apiNote 推荐枚举类默认实现该方法
      **/
     public static boolean exist(String value) {
-        return from(value) == null;
+        return from(value) != null;
     }
 
     @Override
