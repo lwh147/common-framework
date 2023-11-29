@@ -41,7 +41,7 @@ public final class BeanUtil extends BeanUtils {
         if (null == source || null == target) {
             return;
         }
-        BeanUtils.copyProperties(source, target);
+        copyProperties(source, target);
         if (callBack != null) {
             callBack.callBack(source, target);
         }
@@ -80,7 +80,7 @@ public final class BeanUtil extends BeanUtils {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("转换Bean时实例化目标Bean异常", e);
         }
-        BeanUtils.copyProperties(source, target);
+        copyProperties(source, target);
         if (callBack != null) {
             callBack.callBack(source, target);
         }
@@ -122,7 +122,7 @@ public final class BeanUtil extends BeanUtils {
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException("转换Bean时实例化目标Bean异常", e);
             }
-            BeanUtils.copyProperties(source, target);
+            copyProperties(source, target);
             if (callBack != null) {
                 callBack.callBack(source, target);
             }
