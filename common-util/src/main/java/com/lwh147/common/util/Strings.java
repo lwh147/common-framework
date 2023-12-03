@@ -1,15 +1,15 @@
 package com.lwh147.common.util;
 
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 借用 Apache Commons Lang 的 String 工具类
  * <p>
  * 本框架作者比较喜欢该工具类的实现，简单小巧实用，但由于源工具类在 org.apache.logging.log4j 的 log4j-api 下，而本框架日志使
  * 用 Slf4j，所以直接拿来用了
+ * <p>
+ * 后面补充了一些String相关的工具方法
  *
  * @author Apache
  * @date 2021/11/10 16:15
@@ -322,6 +322,56 @@ public final class Strings {
             } finally {
                 sb.setLength(0);
             }
+        }
+    }
+
+    /**
+     * 这部分主要提供判断一个类（或对象）是否有自己实现toString方法的相关工具
+     * <p>
+     * 如果该类型存在继承关系，则只考虑当前子类是否有自己实现toString方法
+     * <p>
+     * 使用缓存保存已经处理过的结果
+     **/
+    private static final Map<Class<?>, Boolean> CACHED_TO_STRING_ANSWERS = new ConcurrentHashMap<>();
+
+    static {
+        // Object的toString方法视为没有自己的实现
+        CACHED_TO_STRING_ANSWERS.put(Object.class, Boolean.FALSE);
+    }
+
+    /**
+     * 检查一个对象是否有实现自己的toString方法
+     *
+     * @param obj 被检查的实例对象
+     * @return 检查结果
+     **/
+    public static boolean hasToStringOverride(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        return hasToStringOverride(obj.getClass());
+    }
+
+    /**
+     * 检查一个类是否有定义自己的toString方法
+     *
+     * @param cls 被检查的类型
+     * @return 检查结果
+     **/
+    public static boolean hasToStringOverride(final Class<?> cls) {
+        if (cls == null) {
+            return false;
+        }
+        if (CACHED_TO_STRING_ANSWERS.containsKey(cls)) {
+            return CACHED_TO_STRING_ANSWERS.get(cls);
+        }
+        try {
+            cls.getDeclaredMethod("toString");
+            CACHED_TO_STRING_ANSWERS.put(cls, true);
+            return true;
+        } catch (NoSuchMethodException e) {
+            CACHED_TO_STRING_ANSWERS.put(cls, false);
+            return false;
         }
     }
 }

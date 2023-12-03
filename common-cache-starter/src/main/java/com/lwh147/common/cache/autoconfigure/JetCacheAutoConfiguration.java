@@ -8,8 +8,7 @@ import com.alicp.jetcache.embedded.EmbeddedCacheBuilder;
 import com.alicp.jetcache.embedded.LinkedHashMapCacheBuilder;
 import com.alicp.jetcache.redis.lettuce.RedisLettuceCacheBuilder;
 import com.lwh147.common.cache.policy.CacheKeyConverter;
-import com.lwh147.common.cache.policy.CacheValueDecoder;
-import com.lwh147.common.cache.policy.CacheValueEncoder;
+import com.lwh147.common.cache.policy.RedisValueSerializer;
 import com.lwh147.common.cache.properties.JetCacheProperties;
 import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisClient;
@@ -98,9 +97,9 @@ public class JetCacheAutoConfiguration {
     public GlobalCacheConfig config(SpringConfigProvider configProvider, RedisClient redisClient) {
         // 创建本地缓存，默认永不过期
         Map<String, CacheBuilder> localBuilders = new HashMap<>(16);
-        EmbeddedCacheBuilder<?> localBuilder = LinkedHashMapCacheBuilder
+        EmbeddedCacheBuilder<LinkedHashMapCacheBuilder.LinkedHashMapCacheBuilderImpl> localBuilder = LinkedHashMapCacheBuilder
                 .createLinkedHashMapCacheBuilder()
-                .keyConvertor(CacheKeyConverter.INSTANCE)
+                .keyConvertor(CacheKeyConverter::convert)
                 .limit(jetCacheProperties.getLocalLimit())
                 .expireAfterWrite(jetCacheProperties.getLocalExpiredIn(), TimeUnit.SECONDS);
         // 使用默认区域名称
@@ -110,9 +109,9 @@ public class JetCacheAutoConfiguration {
         RedisLettuceCacheBuilder<?> remoteCacheBuilder = RedisLettuceCacheBuilder
                 .createRedisLettuceCacheBuilder()
                 .redisClient(redisClient)
-                .keyConvertor(CacheKeyConverter.INSTANCE)
-                .valueEncoder(CacheValueEncoder.INSTANCE)
-                .valueDecoder(CacheValueDecoder.INSTANCE)
+                .keyConvertor(CacheKeyConverter::convert)
+                .valueEncoder(RedisValueSerializer.INSTANCE::serialize)
+                .valueDecoder(RedisValueSerializer.INSTANCE::deserialize)
                 .expireAfterWrite(jetCacheProperties.getRemoteExpiredIn(), TimeUnit.SECONDS);
         remoteBuilders.put(CacheConsts.DEFAULT_AREA, remoteCacheBuilder);
         // JetCache配置类

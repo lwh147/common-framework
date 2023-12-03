@@ -1,47 +1,51 @@
 package com.lwh147.common.cache.policy;
 
-import com.lwh147.common.core.exception.CommonExceptionEnum;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 
-import java.util.Arrays;
-import java.util.function.Function;
+import java.util.Date;
 
 /**
- * 自定义JetCache缓存key转换器
+ * 自定义缓存key转换器
  * <p>
- * 正常情况下，key应该为可读性较强的数值或字符串类型，但如果一个Bean被当作key时默认会调用其 {@code toString()} 方法作为key（
- * 实际项目中真有这么干的），这样的key会极大影响可读性
+ * 正常情况下，缓存key应该为可读性较强的数值或字符串或其他基础数据类型，但如果一个Bean被当作key时，JetCache会默认将其转换为字
+ * 节码，这样的key会极大影响可读性（不要想着你不会碰到这种情况）
  * <p>
- * 本方法采用与 {@link Object#toString()} 方法相似的逻辑生成key：
+ * 本方法基于 JetCache 内置的默认缓存key转换策略，详见 {@link com.alicp.jetcache.external.ExternalKeyUtil#buildKeyAfterConvert}
+ * 区别是：
  * <p>
- * 当key的类型为Java原始类型对应的包装类型时使用 {@code toString()} 结果作为key，其它情况下取 对象的类名 + 16进制哈希码
+ * 优化了展示规则
  * <p>
- * 此外，虽然Redis允许key为 {@code null}，但是本框架不允许，这种情况本身就应该是异常情况，如果你已经知道对象可能是 {@code
- * null} 的情况下还会用这个对象做key吗？再者，就算允许key为 {@code null} 也没有意义，因为一旦允许则根据墨菲定律必定会出现各种
- * 意外情况造成key为 {@code null} 的缓存内容互相覆盖，这样一来缓存对应的业务场景也无法确定，获取到之后进行处理时可能会导致发生
- * 异常
+ * 当key为其他类型时，采用 {@link Object#toString()} 类似规则转换为字符串
+ * <p>
+ * 此外，该转换器也不允许使用 {@code null}对象作为key（可以序列化为字符串"null"），虽然Redis允许key为 {@code null}，但是这种
+ * 情况本身就应该是异常情况，如果你已经知道对象是 {@code null} 的情况下还会用这个对象做key吗？其次就算允许也没有什么好处，反而
+ * 还会产生问题，因为一旦允许，根据墨菲定律必定会出现 {@code "null"} 的key，这样的key缓存内容会互相覆盖，缓存对应的业务场景也
+ * 无法确定，获取到之后进行处理时可能会导致未知的异常
  *
  * @author lwh
  * @date 2021/12/7 9:59
  **/
-public class CacheKeyConverter implements Function<Object, Object> {
-    public static final CacheKeyConverter INSTANCE = new CacheKeyConverter();
-    public static final Class<?>[] CLASS_CAN_BE_KEY = {String.class, Short.class, Integer.class, Long.class, Boolean.class, Byte.class, Character.class, Float.class, Double.class};
-
+public final class CacheKeyConverter {
     private CacheKeyConverter() {
     }
 
-    @Override
-    public Object apply(Object originalKey) {
-        if (originalKey == null) {
-            throw CommonExceptionEnum.COMMON_ERROR.toException("缓存key为null");
+    public static String convert(Object key) {
+        if (key == null) {
+            throw new NullPointerException("cache key can't be null");
         }
-        if (this.canBeKey(originalKey)) {
-            return '@' + originalKey.toString();
+        if (key instanceof String) {
+            return (String) key;
+        } else if (key instanceof byte[] || key instanceof char[] || key instanceof Character || key instanceof CharSequence) {
+            return key.toString();
+        } else if (key instanceof Number) {
+            return key.getClass().getSimpleName() + "@" + key;
+        } else if (key instanceof Date) {
+            return key.getClass().getSimpleName() + "@" + DateUtil.format((Date) key, DatePattern.PURE_DATETIME_MS_FORMATTER);
+        } else if (key instanceof Boolean) {
+            return key.toString();
+        } else {
+            return key.getClass().getName() + "@" + Integer.toHexString(key.hashCode());
         }
-        return originalKey.getClass().getName() + "@" + Integer.toHexString(originalKey.hashCode());
-    }
-
-    private boolean canBeKey(Object obj) {
-        return Arrays.stream(CLASS_CAN_BE_KEY).anyMatch(clazz -> clazz.equals(obj.getClass()));
     }
 }

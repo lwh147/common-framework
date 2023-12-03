@@ -1,6 +1,8 @@
 package com.lwh147.common.cache.autoconfigure;
 
-import com.lwh147.common.cache.policy.JacksonSerializer;
+import com.lwh147.common.cache.policy.CacheKeyConverter;
+import com.lwh147.common.cache.policy.RedisKeySerializer;
+import com.lwh147.common.cache.policy.RedisValueSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +22,8 @@ import javax.annotation.Resource;
 /**
  * Spring Data Redis 配置
  * <p>
- * value采用Jackson序列化策略，key采用自定义序列化策略
- * {@link com.lwh147.common.cache.policy.CacheKeyConverter}
+ * value采用Jackson泛型序列化策略 {@link org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer}，
+ * key采用自定义序列化策略 {@link CacheKeyConverter}
  * <p>
  * {@link RedisTemplate} 和 {@link RedisCacheManager} 均默认永不过期
  * <p>
@@ -42,15 +44,15 @@ public class SpringRedisAutoConfiguration {
     @Bean
     @Primary
     @ConditionalOnMissingBean(name = "redisTemplate")
-    public RedisTemplate<String, Object> redisTemplate() {
+    public RedisTemplate<Object, Object> redisTemplate() {
         // 新建RedisTemplate
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
 
         // key采用String序列化工具
-        template.setKeySerializer(JacksonSerializer.STRING_SERIALIZER);
+        template.setKeySerializer(RedisKeySerializer.INSTANCE);
         // value采用Jackson序列化工具
-        template.setValueSerializer(JacksonSerializer.JACKSON_SERIALIZER);
+        template.setValueSerializer(RedisValueSerializer.INSTANCE);
 
         template.afterPropertiesSet();
 
@@ -69,9 +71,9 @@ public class SpringRedisAutoConfiguration {
         // 修改默认配置
         redisCacheConfiguration = redisCacheConfiguration
                 // 采用String序列化工具
-                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(JacksonSerializer.STRING_SERIALIZER))
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisKeySerializer.INSTANCE))
                 // value序列化策略采用Jackson
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(JacksonSerializer.JACKSON_SERIALIZER))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisValueSerializer.INSTANCE))
                 // 不缓存null值
                 .disableCachingNullValues();
         return RedisCacheManager
