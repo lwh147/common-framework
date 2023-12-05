@@ -47,8 +47,8 @@ public class BaseModel<T extends BaseModel<?>> extends Model<T> {
      * {@code @JsonFormat} 指定序列化和反序列化时采用的日期时间格式，基于Jackson
      **/
     @TableField(CREATE_TIME)
-    @DateTimeFormat(pattern = DateTimeConstant.DEFAULT_DATETIME_FORMAT)
-    @JsonFormat(timezone = DateTimeConstant.DEFAULT_TIMEZONE, pattern = DateTimeConstant.DEFAULT_DATETIME_FORMAT)
+    @DateTimeFormat(pattern = DateTimeConstant.DEFAULT_DATETIME_PATTERN)
+    @JsonFormat(timezone = DateTimeConstant.DEFAULT_TIMEZONE, pattern = DateTimeConstant.DEFAULT_DATETIME_PATTERN)
     protected Date createTime;
     /**
      * 修改时间
@@ -56,8 +56,8 @@ public class BaseModel<T extends BaseModel<?>> extends Model<T> {
      * 推荐在数据库中配置根据当前时间自动更新
      **/
     @TableField(UPDATE_TIME)
-    @DateTimeFormat(pattern = DateTimeConstant.DEFAULT_DATETIME_FORMAT)
-    @JsonFormat(timezone = DateTimeConstant.DEFAULT_TIMEZONE, pattern = DateTimeConstant.DEFAULT_DATETIME_FORMAT)
+    @DateTimeFormat(pattern = DateTimeConstant.DEFAULT_DATETIME_PATTERN)
+    @JsonFormat(timezone = DateTimeConstant.DEFAULT_TIMEZONE, pattern = DateTimeConstant.DEFAULT_DATETIME_PATTERN)
     protected Date updateTime;
 
     public static final String ID = "id";

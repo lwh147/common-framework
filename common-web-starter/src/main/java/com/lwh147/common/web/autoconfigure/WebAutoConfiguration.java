@@ -1,11 +1,7 @@
 package com.lwh147.common.web.autoconfigure;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.lwh147.common.model.constant.DateTimeConstant;
+import com.lwh147.common.util.JacksonUtils;
 import com.lwh147.common.web.component.BannerPrinter;
 import com.lwh147.common.web.exception.ExceptionResolver;
 import com.lwh147.common.web.filter.RequestEncodingFilter;
@@ -27,11 +23,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Web相关配置，拦截器、过滤器、全局异常处理器等
@@ -44,7 +38,7 @@ import java.util.TimeZone;
 @EnableConfigurationProperties(WebProperties.class)
 public class WebAutoConfiguration implements WebMvcConfigurer {
     @Value("${spring.jackson.date-format:}")
-    private final String dateFormat = DateTimeConstant.DEFAULT_DATETIME_FORMAT;
+    private final String dateFormat = DateTimeConstant.DEFAULT_DATETIME_PATTERN;
     @Value("${spring.jackson.time-zone:}")
     private final String timeZone = DateTimeConstant.DEFAULT_TIMEZONE;
     @Resource
@@ -141,24 +135,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         // 新建转换器
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        // 添加并设置转换策略
-        ObjectMapper objectMapper = converter.getObjectMapper();
-        SimpleModule simpleModule = new SimpleModule();
-
-        // 将Long转换成String
-        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-        simpleModule.addSerializer(long.class, ToStringSerializer.instance);
-        // 将BigDecimal转换成PlainString，不采用科学计数法，完整打印数值
-        objectMapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
-        // JSON与Java对象属性不全对应时也进行反序列化
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        // 日期时间格式
-        objectMapper.setDateFormat(new SimpleDateFormat(dateFormat));
-        objectMapper.setTimeZone(TimeZone.getTimeZone(timeZone));
-
-        objectMapper.registerModule(simpleModule);
-        converter.setObjectMapper(objectMapper);
+        converter.setObjectMapper(JacksonUtils.DEFAULT_OBJECT_MAPPER);
         // 添加转换器
         converters.add(0, converter);
     }

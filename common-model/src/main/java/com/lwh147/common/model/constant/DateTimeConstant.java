@@ -7,10 +7,28 @@ package com.lwh147.common.model.constant;
  * @date 2021/11/26 11:00
  **/
 public class DateTimeConstant {
-    public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
-    public static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";
     public static final String DEFAULT_TIMEZONE = "GMT+8";
+
+    public static final String DEFAULT_DATETIME_MS_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
+    public static final String DEFAULT_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    public static final String DEFAULT_DATETIME_MINUTE_PATTERN = "yyyy-MM-dd HH:mm";
+    public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd";
+    public static final String DEFAULT_MONTH_PATTERN = "yyyy-MM";
+    public static final String DEFAULT_TIME_PATTERN = "HH:mm:ss";
+
+    public static final String PURE_DATETIME_MS_PATTERN = "yyyyMMddHHmmssSSS";
+    public static final String PURE_DATETIME_PATTERN = "yyyyMMddHHmmss";
+    public static final String PURE_DATE_PATTERN = "yyyyMMdd";
+    public static final String PURE_MONTH_PATTERN = "yyyyMM";
+    public static final String PURE_TIME_PATTERN = "HHmmss";
+
+    public static final String CHINESE_DATE_TIME_PATTERN = "yyyy年MM月dd日HH时mm分ss秒";
+    public static final String CHINESE_DATE_PATTERN = "yyyy年MM月dd日";
+    public static final String CHINESE_MONTH_PATTERN = "yyyy年MM月";
+    public static final String CHINESE_TIME_PATTERN = "HH时mm分ss秒";
+
+    public static final String HTTP_DATETIME_PATTERN = "EEE, dd MMM yyyy HH:mm:ss z";
+    public static final String JDK_DATETIME_PATTERN = "EEE MMM dd HH:mm:ss zzz yyyy";
 
     public static final int MILLISECONDS_OF_SECOND = 1000;
     public static final int SECONDS_OF_MINUTE = 60;

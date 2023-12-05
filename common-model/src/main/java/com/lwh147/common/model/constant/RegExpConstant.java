@@ -35,6 +35,10 @@ public class RegExpConstant {
      * 大于等于0的数，包含小数，允许出现前导0，可用作金额
      **/
     public static final Pattern INTEGER_FLOAT_BE_ZERO_PATTERN = Pattern.compile("^\\d+(\\.?\\d+)?$");
+    /**
+     * 合法的雪花算法ID校验正则表达式
+     **/
+    public static final Pattern SNOWFLAKE_ID_PATTERN = Pattern.compile("^[1-9]\\d{18}$");
 
     /**
      * 邮件地址

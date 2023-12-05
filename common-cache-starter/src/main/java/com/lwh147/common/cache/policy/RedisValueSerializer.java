@@ -1,5 +1,6 @@
 package com.lwh147.common.cache.policy;
 
+import com.lwh147.common.util.JacksonUtils;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
@@ -16,27 +17,27 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  **/
 public final class RedisValueSerializer implements RedisSerializer<Object> {
     /**
-     * 唯一实例
+     * 默认实例
      **/
     public static final RedisValueSerializer INSTANCE = new RedisValueSerializer();
 
     /**
-     * 使用Jackson泛型序列化为json字符串
+     * 基于Jackson序列化为泛型json字符串
      **/
-    private final RedisSerializer<Object> GENERIC_JACKSON_2_JSON_SERIALIZER = RedisSerializer.json();
+    public static final RedisSerializer<Object> GENERIC_JACKSON_2_JSON_SERIALIZER = new GenericJackson2JsonRedisSerializer(JacksonUtils.CACHE_OBJECT_MAPPER);
 
     private RedisValueSerializer() {
     }
 
     /**
-     * 默认序列化策略
+     * 序列化
      **/
     public byte[] serialize(Object o) {
         return GENERIC_JACKSON_2_JSON_SERIALIZER.serialize(o);
     }
 
     /**
-     * 默认反序列化策略
+     * 反序列化
      **/
     public Object deserialize(byte[] bytes) {
         return GENERIC_JACKSON_2_JSON_SERIALIZER.deserialize(bytes);

@@ -1,8 +1,7 @@
 package com.lwh147.common.util;
 
 import cn.hutool.core.lang.Snowflake;
-
-import java.util.regex.Pattern;
+import com.lwh147.common.model.constant.RegExpConstant;
 
 /**
  * 雪花算法工具类
@@ -12,18 +11,14 @@ import java.util.regex.Pattern;
  **/
 public final class SnowflakeIdUtils {
     /**
-     * 雪花算法对象
+     * 随便生成一个默认的雪花算法对象
      **/
     private static final Snowflake SNOWFLAKE = new Snowflake(0L, 0L);
-    /**
-     * 合法的id校验正则表达式
-     **/
-    private static final Pattern SNOWFLAKE_ID_PATTERN = Pattern.compile("^[1-9]\\d{18}$");
 
     private SnowflakeIdUtils() {}
 
     /**
-     * 获取一个雪花算法节点
+     * 获取一个雪花算法节点，不保证不会重复
      **/
     public static long nextId() {
         return SNOWFLAKE.nextId();
@@ -38,7 +33,7 @@ public final class SnowflakeIdUtils {
         if (Strings.isBlank(id)) {
             return false;
         }
-        return id.matches(SNOWFLAKE_ID_PATTERN.pattern());
+        return id.matches(RegExpConstant.SNOWFLAKE_ID_PATTERN.pattern());
     }
 
     /**

@@ -49,10 +49,16 @@ public class SpringRedisAutoConfiguration {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
 
+        // 默认序列化工具采用泛型Jackson序列化工具
+        template.setDefaultSerializer(RedisValueSerializer.INSTANCE);
         // key采用String序列化工具
         template.setKeySerializer(RedisKeySerializer.INSTANCE);
-        // value采用Jackson序列化工具
+        // value采用泛型Jackson序列化工具
         template.setValueSerializer(RedisValueSerializer.INSTANCE);
+        // hash key采用泛型Jackson序列化工具，因为hash key 可能会被作为entry set返回，需要保持反序列化结果的一致性
+        template.setHashKeySerializer(RedisValueSerializer.INSTANCE);
+        // hash value采用泛型Jackson序列化工具
+        template.setHashValueSerializer(RedisValueSerializer.INSTANCE);
 
         template.afterPropertiesSet();
 
@@ -71,8 +77,8 @@ public class SpringRedisAutoConfiguration {
         // 修改默认配置
         redisCacheConfiguration = redisCacheConfiguration
                 // 采用String序列化工具
-                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisKeySerializer.INSTANCE))
-                // value序列化策略采用Jackson
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisKeySerializer.STRING_SERIALIZER))
+                // value序列化策略采用泛型Jackson
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisValueSerializer.INSTANCE))
                 // 不缓存null值
                 .disableCachingNullValues();

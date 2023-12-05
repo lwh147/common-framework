@@ -1,5 +1,7 @@
 package com.lwh147.common.util;
 
+import com.lwh147.common.model.constant.DateTimeConstant;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -168,33 +170,33 @@ public final class DateTimeUtils {
      * 如果参数为未来，则返回倒计时，格式为：56、01:56、11:01:56、1天 11:01:01，最大单位为天
      */
     public static String fromNow(Date datetime) {
-        long time = datetime.getTime() / 1000;
-        long now = System.currentTimeMillis() / 1000;
+        long time = datetime.getTime() / DateTimeConstant.MILLISECONDS_OF_SECOND;
+        long now = System.currentTimeMillis() / DateTimeConstant.MILLISECONDS_OF_SECOND;
         long ago = now - time;
 
         if (ago < 0) {
             ago = -ago;
-            if (ago < 60) {
+            if (ago < DateTimeConstant.SECONDS_OF_MINUTE) {
                 return String.format("%02d", ago);
             }
-            if (ago < 3600) {
-                return String.format("%02d:%02d", ago / 60, ago % 60);
+            if (ago < DateTimeConstant.SECONDS_OF_HOUR) {
+                return String.format("%02d:%02d", ago / DateTimeConstant.SECONDS_OF_MINUTE, ago % DateTimeConstant.SECONDS_OF_MINUTE);
             }
-            if (ago < 86400) {
-                return String.format("%02d:%02d:%02d", ago / 3600, ago % 3600 / 60, ago % 60);
+            if (ago < DateTimeConstant.SECONDS_OF_DAY) {
+                return String.format("%02d:%02d:%02d", ago / DateTimeConstant.SECONDS_OF_HOUR, ago % DateTimeConstant.SECONDS_OF_HOUR / DateTimeConstant.SECONDS_OF_MINUTE, ago % DateTimeConstant.SECONDS_OF_MINUTE);
             }
-            return String.format("%d天 %02d:%02d:%02d", ago / 86400, ago % 86400 / 3600, ago % 3600 / 60, ago % 60);
+            return String.format("%d天 %02d:%02d:%02d", ago / DateTimeConstant.SECONDS_OF_DAY, ago % DateTimeConstant.SECONDS_OF_DAY / DateTimeConstant.SECONDS_OF_HOUR, ago % DateTimeConstant.SECONDS_OF_HOUR / DateTimeConstant.SECONDS_OF_MINUTE, ago % DateTimeConstant.SECONDS_OF_MINUTE);
         } else {
-            if (ago < 60) {
+            if (ago < DateTimeConstant.SECONDS_OF_MINUTE) {
                 return "刚刚";
             }
-            if (ago < 3600) {
-                return ago / 60 + "分钟前";
+            if (ago < DateTimeConstant.SECONDS_OF_HOUR) {
+                return ago / DateTimeConstant.SECONDS_OF_MINUTE + "分钟前";
             }
-            if (ago < 86400) {
-                return ago / 3600 + "小时前";
+            if (ago < DateTimeConstant.SECONDS_OF_DAY) {
+                return ago / DateTimeConstant.SECONDS_OF_HOUR + "小时前";
             }
-            return ago / 86400 + "天前";
+            return ago / DateTimeConstant.SECONDS_OF_DAY + "天前";
         }
     }
 }

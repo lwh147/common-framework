@@ -1,18 +1,22 @@
 package com.lwh147.common.util;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.lwh147.common.model.constant.DateTimeConstant;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
- * Jackson工具类
- * <p>
- * 按照FastJson的使用逻辑进行封装
+ * JSON工具类，基于Jackson封装实现
  *
  * @author lwh
  * @date 2021/11/19 9:51
@@ -21,21 +25,48 @@ public final class JacksonUtils {
     /**
      * 默认使用的ObjectMapper
      **/
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    public static final ObjectMapper DEFAULT_OBJECT_MAPPER = new ObjectMapper();
+    /**
+     * 供缓存场景使用的ObjectMapper
+     **/
+    public static final ObjectMapper CACHE_OBJECT_MAPPER = new ObjectMapper();
 
     private JacksonUtils() {}
 
-    /*
-     * 常用注解：
-     * 空值不转换 @JsonInclude(JsonInclude.Include.NON_NULL)
-     * 日期时间格式化 @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
-     * 序列化为String或配置自定义序列化策略 @JsonSerialize(using = ToStringSerializer.class)
-     */
     static {
+        /*
+         * 常用注解：
+         * 空值不转换 @JsonInclude(JsonInclude.Include.NON_NULL)
+         * 日期时间格式化 @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
+         * 序列化为String或配置自定义序列化策略 @JsonSerialize(using = ToStringSerializer.class)
+         */
+
+        SimpleModule simpleModule = new SimpleModule();
+
+        // 将Long转换成String
+        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+        simpleModule.addSerializer(long.class, ToStringSerializer.instance);
+
+        DEFAULT_OBJECT_MAPPER.registerModule(simpleModule);
+        CACHE_OBJECT_MAPPER.registerModule(simpleModule);
+
         // 将BigDecimal转换成PlainString，不采用科学计数法，完整打印数值
-        OBJECT_MAPPER.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
-        // JSON与Java对象属性不全对应时也进行反序列化
-        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        DEFAULT_OBJECT_MAPPER.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+        CACHE_OBJECT_MAPPER.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+
+        // 日期时间格式
+        DEFAULT_OBJECT_MAPPER.setTimeZone(TimeZone.getTimeZone(DateTimeConstant.DEFAULT_TIMEZONE));
+        CACHE_OBJECT_MAPPER.setTimeZone(TimeZone.getTimeZone(DateTimeConstant.DEFAULT_TIMEZONE));
+        DEFAULT_OBJECT_MAPPER.setDateFormat(new SimpleDateFormat(DateTimeConstant.DEFAULT_DATETIME_PATTERN));
+        CACHE_OBJECT_MAPPER.setDateFormat(new SimpleDateFormat(DateTimeConstant.DEFAULT_DATETIME_PATTERN));
+
+        // JSON与Java对象属性不全对应时也进行反序列化，缓存场景默认不开启
+        DEFAULT_OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        // 开启泛型支持，仅缓存场景开启
+        CACHE_OBJECT_MAPPER.activateDefaultTyping(DEFAULT_OBJECT_MAPPER.getPolymorphicTypeValidator(),
+                ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
     }
 
     /**
@@ -45,7 +76,7 @@ public final class JacksonUtils {
      * @return JSON字符串
      **/
     public static String toJsonStr(Object object) {
-        return toJsonStr(object, OBJECT_MAPPER);
+        return toJsonStr(object, DEFAULT_OBJECT_MAPPER);
     }
 
     /**
@@ -74,7 +105,7 @@ public final class JacksonUtils {
      * @return 目标对象
      **/
     public static <T> T parseObject(String jsonStr, Class<T> javaType) {
-        return parseObject(jsonStr, OBJECT_MAPPER, javaType);
+        return parseObject(jsonStr, DEFAULT_OBJECT_MAPPER, javaType);
     }
 
     /**
@@ -105,7 +136,7 @@ public final class JacksonUtils {
      * @return 目标对象数组
      **/
     public static <T> List<T> parseList(String jsonStr, Class<T> itemType) {
-        return parseList(jsonStr, OBJECT_MAPPER, itemType);
+        return parseList(jsonStr, DEFAULT_OBJECT_MAPPER, itemType);
     }
 
     /**
