@@ -1,4 +1,4 @@
-package com.lwh147.common.mybatisplus.snowflake;
+package com.lwh147.common.mybatisplus.generator;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +19,23 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Worker implements Serializable {
     /**
+     * 最大工作机器ID
+     **/
+    public static final Long MAX_WORKER_ID = 31L;
+    /**
+     * 最大数据中心ID
+     **/
+    public static final Long MAX_DATA_CENTER_ID = 31L;
+    /**
+     * 默认机器ID
+     **/
+    public static final Long DEFAULT_WORKER_ID = 0L;
+    /**
+     * 默认数据中心ID
+     **/
+    public static final Long DEFAULT_DATA_CENTER_ID = 0L;
+
+    /**
      * 工作机器ID，0-31
      **/
     private Long workerId = DEFAULT_WORKER_ID;
@@ -28,7 +45,7 @@ public class Worker implements Serializable {
     private Long dataCenterId = DEFAULT_DATA_CENTER_ID;
 
     /**
-     * 下一个节点，循环的，即最大节点的下一个节点为初始节点
+     * 下一个节点，到达最大节点时从初始节点开始重新循环生成
      **/
     public void next() {
         if (this.workerId < MAX_WORKER_ID) {
@@ -61,21 +78,4 @@ public class Worker implements Serializable {
                 ", workerId=" + this.workerId +
                 ')';
     }
-
-    /**
-     * 最大工作机器ID
-     **/
-    public static final Long MAX_WORKER_ID = 31L;
-    /**
-     * 最大数据中心ID
-     **/
-    public static final Long MAX_DATA_CENTER_ID = 31L;
-    /**
-     * 默认机器ID
-     **/
-    public static final Long DEFAULT_WORKER_ID = 0L;
-    /**
-     * 默认数据中心ID
-     **/
-    public static final Long DEFAULT_DATA_CENTER_ID = 0L;
 }

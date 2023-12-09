@@ -9,12 +9,12 @@ import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInt
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.IDialect;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
+import com.lwh147.common.mybatisplus.generator.ClusterIdGenerator;
+import com.lwh147.common.mybatisplus.generator.CustomizedIdGenerator;
+import com.lwh147.common.mybatisplus.generator.StandaloneIdGenerator;
 import com.lwh147.common.mybatisplus.properties.MybatisPlusProperties;
 import com.lwh147.common.mybatisplus.properties.SnowflakeProperties;
 import com.lwh147.common.mybatisplus.properties.enums.SnowflakeIdType;
-import com.lwh147.common.mybatisplus.snowflake.ClusterIdGenerator;
-import com.lwh147.common.mybatisplus.snowflake.CustomizedIdGenerator;
-import com.lwh147.common.mybatisplus.snowflake.StandaloneIdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

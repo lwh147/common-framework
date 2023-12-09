@@ -1,10 +1,10 @@
-package com.lwh147.common.mybatisplus.snowflake;
+package com.lwh147.common.mybatisplus.generator;
 
 import cn.hutool.core.lang.Snowflake;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 
 /**
- * 自定义的雪花算法ID生成器
+ * 自定义DataCenter域的雪花算法ID生成器
  *
  * @author lwh
  * @date 2021/12/13 9:48

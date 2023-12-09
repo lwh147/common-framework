@@ -1,4 +1,4 @@
-package com.lwh147.common.mybatisplus.snowflake;
+package com.lwh147.common.mybatisplus.generator;
 
 import cn.hutool.core.lang.Snowflake;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
@@ -42,30 +42,75 @@ public class ClusterIdGenerator implements IdentifierGenerator {
      **/
     public static final String CACHE_KEY_PREFIX = "snowflake:";
     /**
-     * 工作节点缓存Key
+     * 当前最大工作节点缓存Key
      **/
-    public static final String WORKER_CACHE_KEY = CACHE_KEY_PREFIX + "worker";
+    public static final String TARGET_WORKER_CACHE_KEY = CACHE_KEY_PREFIX + "target-worker";
     /**
-     * 锁的Key
+     * 已被抢占的节点的Key的锁前缀
      **/
-    public static final String LOCK_CACHE_KEY_PREFIX = CACHE_KEY_PREFIX + "locked";
-    /**
-     * 抢占成功时的锁对象
-     **/
-    private RLock lock;
-    /**
-     * 工作节点对象
-     **/
-    private Worker worker;
+    public static final String LOCKED_WORKER_CACHE_KEY_PREFIX = CACHE_KEY_PREFIX + "locked-worker";
+
     /**
      * 雪花算法对象
      **/
     private Snowflake snowflake;
+    /**
+     * 抢占成功时的锁对象
+     **/
+    private RLock lock;
 
     @Resource
     private RedissonClient redissonClient;
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
+
+    /**
+     * 初始化雪花算法对象
+     **/
+    @PostConstruct
+    public void init() {
+        if (this.snowflake != null) {
+            // 已经初始化，无需操作
+            return;
+        }
+
+        // 从Redis中获取上一次被注册的节点
+        Worker worker = (Worker) redisTemplate.opsForValue().get(TARGET_WORKER_CACHE_KEY);
+        log.debug("从Redis中获取到的上一次被注册的节点[{}]", worker);
+        if (worker == null) {
+            // 没有被注册的节点
+            worker = new Worker();
+        } else {
+            // 从下一个节点开始
+            worker.next();
+        }
+
+        RLock tryLock;
+
+        // 记录重试次数
+        int tryCount = 0;
+        while (tryCount < MAX_TRY_COUNT) {
+            // 生成锁
+            tryLock = redissonClient.getLock(LOCKED_WORKER_CACHE_KEY_PREFIX + worker.generateCacheKey());
+            // 尝试抢占注册节点
+            if (tryLock.tryLock()) {
+                this.lock = tryLock;
+                // 生成雪花算法对象
+                this.snowflake = new Snowflake(worker.getWorkerId(), worker.getDataCenterId());
+                // 更新Redis中上一次被注册的节点信息
+                redisTemplate.opsForValue().set(TARGET_WORKER_CACHE_KEY, worker);
+                log.info("成功初始化雪花算法工作节点为[{}]", worker.toString());
+                return;
+            }
+            log.debug("抢占工作节点[{}]失败", worker.toString());
+            // 尝试抢占下一个节点
+            worker.next();
+            tryCount++;
+        }
+
+        // 节点已满，初始化失败
+        throw CommonExceptionEnum.COMMON_ERROR.toException("已达最大工作机器数，无法启动更多服务，如需启动请人工清除节点");
+    }
 
     @Override
     public Number nextId(Object entity) {
@@ -77,96 +122,16 @@ public class ClusterIdGenerator implements IdentifierGenerator {
     }
 
     /**
-     * 初始化雪花算法对象
-     **/
-    @PostConstruct
-    public void init() {
-        if (this.snowflake != null) {
-            // 已经初始化，无需操作
-            return;
-        }
-        // 从Redis中获取上一次被注册的节点
-        this.worker = this.getWorker();
-        log.debug("从Redis中获取到的上一次被注册的节点[{}]", this.worker);
-        if (this.worker == null) {
-            // 没有被注册的节点
-            this.worker = new Worker();
-        } else {
-            // 从下一个节点开始
-            this.worker.next();
-        }
-        // 记录重试次数
-        int tryCount = 0;
-        while (tryCount < MAX_TRY_COUNT) {
-            // 尝试抢占注册节点
-            if (this.tryLock()) {
-                // 生成雪花算法对象
-                this.snowflake = new Snowflake(this.worker.getWorkerId(), this.worker.getDataCenterId());
-                // 更新Redis中上一次被注册的节点信息
-                this.setWorker(this.worker);
-                log.info("初始化雪花算法工作节点为[{}]", this.worker.toString());
-                return;
-            }
-            // 尝试抢占下一个节点
-            this.worker.next();
-            tryCount++;
-        }
-        // 节点已满，初始化失败
-        throw CommonExceptionEnum.COMMON_ERROR.toException("已达最大工作机器数，无法启动更多服务，如需启动请人工清除节点");
-    }
-
-    /**
      * 应用停止时在当前Bean被销毁前释放抢占的工作节点
      **/
     @PreDestroy
     public void destory() {
-        this.lock.unlock();
-    }
-
-    /**
-     * 尝试为下一个工作节点加锁
-     *
-     * @return 是否加锁成功
-     **/
-    public Boolean tryLock() {
-        // 生成锁
-        RLock lock = redissonClient.getLock(LOCK_CACHE_KEY_PREFIX + this.worker.generateCacheKey());
-        // 尝试抢占（加锁）
-        if (lock.tryLock()) {
-            this.lock = lock;
-            log.debug("抢占工作节点[{}]成功", this.worker.toString());
-            return true;
+        if (this.lock != null && this.lock.isLocked() && this.lock.isHeldByCurrentThread()) {
+            this.lock.unlock();
         } else {
-            log.debug("抢占工作节点[{}]失败", this.worker.toString());
-            return false;
+            log.warn("销毁集群模式下雪花算法ID生成器Bean对象时释放工作节点异常：{}，{}，{}",
+                    this.lock, this.lock == null ? null : this.lock.isLocked(),
+                    this.lock == null ? null : this.lock.isHeldByCurrentThread());
         }
     }
-
-    /**
-     * 从Redis中获取上一次被注册的节点对象
-     * <p>
-     * 没有在缓存中获取到时，说明当前没有实例抢占节点资源，返回 {@code null}
-     *
-     * @return 获取到的Worker对象，没获取到返回 {@code null}
-     **/
-    public Worker getWorker() {
-        // 从缓存中获取
-        Object o = redisTemplate.opsForValue().get(WORKER_CACHE_KEY);
-        if (o != null) {
-            // 直接返回获取到的数据
-            return (Worker) o;
-        }
-        // 没有节点
-        return null;
-    }
-
-    /**
-     * 更新节点
-     *
-     * @param worker 要更新的Worker对象
-     **/
-    public void setWorker(Worker worker) {
-        redisTemplate.opsForValue().set(WORKER_CACHE_KEY, worker);
-    }
-
 }
