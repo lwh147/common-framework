@@ -80,14 +80,15 @@ JetCache和Redisson均共享SpringDataRedis关于Redis连接地址、端口、�
 
 Redisson目前没有进行任何定制化配置，使用的就是自动配置生成的默认 `RedissonClient`
 
+## 缓存key序列化策略
+
+JetCache和SpringDataRedis提供的RedisTemplate均采用自定义策略将key转换为特定格式的String类型后使用，SpringDataRedis提供的的RedisCacheManager则采用默认的字符串类型序列化策略
+
 ## 缓存value序列化策略
 
-目前采用SpringDataRedis提供的GenericJackson2JsonRedisSerializer作为序列化工具，采用泛型是为了防止反序列化时出现类型转换的相关问题，但可能会影响缓存数据的通用性（比如服务A用私有的model作为缓存对象，服务B反序列化时就会有问题）
+JetCache和SpringDataRedis均采用Spring默认提供的GenericJackson2JsonRedisSerializer作为序列化工具，采用泛型是为了防止反序列化时出现类型转换的相关问题，但可能会影响缓存数据的通用性（比如服务A用私有的model作为缓存对象，服务B反序列化时就会有问题）
 
 ## 待办
 
 * LettuceClient 集群、Sentinel、连接池配置
 * JetCache 缓存刷新记录停止刷新时间的键重复问题
-*
-
-缓存序列化策略待定，RedisSerializer，目前采用GenericJackson2JsonRedisSerializer，但考虑到缓存数据通用性，可能需要调整（比如服务A用私有的model作为缓存对象，服务B反序列化时就会有问题）
