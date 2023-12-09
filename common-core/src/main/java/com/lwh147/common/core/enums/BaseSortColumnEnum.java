@@ -1,7 +1,8 @@
-package com.lwh147.common.model.enums;
+package com.lwh147.common.core.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.lwh147.common.model.enums.SampleEnum;
 
 /**
  * 基础的可排序表列名枚举类

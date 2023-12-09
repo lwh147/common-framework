@@ -1,9 +1,9 @@
 package com.lwh147.common.core.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lwh147.common.model.enums.BaseSortColumnEnum;
-import com.lwh147.common.model.enums.ColumnEnum;
-import com.lwh147.common.model.enums.SortOrderEnum;
+import com.lwh147.common.core.enums.BaseSortColumnEnum;
+import com.lwh147.common.core.enums.ColumnEnum;
+import com.lwh147.common.core.enums.SortOrderEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

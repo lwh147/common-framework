@@ -1,7 +1,7 @@
 package c.l.c.test.pojo.query;
 
+import com.lwh147.common.core.enums.BaseSortColumnEnum;
 import com.lwh147.common.core.request.SortPageQuery;
-import com.lwh147.common.model.enums.BaseSortColumnEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
