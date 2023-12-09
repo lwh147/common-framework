@@ -95,16 +95,17 @@ public class JetCacheAutoConfiguration {
      **/
     @Bean
     public GlobalCacheConfig config(SpringConfigProvider configProvider, RedisClient redisClient) {
-        // 创建本地缓存，默认永不过期
+        // 创建本地缓存
         Map<String, CacheBuilder> localBuilders = new HashMap<>(16);
         EmbeddedCacheBuilder<LinkedHashMapCacheBuilder.LinkedHashMapCacheBuilderImpl> localBuilder = LinkedHashMapCacheBuilder
                 .createLinkedHashMapCacheBuilder()
                 .keyConvertor(CacheKeyConverter::convert)
                 .limit(jetCacheProperties.getLocalLimit())
+                // 框架原本默认是永不过期
                 .expireAfterWrite(jetCacheProperties.getLocalExpiredIn(), TimeUnit.SECONDS);
         // 使用默认区域名称
         localBuilders.put(CacheConsts.DEFAULT_AREA, localBuilder);
-        // 创建基于Lettuce的Redis远程缓存，默认永不过期
+        // 创建基于Lettuce的Redis远程缓存
         Map<String, CacheBuilder> remoteBuilders = new HashMap<>(16);
         RedisLettuceCacheBuilder<?> remoteCacheBuilder = RedisLettuceCacheBuilder
                 .createRedisLettuceCacheBuilder()
@@ -112,6 +113,7 @@ public class JetCacheAutoConfiguration {
                 .keyConvertor(CacheKeyConverter::convert)
                 .valueEncoder(RedisValueSerializer.INSTANCE::serialize)
                 .valueDecoder(RedisValueSerializer.INSTANCE::deserialize)
+                // 框架原本默认是永不过期
                 .expireAfterWrite(jetCacheProperties.getRemoteExpiredIn(), TimeUnit.SECONDS);
         remoteBuilders.put(CacheConsts.DEFAULT_AREA, remoteCacheBuilder);
         // JetCache配置类

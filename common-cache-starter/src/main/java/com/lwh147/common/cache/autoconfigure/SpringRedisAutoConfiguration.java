@@ -5,6 +5,7 @@ import com.lwh147.common.cache.policy.RedisKeySerializer;
 import com.lwh147.common.cache.policy.RedisValueSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -14,10 +15,10 @@ import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import javax.annotation.Resource;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Spring Data Redis 配置
@@ -37,6 +38,8 @@ import javax.annotation.Resource;
 public class SpringRedisAutoConfiguration {
     @Resource
     private RedisConnectionFactory redisConnectionFactory;
+    @Resource
+    private RedisProperties redisProperties;
 
     /**
      * 自定义 RedisTemplate，覆盖默认的 RedisTemplate
@@ -70,8 +73,6 @@ public class SpringRedisAutoConfiguration {
      */
     @Bean
     public RedisCacheManager cacheManager() {
-        // String序列化工具
-        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
         // 生成默认配置
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
         // 修改默认配置
@@ -80,8 +81,8 @@ public class SpringRedisAutoConfiguration {
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisKeySerializer.STRING_SERIALIZER))
                 // value序列化策略采用泛型Jackson
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisValueSerializer.INSTANCE))
-                // 不缓存null值
-                .disableCachingNullValues();
+                // 默认永不过期，这里改为默认三分钟过期
+                .entryTtl(redisProperties.getTimeout() == null ? Duration.of(3, ChronoUnit.MINUTES) : redisProperties.getTimeout());
         return RedisCacheManager
                 .builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory))
                 .cacheDefaults(redisCacheConfiguration)
