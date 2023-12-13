@@ -1,16 +1,15 @@
 package com.lwh147.common.mybatisplus.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * 数据实体类，在基础实体类上增加逻辑删除和版本控制
- * <p>
- * 你可以根据情况选择继承该类与否
+ * 数据实体类，在基础实体类上增加主键ID和逻辑删除
  *
  * @param <T> 继承了 {@code DataModel} 的实体类
  * @author lwh
@@ -19,20 +18,18 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class DataModel<T extends DataModel<?>> extends BaseModel<T> {
+public abstract class DataModel<T extends DataModel<T>> extends BaseModel<T> {
+    public static final String ID = "id";
+    /**
+     * 主键，雪花算法生成
+     **/
+    @TableId(value = ID, type = IdType.ASSIGN_ID)
+    private Long id;
     /**
      * 逻辑删除
      **/
     @TableLogic(value = "0", delval = "1")
-    @TableField(DELETED)
-    protected Integer deleted;
-    /**
-     * 数据版本
-     **/
-    @Version
-    @TableField(VERSION)
-    protected Integer version;
-
+    @TableField(value = DELETED)
+    private Integer deleted;
     public static final String DELETED = "deleted";
-    public static final String VERSION = "version";
 }
