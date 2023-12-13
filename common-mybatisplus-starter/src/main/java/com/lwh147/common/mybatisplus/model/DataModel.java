@@ -19,7 +19,6 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public abstract class DataModel<T extends DataModel<T>> extends BaseModel<T> {
-    public static final String ID = "id";
     /**
      * 主键，雪花算法生成
      **/
@@ -31,5 +30,7 @@ public abstract class DataModel<T extends DataModel<T>> extends BaseModel<T> {
     @TableLogic(value = "0", delval = "1")
     @TableField(value = DELETED)
     private Integer deleted;
+
+    public static final String ID = "id";
     public static final String DELETED = "deleted";
 }

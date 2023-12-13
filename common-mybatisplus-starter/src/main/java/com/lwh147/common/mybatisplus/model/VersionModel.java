@@ -17,11 +17,12 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public abstract class VersionModel<T extends VersionModel<T>> extends DataModel<T> {
-    public static final String VERSION = "version";
     /**
      * 数据版本
      **/
     @Version
     @TableField(value = VERSION)
     private Integer version;
+
+    public static final String VERSION = "version";
 }
