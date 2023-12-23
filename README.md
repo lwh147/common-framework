@@ -47,22 +47,23 @@ common-framework ----------------------------- 通用开发框架根模块(root)
 下面是本项目的所有依赖项及版本列表：
 
 ```text
-spring-boot-dependencies ---------------------- 2.3.2.RELEASE
-spring-cloud-dependencies --------------------- Hoxton.SR9
-spring-cloud-alibaba-dependencies ------------- 2.2.6.RELEASE
-mysql-connector-java -------------------------- 8.0.16
-mybaits-plus-boot-starter --------------------- 3.4.2
+spring-boot-dependencies ---------------------- 2.3.12.RELEASE
+spring-cloud-dependencies --------------------- Hoxton.SR12
+spring-cloud-alibaba-dependencies ------------- 2.2.10-RC1
+mysql-connector-java -------------------------- 8.0.28
+mybaits-plus-boot-starter --------------------- 3.4.3.4
+mybaits-plus-generator ------------------------ 3.4.1
 druid-spring-boot-starter --------------------- 1.2.8
-lombok ---------------------------------------- 1.18.12
-logback-classic ------------------------------- 1.2.3
+lombok ---------------------------------------- 1.18.24
+logback-classic ------------------------------- 1.2.11
 sprignfox-swagger2 ---------------------------- 2.9.2
 sprignfox-swagger-ui -------------------------- 2.9.2
 swagger-annotations --------------------------- 1.5.24
 swagger-models -------------------------------- 1.5.24
 redisson-spring-boot-starter ------------------ 3.12.5
-jetcache-starter-redis-lettuce ---------------- 2.6.0
-reflections ----------------------------------- 0.9.11
-hutool-all ------------------------------------ 5.7.14
+jetcache-starter-redis-lettuce ---------------- 2.6.7
+reflections ----------------------------------- 0.10.2
+hutool-all ------------------------------------ 5.7.22
 ```
 
 ## 开发规约
