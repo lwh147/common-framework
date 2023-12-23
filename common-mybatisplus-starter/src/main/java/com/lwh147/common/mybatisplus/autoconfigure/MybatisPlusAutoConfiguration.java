@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.IDialect;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.mybatisplus.generator.ClusterIdGenerator;
-import com.lwh147.common.mybatisplus.generator.CustomizedIdGenerator;
+import com.lwh147.common.mybatisplus.generator.CustomIdGenerator;
 import com.lwh147.common.mybatisplus.generator.StandaloneIdGenerator;
 import com.lwh147.common.mybatisplus.properties.MybatisPlusProperties;
 import com.lwh147.common.mybatisplus.properties.SnowflakeProperties;
@@ -62,7 +62,7 @@ public class MybatisPlusAutoConfiguration {
             Long dataCenterId = snowflakeProperties.getDataCenterId();
             if (workerId != null && dataCenterId != null) {
                 log.debug("配置并开启雪花算法ID生成器[定制模式]");
-                return new CustomizedIdGenerator(workerId, dataCenterId);
+                return new CustomIdGenerator(workerId, dataCenterId);
             }
             log.warn("配置了雪花算法ID生成器为[定制模式]但没有指定工作机器ID和数据中心ID，将使用默认的[单机模式]");
             return new StandaloneIdGenerator();

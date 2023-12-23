@@ -9,7 +9,6 @@ import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
 /**
@@ -25,8 +24,6 @@ import javax.annotation.Resource;
  * 4.如果抢占成功，使用抢占到的工作节点信息创建雪花算法对象并更新Redis上一次被注册的节点为当前节点；如果抢占失败，重复步骤3
  * <p>
  * 5.当步骤3重复次数达到最大尝试次数时说明所有节点均被注册，启动失败，需要人工介入调整
- * <p>
- * 6.Bean销毁时在PreDestroy阶段对当前应用抢占的工作节点锁进行释放
  *
  * @author lwh
  * @date 2021/11/26 17:16
@@ -55,7 +52,7 @@ public class ClusterIdGenerator implements IdentifierGenerator {
      **/
     private Snowflake snowflake;
     /**
-     * 抢占成功时的锁对象
+     * 抢占成功时的锁对象，上锁成功后应用在运行期间锁会自动续约，默认永不解锁，应用停止后经过一定时间（默认30s）会自动解锁
      **/
     private RLock lock;
 
@@ -68,7 +65,7 @@ public class ClusterIdGenerator implements IdentifierGenerator {
      * 初始化雪花算法对象
      **/
     @PostConstruct
-    public void init() {
+    private void init() {
         if (this.snowflake != null) {
             // 已经初始化，无需操作
             return;
@@ -85,16 +82,11 @@ public class ClusterIdGenerator implements IdentifierGenerator {
             worker.next();
         }
 
-        RLock tryLock;
-
         // 记录重试次数
         int tryCount = 0;
         while (tryCount < MAX_TRY_COUNT) {
-            // 生成锁
-            tryLock = redissonClient.getLock(LOCKED_WORKER_CACHE_KEY_PREFIX + worker.generateCacheKey());
             // 尝试抢占注册节点
-            if (tryLock.tryLock()) {
-                this.lock = tryLock;
+            if (this.tryLock(worker)) {
                 // 生成雪花算法对象
                 this.snowflake = new Snowflake(worker.getWorkerId(), worker.getDataCenterId());
                 // 更新Redis中上一次被注册的节点信息
@@ -102,7 +94,6 @@ public class ClusterIdGenerator implements IdentifierGenerator {
                 log.info("成功初始化雪花算法工作节点为[{}]", worker.toString());
                 return;
             }
-            log.debug("抢占工作节点[{}]失败", worker.toString());
             // 尝试抢占下一个节点
             worker.next();
             tryCount++;
@@ -112,6 +103,23 @@ public class ClusterIdGenerator implements IdentifierGenerator {
         throw CommonExceptionEnum.COMMON_ERROR.toException("已达最大工作机器数，无法启动更多服务，如需启动请人工清除节点");
     }
 
+    /**
+     * 尝试为工作节点加锁
+     *
+     * @param worker 工作节点对象
+     * @return 是否加锁成功
+     **/
+    private boolean tryLock(Worker worker) {
+        this.lock = redissonClient.getLock(LOCKED_WORKER_CACHE_KEY_PREFIX + worker.generateCacheKey());
+        if (this.lock.tryLock()) {
+            log.debug("抢占工作节点[{}]成功", worker.toString());
+            return true;
+        } else {
+            log.debug("抢占工作节点[{}]失败", worker.toString());
+            return false;
+        }
+    }
+
     @Override
     public Number nextId(Object entity) {
         return snowflake.nextId();
@@ -119,19 +127,5 @@ public class ClusterIdGenerator implements IdentifierGenerator {
 
     public Long nextId() {
         return snowflake.nextId();
-    }
-
-    /**
-     * 应用停止时在当前Bean被销毁前释放抢占的工作节点
-     **/
-    @PreDestroy
-    public void destory() {
-        if (this.lock != null && this.lock.isLocked() && this.lock.isHeldByCurrentThread()) {
-            this.lock.unlock();
-        } else {
-            log.warn("销毁集群模式下雪花算法ID生成器Bean对象时释放工作节点异常：{}，{}，{}",
-                    this.lock, this.lock == null ? null : this.lock.isLocked(),
-                    this.lock == null ? null : this.lock.isHeldByCurrentThread());
-        }
     }
 }

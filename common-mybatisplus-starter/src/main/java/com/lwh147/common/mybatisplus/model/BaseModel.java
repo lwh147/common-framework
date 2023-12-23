@@ -54,4 +54,7 @@ public abstract class BaseModel<T extends BaseModel<T>> extends Model<T> {
 
     public static final String CREATE_TIME = "create_time";
     public static final String UPDATE_TIME = "update_time";
+
+    public static final String CREATE_TIME_CC = "createTime";
+    public static final String UPDATE_TIME_CC = "updateTime";
 }

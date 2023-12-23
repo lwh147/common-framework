@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
  * @author lwh
  * @date 2021/12/13 9:48
  **/
-public class CustomizedIdGenerator implements IdentifierGenerator {
+public class CustomIdGenerator implements IdentifierGenerator {
     /**
      * 雪花算法对象
      **/
@@ -18,7 +18,7 @@ public class CustomizedIdGenerator implements IdentifierGenerator {
     /**
      * 根据用户指定的DataCenter生成雪花算法对象
      **/
-    public CustomizedIdGenerator(Long workerId, Long dataCenterId) {
+    public CustomIdGenerator(Long workerId, Long dataCenterId) {
         this.snowflake = new Snowflake(workerId, dataCenterId);
     }
 
