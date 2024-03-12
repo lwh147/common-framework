@@ -1,13 +1,11 @@
 package com.lwh147.common.util;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.lwh147.common.model.constant.DateTimeConstant;
 
 import java.text.SimpleDateFormat;
@@ -25,48 +23,19 @@ public final class JacksonUtils {
     /**
      * 默认使用的ObjectMapper
      **/
-    public static final ObjectMapper DEFAULT_OBJECT_MAPPER = new ObjectMapper();
-    /**
-     * 供缓存场景使用的ObjectMapper
-     **/
-    public static final ObjectMapper CACHE_OBJECT_MAPPER = new ObjectMapper();
+    public static final ObjectMapper DEFAULT_OBJECT_MAPPER = JsonMapper.builder().build();
 
     private JacksonUtils() {}
 
     static {
-        /*
-         * 常用注解：
-         * 空值不转换 @JsonInclude(JsonInclude.Include.NON_NULL)
-         * 日期时间格式化 @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
-         * 序列化为String或配置自定义序列化策略 @JsonSerialize(using = ToStringSerializer.class)
-         */
-
-        SimpleModule simpleModule = new SimpleModule();
-
-        // 将Long转换成String
-        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-        simpleModule.addSerializer(long.class, ToStringSerializer.instance);
-
-        DEFAULT_OBJECT_MAPPER.registerModule(simpleModule);
-        CACHE_OBJECT_MAPPER.registerModule(simpleModule);
-
         // 将BigDecimal转换成PlainString，不采用科学计数法，完整打印数值
         DEFAULT_OBJECT_MAPPER.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
-        CACHE_OBJECT_MAPPER.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+        // JSON与Java对象属性不全对应时也进行反序列化
+        DEFAULT_OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         // 日期时间格式
         DEFAULT_OBJECT_MAPPER.setTimeZone(TimeZone.getTimeZone(DateTimeConstant.DEFAULT_TIMEZONE));
-        CACHE_OBJECT_MAPPER.setTimeZone(TimeZone.getTimeZone(DateTimeConstant.DEFAULT_TIMEZONE));
         DEFAULT_OBJECT_MAPPER.setDateFormat(new SimpleDateFormat(DateTimeConstant.DEFAULT_DATETIME_PATTERN));
-        CACHE_OBJECT_MAPPER.setDateFormat(new SimpleDateFormat(DateTimeConstant.DEFAULT_DATETIME_PATTERN));
-
-        // JSON与Java对象属性不全对应时也进行反序列化，缓存场景默认不开启
-        DEFAULT_OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        // 开启泛型支持，仅缓存场景开启
-        CACHE_OBJECT_MAPPER.activateDefaultTyping(DEFAULT_OBJECT_MAPPER.getPolymorphicTypeValidator(),
-                ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
     }
 
     /**

@@ -1,8 +1,15 @@
 package com.lwh147.common.cache.policy;
 
-import com.lwh147.common.util.JacksonUtils;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lwh147.common.model.constant.DateTimeConstant;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
+
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 /**
  * 缓存value序列化策略
@@ -22,9 +29,27 @@ public final class RedisValueSerializer implements RedisSerializer<Object> {
     public static final RedisValueSerializer INSTANCE = new RedisValueSerializer();
 
     /**
+     * 供缓存场景使用的ObjectMapper
+     **/
+    public static final ObjectMapper CACHE_OBJECT_MAPPER = new ObjectMapper();
+    /**
      * 基于Jackson序列化为泛型json字符串
      **/
-    public static final RedisSerializer<Object> GENERIC_JACKSON_2_JSON_SERIALIZER = new GenericJackson2JsonRedisSerializer(JacksonUtils.CACHE_OBJECT_MAPPER);
+    public static final RedisSerializer<Object> GENERIC_JACKSON_2_JSON_SERIALIZER = new GenericJackson2JsonRedisSerializer(CACHE_OBJECT_MAPPER);
+
+    static {
+        // 将BigDecimal转换成PlainString，不采用科学计数法，完整打印数值
+        CACHE_OBJECT_MAPPER.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+        // JSON与Java对象属性不全对应时也进行反序列化
+        CACHE_OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // 开启泛型支持，仅缓存场景开启
+        CACHE_OBJECT_MAPPER.activateDefaultTyping(CACHE_OBJECT_MAPPER.getPolymorphicTypeValidator(),
+                ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+
+        // 日期时间格式
+        CACHE_OBJECT_MAPPER.setTimeZone(TimeZone.getTimeZone(DateTimeConstant.DEFAULT_TIMEZONE));
+        CACHE_OBJECT_MAPPER.setDateFormat(new SimpleDateFormat(DateTimeConstant.DEFAULT_DATETIME_PATTERN));
+    }
 
     private RedisValueSerializer() {
     }

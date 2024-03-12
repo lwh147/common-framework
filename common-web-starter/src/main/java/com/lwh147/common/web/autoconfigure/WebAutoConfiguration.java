@@ -1,7 +1,13 @@
 package com.lwh147.common.web.autoconfigure;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.json.JsonWriteFeature;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.lwh147.common.model.constant.DateTimeConstant;
-import com.lwh147.common.util.JacksonUtils;
 import com.lwh147.common.web.component.BannerPrinter;
 import com.lwh147.common.web.exception.ExceptionResolver;
 import com.lwh147.common.web.filter.RequestEncodingFilter;
@@ -15,6 +21,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -23,9 +30,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Web相关配置，拦截器、过滤器、全局异常处理器等
@@ -44,6 +53,8 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
     @Resource
     private WebProperties webProperties;
     @Resource
+    private ObjectMapper objectMapper;
+    @Resource
     private ExceptionResolver exceptionResolver;
     @Resource
     private RequestReplaceFilter requestReplaceFilter;
@@ -58,17 +69,6 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
      * @param bannerPrinter 非必须，如果不存在则说明配置为不打印
      **/
     public WebAutoConfiguration(@Autowired(required = false) BannerPrinter bannerPrinter) {
-    }
-
-    /**
-     * 配置全局异常处理器
-     **/
-    @Override
-    public void configureHandlerExceptionResolvers(@Nonnull List<HandlerExceptionResolver> resolvers) {
-        if (webProperties.getGlobalExceptionHandler().getEnabled()) {
-            log.debug("配置并开启全局异常处理器");
-            resolvers.add(exceptionResolver);
-        }
     }
 
     /**
@@ -100,6 +100,56 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
     }
 
     /**
+     * 自定义ObjectMapper替换SpringBoot使用的默认ObjectMapper
+     * <p>
+     * 1.将 {@link Number} 转换成String
+     * <p>
+     * 2.将 {@link java.math.BigDecimal} 转换成Plain格式不采用科学计数法，完整打印数值
+     * <p>
+     * 3.设置默认时区为：GMT+8，默认日期时间格式为：yyyy-MM-dd HH:mm:ss
+     * <p>
+     * 4.json与java对象属性不全对应时也进行反序列化
+     * <p>
+     * 常用注解：
+     * - 空值不转换 @JsonInclude(JsonInclude.Include.NON_NULL)
+     * - 日期时间格式化 @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+     * - 序列化为String或配置自定义序列化策略 @JsonSerialize(using = ToStringSerializer.class)
+     **/
+    @Bean
+    @Primary
+    public ObjectMapper objectMapper() {
+        ObjectMapper webObjectMapper = JsonMapper.builder()
+                // SpringBoot默认行为
+                .configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false)
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                // JSON与Java对象属性不全对应时也进行反序列化
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+
+                // 将数字序列化为字符串
+                .configure(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS, true)
+                // 将BigDecimal转换成PlainString，不采用科学计数法，完整打印数值
+                .configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true)
+                .build();
+
+        // 日期时间格式
+        webObjectMapper.setTimeZone(TimeZone.getTimeZone(timeZone));
+        webObjectMapper.setDateFormat(new SimpleDateFormat(dateFormat));
+
+        return webObjectMapper;
+    }
+
+    /**
+     * 配置全局异常处理器
+     **/
+    @Override
+    public void configureHandlerExceptionResolvers(@Nonnull List<HandlerExceptionResolver> resolvers) {
+        if (webProperties.getGlobalExceptionHandler().getEnabled()) {
+            log.debug("配置并开启全局异常处理器");
+            resolvers.add(exceptionResolver);
+        }
+    }
+
+    /**
      * 配置请求日志记录拦截器
      **/
     @Override
@@ -121,21 +171,13 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
     }
 
     /**
-     * 配置Jackson的全局序列化策略：
-     * <p>
-     * 1.将 {@link Long} 转换成String
-     * <p>
-     * 2.将 {@link java.math.BigDecimal} 转换成PlainString，不采用科学计数法，完整打印数值
-     * <p>
-     * 3.设置默认时区为：GMT+8，默认日期时间格式为：yyyy-MM-dd HH:mm:ss
-     * <p>
-     * 4.json与java对象属性不全对应时也进行反序列化
+     * 配置Jackson的全局序列化策略
      */
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         // 新建转换器
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setObjectMapper(JacksonUtils.DEFAULT_OBJECT_MAPPER);
+        converter.setObjectMapper(objectMapper);
         // 添加转换器
         converters.add(0, converter);
     }
