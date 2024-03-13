@@ -1,4 +1,4 @@
-package com.lwh147.common.mybatisplus.model;
+package com.lwh147.common.mybatisplus.schema;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

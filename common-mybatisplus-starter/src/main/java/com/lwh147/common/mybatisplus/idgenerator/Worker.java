@@ -1,4 +1,4 @@
-package com.lwh147.common.mybatisplus.generator;
+package com.lwh147.common.mybatisplus.idgenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

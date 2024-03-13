@@ -1,4 +1,4 @@
-package com.lwh147.common.mybatisplus.model;
+package com.lwh147.common.mybatisplus.schema;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -29,7 +29,7 @@ public abstract class DataModel<T extends DataModel<T>> extends BaseModel<T> {
      **/
     @TableLogic(value = "0", delval = "1")
     @TableField(value = DELETED)
-    private Integer deleted;
+    private Boolean deleted;
 
     public static final String ID = "id";
     public static final String DELETED = "deleted";

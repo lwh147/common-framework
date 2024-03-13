@@ -9,9 +9,9 @@ import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInt
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.IDialect;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
-import com.lwh147.common.mybatisplus.generator.ClusterIdGenerator;
-import com.lwh147.common.mybatisplus.generator.CustomIdGenerator;
-import com.lwh147.common.mybatisplus.generator.StandaloneIdGenerator;
+import com.lwh147.common.mybatisplus.idgenerator.ClusterIdGenerator;
+import com.lwh147.common.mybatisplus.idgenerator.CustomIdGenerator;
+import com.lwh147.common.mybatisplus.idgenerator.StandaloneIdGenerator;
 import com.lwh147.common.mybatisplus.properties.MybatisPlusProperties;
 import com.lwh147.common.mybatisplus.properties.SnowflakeProperties;
 import com.lwh147.common.mybatisplus.properties.enums.SnowflakeIdType;

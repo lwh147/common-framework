@@ -1,7 +1,7 @@
 package com.lwh147.common.mybatisplus.component;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.lwh147.common.mybatisplus.model.BaseModel;
+import com.lwh147.common.mybatisplus.schema.BaseModel;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 

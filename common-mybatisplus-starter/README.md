@@ -9,6 +9,7 @@ Mybaits-Plus的启动类封装，主要封装了雪花算法Id生成器以及Myb
 添加Maven依赖
 
 ```xml
+
 <dependency>
     <groupId>com.lwh147</groupId>
     <artifactId>common-mybatisplus-starter</artifactId>
@@ -19,6 +20,7 @@ Mybaits-Plus的启动类封装，主要封装了雪花算法Id生成器以及Myb
 SpringBoot程序启动类注解 `@SpringBootApplication` 增加 `com.lwh147.common` 基础扫描包路径
 
 ```java
+
 @SpringBootApplication(scanBasePackages = {
         "com.lwh147.common",
         ...
@@ -49,30 +51,37 @@ spring:
 
 ### 实体类的父类
 
-为了简化实体类的编写，在本模块中设计了实体类的父类对表中的一些必须公共字段进行了封装，具体表格实体类只需要继承该父类后添加自己特有的属性即可，现对两个实体类父类的封装进行如下说明:
+为了简化实体类的编写，在本模块中设计了实体类的一系列抽象类来对表中的一些必须公共字段进行封装，具体表格实体类只需要根据类型选择继承后添加自己特有的属性即可，现对这些抽象类的封装进行如下说明:
 
-* BaseModel extends Model
+* abstract BaseModel extends Model
 
-继承自Model，包含主键、创建时间和修改时间三个字段
+继承自 `Model` (MyBatisPlus提供的基础模型)，包含创建时间和修改时间两个字段
+
+| 属性名 | 类型 | 数据库字段名 |
+|-------|-------|-------|
+| `createTime` | `Date` | `create_time` |
+| `updateTime` | `Date` | `update_time` |
+
+* abstract DataModel extends BaseModel
+
+继承自 `BaseModel` ，增加了表ID和逻辑删除两个字段
 
 | 属性名 | 类型 | 数据库字段名 |
 |-------|-------|-------|
 | `id` | `Long` | `id` |
-| `createTime` | `Date` | `create_time` |
-| `updateTime` | `Date` | `update_time` |
+| `deleted` | `Boolean` | `deleted` |
 
-* DataModel extends BaseModel
+* abstract VersionModel extends DataModel
 
-继承自BaseModel，增加了逻辑删除和版本控制两个字段
+继承自 `DataModel` ，增加了版本控制字段
 
 | 属性名 | 类型 | 数据库字段名 |
 |-------|-------|-------|
-| `deleted` | `Integer` | `deleted` |
 | `version` | `Integer` | `version` |
 
 > 实体类属性名 与 数据库表字段名 之间采用默认的 驼峰 与 下划线 映射方式
 
-用户可根据需要选择继承两者
+用户可根据需要选择继承这些抽象类
 
 ### 雪花算法ID生成器配置
 

@@ -1,7 +1,7 @@
 package c.l.c.test.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.lwh147.common.mybatisplus.model.DataModel;
+import com.lwh147.common.mybatisplus.schema.DataModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;

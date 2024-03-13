@@ -12,10 +12,10 @@
 项目采用Maven多模块的组织结构，各模块内容如下：
 
 ```text
-common-framework ----------------------------- 通用开发框架根模块(root)
+common-framework ------------------------------- 通用开发框架根模块(root)
 ├─ common-cache-starter ------------------------ 常用缓存框架自动配置模块
 ├─ common-core --------------------------------- 开发框架核心模块
-├─ common-model --------------------------------- 开发框架基础模型定义模块
+├─ common-model -------------------------------- 开发框架基础模型定义模块
 ├─ common-mybatisplus-starter ------------------ MybatisPlus自动配置模块
 ├─ common-stream-starter ----------------------- 消息中间件自动配置模块
 ├─ common-swagger-starter ---------------------- Swagger自动配置模块
