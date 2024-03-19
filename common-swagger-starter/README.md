@@ -4,7 +4,11 @@
 
 本部分对Swagger进行了封装，添加依赖之后默认开启Swagger，支持在配置文件中进行开启或关闭控制，同时也支持对扫描包路径、匹配路径规则以及API信息等进行配置，但是目前仅支持基础配置，等待后续更新迭代
 
+新增了Knife4j的支持，共用Swagger的API相关配置
+
 > 使用的Swagger版本为 `2.9.2` ，其中 annotations 和 models 模块使用 `1.5.24` 版本， `1.5.20` 及之前的版本存在默认空串强转错误等影响使用体验的bug
+
+> 使用的Knife4j版本为 `2.0.5` ，适配 Swagger版本为 `2.9.2`
 
 ## 简单使用
 
@@ -56,3 +60,4 @@ public class TestApplication {
 ## 待办
 
 * 分组API配置支持
+* Swagger和Knife4j开关

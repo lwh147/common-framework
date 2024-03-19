@@ -42,9 +42,10 @@
         <druid.version>1.2.8</druid.version>
         <lombok.version>1.18.24</lombok.version>
         <logback.version>1.2.11</logback.version>
-        <springfox.swagger.version>2.9.2</springfox.swagger.version>
         <redisson.version>3.12.5</redisson.version>
         <jetcache.version>2.6.7</jetcache.version>
+        <springfox.swagger.version>2.9.2</springfox.swagger.version>
+        <knife4j.version>2.0.5</knife4j.version>
         <!-- 需要覆盖基础依赖的子依赖版本管理 -->
         <io.swagger.version>1.5.24</io.swagger.version>
         <!-- 其它开发工具依赖库版本管理 -->
@@ -191,6 +192,11 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-models</artifactId>
                 <version>${io.swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
 
             <dependency>

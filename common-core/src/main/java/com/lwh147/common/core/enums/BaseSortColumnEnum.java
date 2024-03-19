@@ -6,8 +6,6 @@ import com.lwh147.common.model.enums.SampleEnum;
 
 /**
  * 基础的可排序表列名枚举类
- * <p>
- * 如果有需要，这样使用能够避免暴露数据库表列名称到前端，增加安全性
  *
  * @author lwh
  * @date 2021/12/12 23:17
@@ -21,6 +19,8 @@ public enum BaseSortColumnEnum implements ColumnEnum {
 
     /**
      * 暴露给前端的参数名
+     * <p>
+     * 这样使用能够避免暴露数据库表列名称到前端，增加安全性
      **/
     @JsonValue
     private final String paramName;

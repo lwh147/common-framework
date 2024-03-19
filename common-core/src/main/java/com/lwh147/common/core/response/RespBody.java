@@ -12,8 +12,6 @@ import java.io.Serializable;
 
 /**
  * 通用响应体结构封装
- * <p>
- * {@code @JsonInclude(JsonInclude.Include.NON_NULL)} 不为null时序列化，为null时忽略，基于Jackson
  *
  * @author lwh
  * @date 2021/10/22 10:45
@@ -35,6 +33,8 @@ public class RespBody<T> implements Serializable {
     private T data;
     /**
      * 错误来源
+     * <p>
+     * {@code @JsonInclude(JsonInclude.Include.NON_NULL)} 不为null时序列化，为null时忽略，基于Jackson
      **/
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @ApiModelProperty(value = "错误来源", example = "common-service")

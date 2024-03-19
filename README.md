@@ -60,6 +60,7 @@ sprignfox-swagger2 ---------------------------- 2.9.2
 sprignfox-swagger-ui -------------------------- 2.9.2
 swagger-annotations --------------------------- 1.5.24
 swagger-models -------------------------------- 1.5.24
+knife4j-spring-boot-starter ------------------- 2.0.5
 redisson-spring-boot-starter ------------------ 3.12.5
 jetcache-starter-redis-lettuce ---------------- 2.6.7
 reflections ----------------------------------- 0.10.2

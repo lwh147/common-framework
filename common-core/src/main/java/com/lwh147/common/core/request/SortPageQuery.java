@@ -29,9 +29,9 @@ import java.io.Serializable;
 @ApiModel(description = "可指定排序列的分页查询参数封装")
 public class SortPageQuery<T extends Enum<T> & ColumnEnum> extends PageQuery implements Serializable {
     /**
-     * 排序字段枚举，编写规则参考 {@link BaseSortColumnEnum}
+     * 排序字段
      **/
-    @ApiModelProperty(value = "排序字段枚举", example = "createTime")
+    @ApiModelProperty(value = "排序字段", example = "createTime")
     private T column;
 
     /**

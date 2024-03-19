@@ -5,8 +5,6 @@ import java.util.Map;
 
 /**
  * 存储用户请求上下文信息
- * <p>
- * 使用 {@link ThreadLocal} 避免多线程问题
  *
  * @author lwh
  * @date 2021/11/18 17:40
@@ -14,6 +12,8 @@ import java.util.Map;
 public final class ContextHolder {
     /**
      * 线程本地变量，该线程独享这份请求上下文
+     * <p>
+     * 使用 {@link ThreadLocal} 避免多线程问题
      **/
     private static final ThreadLocal<Map<String, String>> THREAD_LOCAL_MAP = new ThreadLocal<>();
 
