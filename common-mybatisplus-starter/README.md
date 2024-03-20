@@ -9,7 +9,6 @@ Mybaits-Plus的启动类封装，主要封装了雪花算法Id生成器以及Myb
 添加Maven依赖
 
 ```xml
-
 <dependency>
     <groupId>com.lwh147</groupId>
     <artifactId>common-mybatisplus-starter</artifactId>
@@ -20,7 +19,6 @@ Mybaits-Plus的启动类封装，主要封装了雪花算法Id生成器以及Myb
 SpringBoot程序启动类注解 `@SpringBootApplication` 增加 `com.lwh147.common` 基础扫描包路径
 
 ```java
-
 @SpringBootApplication(scanBasePackages = {
         "com.lwh147.common",
         ...
@@ -113,3 +111,4 @@ spring:
 
 * 代码生成器
 * SQL打印格式处理和优化
+* 日期Date改用LocalDateTime

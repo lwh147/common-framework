@@ -23,4 +23,3 @@
 ## 待办事项
 
 * Bean和Map互相转换
-* Jackson的objectmapper默认配置优化
