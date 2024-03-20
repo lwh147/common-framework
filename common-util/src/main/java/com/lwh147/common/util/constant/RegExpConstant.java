@@ -13,6 +13,10 @@ public class RegExpConstant {
      * 匹配回车或换行或制表符
      **/
     public static final Pattern ENTER_PATTERN = Pattern.compile("[\r\n\t]");
+    /**
+     * 匹配字符串模板变量，如${test}
+     **/
+    public static final Pattern TEMPLATE_PARAM_PATTERN = Pattern.compile("\\$\\{([a-zA-Z_]+)}");
 
     /**
      * 6-16位字符串，允许出现字母、数字、下划线，可用作用户名

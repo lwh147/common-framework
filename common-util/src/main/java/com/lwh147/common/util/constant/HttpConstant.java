@@ -18,6 +18,16 @@ public class HttpConstant {
     private HttpConstant() {}
 
     /**
+     * 协议类型
+     **/
+    public static class PROTOCOL {
+        public static final String HTTP = "http";
+        public static final String HTTPS = "https";
+
+        private PROTOCOL() {}
+    }
+
+    /**
      * 请求方式
      **/
     public static class Method {
