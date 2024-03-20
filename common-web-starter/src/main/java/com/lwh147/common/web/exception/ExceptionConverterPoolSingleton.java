@@ -2,8 +2,8 @@ package com.lwh147.common.web.exception;
 
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.core.exception.ICommonException;
-import com.lwh147.common.model.constant.RegExpConstant;
 import com.lwh147.common.util.Strings;
+import com.lwh147.common.util.constant.RegExpConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 

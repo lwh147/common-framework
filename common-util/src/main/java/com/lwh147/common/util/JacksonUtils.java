@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.lwh147.common.model.constant.DateTimeConstant;
+import com.lwh147.common.util.constant.DateTimeConstant;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

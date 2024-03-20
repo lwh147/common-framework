@@ -13,8 +13,8 @@ public enum SnowflakeIdType {
     STANDALONE,
     /**
      * 集群模式，各工作机器竞争抢占注册自己的工作机器ID和所属数据中心ID
-     * <p>
-     * 使用远程Redis作为第三方
+     *
+     * @apiNote 使用远程Redis作为第三方
      **/
     CLUSTER,
     /**

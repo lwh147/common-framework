@@ -1,7 +1,7 @@
 package com.lwh147.common.web.logging;
 
 import com.lwh147.common.core.context.ContextHolder;
-import com.lwh147.common.model.constant.HttpConstant;
+import com.lwh147.common.util.constant.HttpConstant;
 import com.lwh147.common.web.filter.RepeatableReadRequestWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

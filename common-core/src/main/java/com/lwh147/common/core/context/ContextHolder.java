@@ -12,8 +12,8 @@ import java.util.Map;
 public final class ContextHolder {
     /**
      * 线程本地变量，该线程独享这份请求上下文
-     * <p>
-     * 使用 {@link ThreadLocal} 避免多线程问题
+     *
+     * @apiNote 使用 {@link ThreadLocal} 避免多线程问题
      **/
     private static final ThreadLocal<Map<String, String>> THREAD_LOCAL_MAP = new ThreadLocal<>();
 

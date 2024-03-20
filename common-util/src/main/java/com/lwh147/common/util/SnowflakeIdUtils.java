@@ -1,7 +1,7 @@
 package com.lwh147.common.util;
 
 import cn.hutool.core.lang.Snowflake;
-import com.lwh147.common.model.constant.RegExpConstant;
+import com.lwh147.common.util.constant.RegExpConstant;
 
 /**
  * 雪花算法工具类

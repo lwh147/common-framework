@@ -7,7 +7,7 @@ import c.l.c.test.pojo.dto.UserUpdateDTO;
 import c.l.c.test.pojo.query.UserQuery;
 import c.l.c.test.pojo.vo.UserVO;
 import c.l.c.test.service.UserService;
-import com.lwh147.common.core.response.PageData;
+import com.lwh147.common.core.schema.response.PageData;
 import com.lwh147.common.util.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;

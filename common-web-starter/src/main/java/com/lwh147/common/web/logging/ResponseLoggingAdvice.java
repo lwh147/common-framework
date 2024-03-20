@@ -1,9 +1,9 @@
 package com.lwh147.common.web.logging;
 
 import com.lwh147.common.core.context.ContextHolder;
-import com.lwh147.common.core.response.RespBody;
-import com.lwh147.common.model.constant.HttpConstant;
+import com.lwh147.common.core.schema.response.RespBody;
 import com.lwh147.common.util.JacksonUtils;
+import com.lwh147.common.util.constant.HttpConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;

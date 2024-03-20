@@ -5,13 +5,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 借用 Apache Commons Lang 的 String 工具类
- * <p>
- * 本框架作者比较喜欢该工具类的实现，简单小巧实用，但由于源工具类在 org.apache.logging.log4j 的 log4j-api 下，而本框架日志使
- * 用 Slf4j，所以直接拿来用了
- * <p>
- * 后面补充了一些String相关的工具方法
  *
  * @author Apache
+ * @apiNote 本框架作者比较喜欢该工具类的实现，简单小巧实用，但由于源工具类在 org.apache.logging.log4j 的 log4j-api 下，而本框架日志使
+ * 用 Slf4j，所以直接拿来用了
  * @date 2021/11/10 16:15
  * @see <a href="http://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
  **/

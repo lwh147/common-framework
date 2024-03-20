@@ -1,14 +1,12 @@
 package com.lwh147.common.util;
 
-import com.lwh147.common.model.constant.DateTimeConstant;
+import com.lwh147.common.util.constant.DateTimeConstant;
 
 import java.util.Calendar;
 import java.util.Date;
 
 /**
- * 日期时间工具类
- * <p>
- * 如不做特殊说明则返回的 {@link Date} 时间均为0点
+ * 日期时间工具类，如不做特殊说明则返回的 {@link Date} 时间均为0点
  *
  * @author lwh
  * @date 2021/12/3 20:23
@@ -161,13 +159,13 @@ public final class DateTimeUtils {
 
     /**
      * 距离现在多久
-     *
-     * @param datetime 指定日期时间
-     * @return 距离现在的时长描述
      * <p>
      * 如果参数为过去，则返回刚刚、几分钟前、几小时前，以此类推，最大单位为天
      * <p>
      * 如果参数为未来，则返回倒计时，格式为：56、01:56、11:01:56、1天 11:01:01，最大单位为天
+     *
+     * @param datetime 指定日期时间
+     * @return 距离现在的时长描述
      */
     public static String fromNow(Date datetime) {
         long time = datetime.getTime() / DateTimeConstant.MILLISECONDS_OF_SECOND;

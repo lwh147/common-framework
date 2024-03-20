@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lwh147.common.model.constant.DateTimeConstant;
+import com.lwh147.common.util.constant.DateTimeConstant;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
@@ -15,11 +15,12 @@ import java.util.TimeZone;
  * 缓存value序列化策略
  * <p>
  * 默认使用 {@link GenericJackson2JsonRedisSerializer} 作为序列化工具，采用泛型是为了防止反序列化时出现类型转换的相关问题
- * <p>
- * 这样可能会存在缓存数据通用性问题，比如服务A用私有的model作为缓存对象，服务B反序列化时就会有问题，不过实际应该避免出现这种不
- * 同服务使用对方私有model的情况，有待考究
  *
  * @author lwh
+ * @apiNote 这样可能会存在缓存数据通用性问题，比如服务A用私有的model作为缓存对象，服务B反序列化时就会有问题，不过实际应该避免出现这种不
+ * 同服务使用对方私有model的情况，有待考究
+ * <p>
+ * 在缓存value未失效的情况下，value对象类型的名称或者包路径发生变化，在获取value后反序列化时也会发生异常
  * @date 2021/12/7 11:01
  **/
 public final class RedisValueSerializer implements RedisSerializer<Object> {

@@ -27,10 +27,6 @@
     <dependencies>
         <dependency>
             <groupId>com.lwh147</groupId>
-            <artifactId>common-model</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.lwh147</groupId>
             <artifactId>common-util</artifactId>
         </dependency>
 
@@ -49,6 +45,10 @@
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

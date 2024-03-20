@@ -1,8 +1,7 @@
 package com.lwh147.common.core.enums;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.lwh147.common.model.enums.Enum;
 
 /**
  * 排序规则枚举
@@ -11,24 +10,16 @@ import com.lwh147.common.model.enums.Enum;
  * @date 2021/11/9 10:30
  **/
 public enum SortOrderEnum implements Enum {
-    /**
-     * 升序
-     **/
+
     ASC("ASC", "升序"),
-    /**
-     * 降序
-     **/
     DESC("DESC", "降序"),
     ;
 
     /**
-     * 枚举值
+     * @apiNote {@link EnumValue} 可指定数据入库时使用该属性作为枚举值，基于 MybatisPlus，这里仅作示例用
      **/
-    @JsonValue
+    @EnumValue
     private final String value;
-    /**
-     * 枚举值名称
-     **/
     private final String name;
 
     SortOrderEnum(String value, String name) {
@@ -37,9 +28,10 @@ public enum SortOrderEnum implements Enum {
     }
 
     /**
-     * 根据枚举值寻找枚举对象
+     * 根据枚举值寻找枚举对象，推荐实现
      *
      * @return 找到的枚举对象，没找到返回 {@code null}
+     * @apiNote {@link JsonCreator} 可指定使用此方法进行反序列化，基于Jackson
      **/
     @JsonCreator
     public static SortOrderEnum from(String value) {
@@ -52,7 +44,7 @@ public enum SortOrderEnum implements Enum {
     }
 
     /**
-     * 判断枚举值是否存在
+     * 判断枚举值是否存在，推荐实现
      *
      * @return 枚举值是否存在
      **/
@@ -70,6 +62,9 @@ public enum SortOrderEnum implements Enum {
         return this.name;
     }
 
+    /**
+     * 推荐按此格式重写toString()方法
+     **/
     @Override
     public String toString() {
         return this.value + "-" + this.name;

@@ -17,10 +17,9 @@
         <module>common-mybatisplus-starter</module>
         <module>common-stream-starter</module>
         <module>common-swagger-starter</module>
-        <module>common-test</module>
         <module>common-web-starter</module>
         <module>common-util</module>
-        <module>common-model</module>
+        <module>common-test</module>
     </modules>
 
     <properties>
@@ -68,11 +67,6 @@
             </dependency>
             <dependency>
                 <groupId>com.lwh147</groupId>
-                <artifactId>common-model</artifactId>
-                <version>${common.framework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.lwh147</groupId>
                 <artifactId>common-mybatisplus-starter</artifactId>
                 <version>${common.framework.version}</version>
             </dependency>
@@ -88,17 +82,17 @@
             </dependency>
             <dependency>
                 <groupId>com.lwh147</groupId>
-                <artifactId>common-test</artifactId>
-                <version>${common.framework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.lwh147</groupId>
                 <artifactId>common-util</artifactId>
                 <version>${common.framework.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.lwh147</groupId>
                 <artifactId>common-web-starter</artifactId>
+                <version>${common.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lwh147</groupId>
+                <artifactId>common-test</artifactId>
                 <version>${common.framework.version}</version>
             </dependency>
             <!-- 开发框架基础依赖库 -->

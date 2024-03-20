@@ -15,7 +15,6 @@
 common-framework ------------------------------- 通用开发框架根模块(root)
 ├─ common-cache-starter ------------------------ 常用缓存框架自动配置模块
 ├─ common-core --------------------------------- 开发框架核心模块
-├─ common-model -------------------------------- 开发框架基础模型定义模块
 ├─ common-mybatisplus-starter ------------------ MybatisPlus自动配置模块
 ├─ common-stream-starter ----------------------- 消息中间件自动配置模块
 ├─ common-swagger-starter ---------------------- Swagger自动配置模块
@@ -30,7 +29,6 @@ common-framework ------------------------------- 通用开发框架根模块(roo
 
 * [common-cache-starter](./common-cache-starter/README.md)
 * [common-core](./common-core/README.md)
-* [common-model](./common-model/README.md)
 * [common-mybatisplus-starter](./common-mybatisplus-starter/README.md)
 * [common-stream-starter](./common-stream-starter/README.md)
 * [common-swagger-starter](./common-swagger-starter/README.md)
@@ -73,6 +71,6 @@ hutool-all ------------------------------------ 5.7.22
 
 ## 待办
 
-* 项目模块结构优化，继续细分基础模型、工具、核心、启动模块
+* 项目模块结构优化
 * 统一异常优化
 * 包结构及命名优化

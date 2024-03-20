@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.lwh147.common.model.constant.DateTimeConstant;
+import com.lwh147.common.util.constant.DateTimeConstant;
 import com.lwh147.common.web.component.BannerPrinter;
 import com.lwh147.common.web.exception.ExceptionResolver;
 import com.lwh147.common.web.filter.RequestEncodingFilter;
@@ -109,11 +109,12 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
      * 3.设置默认时区为：GMT+8，默认日期时间格式为：yyyy-MM-dd HH:mm:ss
      * <p>
      * 4.json与java对象属性不全对应时也进行反序列化
+     *
+     * @apiNote 空值不转换 @JsonInclude(JsonInclude.Include.NON_NULL)
      * <p>
-     * 常用注解：
-     * - 空值不转换 @JsonInclude(JsonInclude.Include.NON_NULL)
-     * - 日期时间格式化 @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-     * - 序列化为String或配置自定义序列化策略 @JsonSerialize(using = ToStringSerializer.class)
+     * 日期时间格式化 @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+     * <p>
+     * 序列化为String或配置自定义序列化策略 @JsonSerialize(using = ToStringSerializer.class)
      **/
     @Bean
     @Primary

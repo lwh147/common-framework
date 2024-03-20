@@ -9,9 +9,9 @@ import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInt
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.IDialect;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
-import com.lwh147.common.mybatisplus.idgenerator.ClusterIdGenerator;
-import com.lwh147.common.mybatisplus.idgenerator.CustomIdGenerator;
-import com.lwh147.common.mybatisplus.idgenerator.StandaloneIdGenerator;
+import com.lwh147.common.mybatisplus.generator.id.ClusterIdGenerator;
+import com.lwh147.common.mybatisplus.generator.id.CustomIdGenerator;
+import com.lwh147.common.mybatisplus.generator.id.StandaloneIdGenerator;
 import com.lwh147.common.mybatisplus.properties.MybatisPlusProperties;
 import com.lwh147.common.mybatisplus.properties.SnowflakeProperties;
 import com.lwh147.common.mybatisplus.properties.enums.SnowflakeIdType;
@@ -40,11 +40,7 @@ public class MybatisPlusAutoConfiguration {
     private SnowflakeProperties snowflakeProperties;
 
     /**
-     * 自定义雪花算法ID生成器配置，生效条件：
-     * <p>
-     * 配置中开启
-     * <p>
-     * 未配置其它ID生成器
+     * 自定义雪花算法ID生成器配置，配置中开启且未配置其它ID生成器时生效
      **/
     @Bean
     @ConditionalOnMissingBean(IdentifierGenerator.class)
@@ -70,9 +66,7 @@ public class MybatisPlusAutoConfiguration {
     }
 
     /**
-     * MybaitsPlus 拦截器配置
-     * <p>
-     * 用户未进行配置时生效
+     * MybaitsPlus 拦截器配置，用户未进行配置时生效
      **/
     @Bean
     @ConditionalOnMissingBean(MybatisPlusInterceptor.class)

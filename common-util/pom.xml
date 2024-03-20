@@ -26,11 +26,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.lwh147</groupId>
-            <artifactId>common-model</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>

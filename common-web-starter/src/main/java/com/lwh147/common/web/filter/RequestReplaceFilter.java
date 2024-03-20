@@ -1,8 +1,8 @@
 package com.lwh147.common.web.filter;
 
 
-import com.lwh147.common.model.constant.HttpConstant;
 import com.lwh147.common.util.Strings;
+import com.lwh147.common.util.constant.HttpConstant;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -11,10 +11,9 @@ import java.io.IOException;
 
 /**
  * 可重复读请求对象替换过滤器
- * <p>
- * 要对request的行为进行更改，只能通过过滤器实现
  *
  * @author lwh
+ * @apiNote 要对request的行为进行更改，只能通过过滤器实现
  * @date 2021/11/17 10:11
  **/
 @Component

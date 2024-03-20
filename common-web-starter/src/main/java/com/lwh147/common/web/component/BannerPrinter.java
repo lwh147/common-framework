@@ -1,6 +1,6 @@
 package com.lwh147.common.web.component;
 
-import com.lwh147.common.model.constant.NumberConstant;
+import com.lwh147.common.util.constant.NumberConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -10,9 +10,7 @@ import java.io.*;
 import java.net.URL;
 
 /**
- * Banner打印
- * <p>
- * 默认开启
+ * Banner打印，默认开启
  *
  * @author lwh
  * @date 2021/12/7 16:49

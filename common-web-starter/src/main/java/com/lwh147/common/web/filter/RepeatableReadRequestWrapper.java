@@ -1,7 +1,7 @@
 package com.lwh147.common.web.filter;
 
 import com.lwh147.common.core.exception.CommonExceptionEnum;
-import com.lwh147.common.model.constant.NumberConstant;
+import com.lwh147.common.util.constant.NumberConstant;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ReadListener;
@@ -93,8 +93,7 @@ public class RepeatableReadRequestWrapper extends HttpServletRequestWrapper {
             }
 
             /**
-             * 这是在重写一个输入流对象的读取方法，需要保证每次都从
-             * 同一个 输入流进行读取
+             * 这是在重写一个输入流对象的读取方法，需要保证每次都从 同一个 输入流进行读取
              **/
             @Override
             public int read() {

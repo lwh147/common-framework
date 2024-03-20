@@ -2,9 +2,9 @@ package com.lwh147.common.web.exception;
 
 import com.lwh147.common.core.exception.CommonExceptionEnum;
 import com.lwh147.common.core.exception.ICommonException;
-import com.lwh147.common.core.response.RespBody;
-import com.lwh147.common.model.constant.HttpConstant;
+import com.lwh147.common.core.schema.response.RespBody;
 import com.lwh147.common.util.JacksonUtils;
+import com.lwh147.common.util.constant.HttpConstant;
 import com.lwh147.common.web.properties.WebProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
