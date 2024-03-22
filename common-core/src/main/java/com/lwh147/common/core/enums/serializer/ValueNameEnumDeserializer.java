@@ -1,4 +1,4 @@
-package com.lwh147.common.core.enums.serialization;
+package com.lwh147.common.core.enums.serializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.BeanProperty;

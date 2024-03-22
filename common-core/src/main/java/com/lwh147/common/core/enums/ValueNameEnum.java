@@ -2,8 +2,8 @@ package com.lwh147.common.core.enums;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lwh147.common.core.enums.serialization.ValueNameEnumDeserializer;
-import com.lwh147.common.core.enums.serialization.ValueNameEnumSerializer;
+import com.lwh147.common.core.enums.serializer.ValueNameEnumDeserializer;
+import com.lwh147.common.core.enums.serializer.ValueNameEnumSerializer;
 
 /**
  * 简单的value-name枚举类行为规范接口

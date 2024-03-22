@@ -2,8 +2,8 @@ package com.lwh147.common.core.enums;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lwh147.common.core.enums.serialization.DbColumnEnumDeserializer;
-import com.lwh147.common.core.enums.serialization.DbColumnEnumSerializer;
+import com.lwh147.common.core.enums.serializer.DbColumnEnumDeserializer;
+import com.lwh147.common.core.enums.serializer.DbColumnEnumSerializer;
 
 /**
  * 表列名枚举类行为规范接口
