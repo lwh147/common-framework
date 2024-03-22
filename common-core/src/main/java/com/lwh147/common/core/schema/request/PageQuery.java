@@ -24,29 +24,19 @@ public class PageQuery implements Serializable {
     /**
      * 页码
      **/
-    @Min(value = 1L, message = "页码必须为正整数")
+    @Max(value = MAX_PAGE, message = "页码必须为[1, 10000]的整数")
+    @Min(value = DEFAULT_PAGE, message = "页码必须为[1, 10000]的整数")
     @NotNull(message = "页码不能为空")
-    @ApiModelProperty(value = "页码，>=1", required = true, example = "1")
+    @ApiModelProperty(value = "页码，[1,10000]", required = true, example = "1")
     private Long current;
-
     /**
      * 页大小
      **/
-    @Max(value = 100L, message = "页大小必须为[1, 100]的整数")
-    @Min(value = 1L, message = "页大小必须为[1, 100]的整数")
+    @Max(value = MAX_PAGE_SIZE, message = "页大小必须为[1, 500]的整数")
+    @Min(value = DEFAULT_PAGE, message = "页大小必须为[1, 500]的整数")
     @NotNull(message = "页大小不能为空")
-    @ApiModelProperty(value = "页大小，[1, 100]", required = true, example = "10")
+    @ApiModelProperty(value = "页大小，[1, 500]", required = true, example = "10")
     private Long size;
-
-    /**
-     * 将分页参数对象转化为 MybatisPlus 的 {@link Page} 类型分页对象，需指定分页数据类型
-     *
-     * @param e 分页数据类型
-     * @return MybatisPlus 的 {@link Page} 类型分页对象
-     **/
-    public <E> Page<E> toPage(Class<E> e) {
-        return new Page<>(current, size);
-    }
 
     /**
      * 将分页参数对象转化为 MybatisPlus 的 {@link Page} 类型分页对象
@@ -54,6 +44,7 @@ public class PageQuery implements Serializable {
      * @return MybatisPlus 的 {@link Page} 类型分页对象
      * @apiNote 不推荐使用此方法，会产生泛型丢失的问题
      **/
+    @Deprecated
     public Page<?> toPage() {
         return new Page<>(current, size);
     }

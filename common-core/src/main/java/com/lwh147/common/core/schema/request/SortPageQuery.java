@@ -1,9 +1,9 @@
 package com.lwh147.common.core.schema.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lwh147.common.core.enums.CommonSortColumnEnum;
+import com.lwh147.common.core.enums.DbColumnEnum;
 import com.lwh147.common.core.enums.SortOrderEnum;
-import com.lwh147.common.core.schema.request.enums.BaseSortColumnEnum;
-import com.lwh147.common.core.schema.request.enums.ColumnEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -16,11 +16,11 @@ import java.io.Serializable;
  * <p>
  * 必须作为 <strong>请求体</strong> 接受参数，否则数据绑定时枚举类型不能被识别，报 {@link IllegalArgumentException} 错误
  *
- * @param <T> 排序字段名称，<strong>表列名枚举类对象</strong>，必须实现 {@link ColumnEnum} 接口
+ * @param <T> 排序字段名称，<strong>表列名枚举类对象</strong>，必须实现 {@link DbColumnEnum} 接口
  *            <p>
  *            使用枚举是为了限制用户输入，<strong>一定程度上预防SQL注入</strong>
  *            <p>
- *            详细参考 {@link BaseSortColumnEnum}
+ *            详细参考 {@link CommonSortColumnEnum}
  * @author lwh
  * @date 2021/10/22 10:44
  **/
@@ -59,10 +59,10 @@ public class SortPageQuery<T extends Enum<T> & ColumnEnum> extends PageQuery imp
      * @return 用空格拼接 {@link SortPageQuery#column} 和 {@link SortPageQuery#order} 后的字符串或 {@code null}
      **/
     public String getSortSqlSuffix() {
-        if (this.column == null) {
+        if (column == null) {
             return null;
         }
-        return this.column.getColumnName() + (this.order == null ? "" : " " + this.order.getValue());
+        return column.getColumnName() + (order == null ? "" : " " + order.getValue());
     }
 
 }
