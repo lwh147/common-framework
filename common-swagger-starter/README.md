@@ -61,3 +61,4 @@ public class TestApplication {
 
 * 分组API配置支持
 * Swagger和Knife4j开关区分处理
+* 枚举展示优化（请求参数、请求体）

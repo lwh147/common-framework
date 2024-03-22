@@ -4,6 +4,7 @@ import c.l.c.test.pojo.dto.UserAddDTO;
 import c.l.c.test.pojo.dto.UserUpdateDTO;
 import c.l.c.test.pojo.query.UserQuery;
 import c.l.c.test.pojo.vo.UserVO;
+import com.lwh147.common.core.enums.SortOrderEnum;
 import com.lwh147.common.core.schema.response.PageData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -72,5 +73,5 @@ public interface UserApi {
      **/
     @GetMapping("/test")
     @ApiOperation(value = "test")
-    void test();
+    void test(@RequestParam SortOrderEnum order);
 }

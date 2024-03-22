@@ -38,6 +38,15 @@ public interface DbColumnEnum {
     String getName();
 
     /**
+     * 强烈推荐按 paramName-name 格式输出以提高日志和接口文档的可读性，还有安全性
+     * <p>
+     * 见 {@link ValueNameEnum#toString()}
+     *
+     * @apiNote 不输出 {@code columnName} 是为了避免暴露数据库表列名
+     **/
+    String toString();
+
+    /**
      * 根据枚举值寻找枚举对象
      *
      * @param <T> 实现了此接口的枚举类型
@@ -70,13 +79,4 @@ public interface DbColumnEnum {
     static <T extends Enum<T> & DbColumnEnum> String toString(T enumObj) {
         return enumObj.getParamName() + "-" + enumObj.getName();
     }
-
-    /**
-     * 强烈推荐按 paramName-name 格式输出以提高日志和接口文档的可读性，还有安全性
-     * <p>
-     * 见 {@link ValueNameEnum#toString()}
-     *
-     * @apiNote 不输出 {@code columnName} 是为了避免暴露数据库表列名
-     **/
-    String toString();
 }

@@ -21,6 +21,9 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @ApiModel(description = "通用响应体结构封装")
 public class RespBody<T> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 成功与否
      **/

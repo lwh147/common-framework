@@ -27,7 +27,10 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(description = "可指定排序列的分页查询参数封装")
-public class SortPageQuery<T extends Enum<T> & ColumnEnum> extends PageQuery implements Serializable {
+public class SortPageQuery<T extends Enum<T> & DbColumnEnum> extends PageQuery implements Serializable {
+
+    private static final long serialVersionUID = 2L;
+
     /**
      * 排序字段
      **/

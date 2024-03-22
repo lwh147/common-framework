@@ -21,6 +21,9 @@ import java.util.List;
 @AllArgsConstructor
 @ApiModel(description = "通用分页响应结果封装")
 public class PageData<T> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 页大小
      **/

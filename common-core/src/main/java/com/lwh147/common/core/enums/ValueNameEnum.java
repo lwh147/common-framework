@@ -18,46 +18,6 @@ import com.lwh147.common.core.enums.serialization.ValueNameEnumSerializer;
 @JsonSerialize(using = ValueNameEnumSerializer.class)
 @JsonDeserialize(using = ValueNameEnumDeserializer.class)
 public interface ValueNameEnum {
-    /**
-     * 根据枚举值寻找枚举对象
-     *
-     * @param <T> 实现了此接口的枚举类型
-     * @return 找到的枚举对象，没找到返回 {@code null}
-     **/
-    static <T extends Enum<T> & ValueNameEnum> T from(Class<T> enumType, String value) {
-        for (T e : enumType.getEnumConstants()) {
-            if (e.getValue().equals(value)) {
-                return e;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 获取枚举名称，即值的中文描述
-     *
-     * @return 枚举名称
-     **/
-    String getName();
-
-    /**
-     * 判断枚举值是否存在
-     *
-     * @param <T> 实现了此接口的枚举类型
-     * @return 枚举值是否存在
-     **/
-    static <T extends Enum<T> & ValueNameEnum> boolean exist(Class<T> enumType, String value) {
-        return from(enumType, value) != null;
-    }
-
-    /**
-     * 泛型toString
-     *
-     * @param <T> 实现了此接口的枚举类型
-     **/
-    static <T extends Enum<T> & ValueNameEnum> String toString(T enumObj) {
-        return enumObj.getValue() + "-" + enumObj.getName();
-    }
 
     /**
      * 获取枚举值，即枚举code或数据库里存储的值
@@ -65,6 +25,13 @@ public interface ValueNameEnum {
      * @return 枚举值
      **/
     String getValue();
+
+    /**
+     * 获取枚举名称，即值的中文描述
+     *
+     * @return 枚举名称
+     **/
+    String getName();
 
     /**
      * 强烈推荐按 value-name 格式输出以提高日志和接口文档的可读性
@@ -84,4 +51,38 @@ public interface ValueNameEnum {
      * @see <a href="https://blog.csdn.net/weixin_38308374/article/details/112440657">Java 8 新特性之接口默认方法和静态方法</a>
      **/
     String toString();
+
+    /**
+     * 根据枚举值寻找枚举对象
+     *
+     * @param <T> 实现了此接口的枚举类型
+     * @return 找到的枚举对象，没找到返回 {@code null}
+     **/
+    static <T extends Enum<T> & ValueNameEnum> T from(Class<T> enumType, String value) {
+        for (T e : enumType.getEnumConstants()) {
+            if (e.getValue().equals(value)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 判断枚举值是否存在
+     *
+     * @param <T> 实现了此接口的枚举类型
+     * @return 枚举值是否存在
+     **/
+    static <T extends Enum<T> & ValueNameEnum> boolean exist(Class<T> enumType, String value) {
+        return from(enumType, value) != null;
+    }
+
+    /**
+     * 泛型toString
+     *
+     * @param <T> 实现了此接口的枚举类型
+     **/
+    static <T extends Enum<T> & ValueNameEnum> String toString(T enumObj) {
+        return enumObj.getValue() + "-" + enumObj.getName();
+    }
 }

@@ -74,7 +74,7 @@ public class ApplicationRunListener implements SpringApplicationRunListener {
                         "External: \t{}://{}:{}{}\n" +
                         "Swagger: \t{}\n" +
                         "Knife4j: \t{}\n" +
-                        "----------------------------------------------------------",
+                        "----------------------------------------------------------\n",
                 env.getProperty("spring.application.name"), protocol, serverPort, contextPath, protocol, hostAddress,
                 serverPort, contextPath, swaggerBaseUrl + "swagger-ui.html", swaggerBaseUrl + "doc.html");
     }
