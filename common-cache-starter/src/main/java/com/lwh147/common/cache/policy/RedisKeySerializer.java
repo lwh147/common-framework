@@ -6,10 +6,11 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * 缓存key序列化策略
  * <p>
  * 基于 {@link org.springframework.data.redis.serializer.StringRedisSerializer} 作为序列化工具
+ * <p>
+ * 需要注意的是：如果key是非String类型，默认会使用 {@link CacheKeyConverter#convert(Object)} 将key转化为String类型后序列化，
+ * 这里没有考虑需要将key反序列化回原对象的情况，缓存key一般也不会有反序列化的需求
  *
  * @author lwh
- * @apiNote 需要注意的是：如果key是非String类型，默认会使用 {@link CacheKeyConverter#convert(Object)} 将key转化为String类型后序列化，
- * 这里没有考虑需要将key反序列化回原对象的情况，缓存key一般也不会有反序列化的需求
  * @date 2023/11/18 15:18
  **/
 public final class RedisKeySerializer implements RedisSerializer<Object> {
