@@ -1,10 +1,5 @@
 package com.lwh147.common.core.enums;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lwh147.common.core.enums.serializer.DbColumnEnumDeserializer;
-import com.lwh147.common.core.enums.serializer.DbColumnEnumSerializer;
-
 /**
  * 表列名枚举类行为规范接口
  * <p>
@@ -13,8 +8,6 @@ import com.lwh147.common.core.enums.serializer.DbColumnEnumSerializer;
  * @author lwh
  * @date 2021/11/1 15:40
  **/
-@JsonSerialize(using = DbColumnEnumSerializer.class)
-@JsonDeserialize(using = DbColumnEnumDeserializer.class)
 public interface DbColumnEnum {
     /**
      * 获取参数名称
@@ -38,9 +31,9 @@ public interface DbColumnEnum {
     String getName();
 
     /**
-     * 强烈推荐按 paramName-name 格式输出以提高日志和接口文档的可读性，还有安全性
+     * 推荐按 paramName-name 格式输出以提高日志和接口文档的可读性，还有安全性
      * <p>
-     * 见 {@link ValueNameEnum#toString()}
+     * 另见 {@link ValueNameEnum#toString()}
      *
      * @apiNote 不输出 {@code columnName} 是为了避免暴露数据库表列名
      **/

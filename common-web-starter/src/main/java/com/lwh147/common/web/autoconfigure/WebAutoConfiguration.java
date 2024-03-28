@@ -7,6 +7,11 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.lwh147.common.core.enums.DbColumnEnum;
+import com.lwh147.common.core.enums.ValueNameEnum;
+import com.lwh147.common.core.enums.serializer.EnumDeserializer;
+import com.lwh147.common.core.enums.serializer.EnumSerializer;
 import com.lwh147.common.util.constant.DateTimeConstant;
 import com.lwh147.common.web.component.BannerPrinter;
 import com.lwh147.common.web.exception.ExceptionResolver;
@@ -109,6 +114,8 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
      * 3.设置默认时区为：GMT+8，默认日期时间格式为：yyyy-MM-dd HH:mm:ss
      * <p>
      * 4.json与java对象属性不全对应时也进行反序列化
+     * <p>
+     * 5.自定义实现了 {@link DbColumnEnum} 或 {@link ValueNameEnum} 接口的枚举类型的（反）序列化策略
      *
      * @apiNote 空值不转换 @JsonInclude(JsonInclude.Include.NON_NULL)
      * <p>
@@ -125,7 +132,6 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
                 // JSON与Java对象属性不全对应时也进行反序列化
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-
                 // 将数字序列化为字符串
                 .configure(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS, true)
                 // 将BigDecimal转换成PlainString，不采用科学计数法，完整打印数值
@@ -135,6 +141,17 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         // 日期时间格式
         webObjectMapper.setTimeZone(TimeZone.getTimeZone(timeZone));
         webObjectMapper.setDateFormat(new SimpleDateFormat(dateFormat));
+
+        SimpleModule simpleModule = new SimpleModule();
+
+        // 配置实现了自定义接口的枚举类型的（反）序列化策略，以下两种方式选其一即可
+        simpleModule.setSerializers(new EnumSerializer());
+        simpleModule.setDeserializers(new EnumDeserializer());
+
+        // simpleModule.setSerializerModifier(new EnumSerializerModifier());
+        // simpleModule.setDeserializerModifier(new EnumDeserializerModifier());
+
+        webObjectMapper.registerModule(simpleModule);
 
         return webObjectMapper;
     }

@@ -31,7 +31,7 @@ public class PageQuery implements Serializable {
     @Min(value = DEFAULT_PAGE, message = "页码必须为[1, 10000]的整数")
     @NotNull(message = "页码不能为空")
     @ApiModelProperty(value = "页码，[1,10000]", required = true, example = "1")
-    private Long current;
+    private Long page;
     /**
      * 页大小
      **/
@@ -48,7 +48,7 @@ public class PageQuery implements Serializable {
      * @return MybatisPlus 的 {@link Page} 类型分页对象
      **/
     public <E> Page<E> toPage(Class<E> e) {
-        return new Page<>(current, size);
+        return new Page<>(page, size);
     }
 
     /**
@@ -59,7 +59,7 @@ public class PageQuery implements Serializable {
      **/
     @Deprecated
     public Page<?> toPage() {
-        return new Page<>(current, size);
+        return new Page<>(page, size);
     }
 
     /**
