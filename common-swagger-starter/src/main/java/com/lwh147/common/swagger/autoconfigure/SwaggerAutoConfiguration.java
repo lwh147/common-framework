@@ -1,7 +1,9 @@
 package com.lwh147.common.swagger.autoconfigure;
 
+import com.lwh147.common.core.enums.DbColumnEnum;
 import com.lwh147.common.core.enums.ValueNameEnum;
 import com.lwh147.common.swagger.properties.SwaggerProperties;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -12,24 +14,47 @@ import org.springframework.util.CollectionUtils;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.AllowableListValues;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.schema.ModelPropertyBuilderPlugin;
 import springfox.documentation.spi.schema.contexts.ModelPropertyContext;
+import springfox.documentation.spi.service.ExpandedParameterBuilderPlugin;
+import springfox.documentation.spi.service.ParameterBuilderPlugin;
+import springfox.documentation.spi.service.contexts.ParameterContext;
+import springfox.documentation.spi.service.contexts.ParameterExpansionContext;
 import springfox.documentation.spring.web.plugins.ApiSelectorBuilder;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Swagger配置类
+ * <p>
+ * 为了增强文档对枚举类型的支持，该配置类针对实现了 {@link DbColumnEnum} 或 {@link ValueNameEnum} 接口的枚举类型参数，在文档
+ * 生成测策略上进行扩展，具体分为三种情况：
+ * <p>
+ * {@link ModelPropertyBuilderPlugin} 作为 JavaBean 属性且打了{@link ApiModelProperty} 注解接受请求体参数时 (接口参数前使用
+ * {@code @RequestBody} 注解）
+ * <p>
+ * {@link ParameterBuilderPlugin} 直接作为打了{@code @RequestParam} 注解的请求参数时
+ * <p>
+ * {@link ExpandedParameterBuilderPlugin} 作为 JavaBean 属性接受请求参数时（未打{@code @RequestParam} 注解）
  * <p>
  * 前提条件：
  * <p>
  * 上下文中不存在Swagger配置Bean
  * <p>
  * springfox.documentation.enabled 配置项缺省或配置为 {@code true}
+ * <p>
  *
  * @author lwh
  * @date 2021/11/19 16:55
@@ -40,7 +65,8 @@ import javax.annotation.Resource;
 @ConditionalOnMissingBean(Docket.class)
 @EnableConfigurationProperties(SwaggerProperties.class)
 @ConditionalOnProperty(name = "swagger.enabled", havingValue = "true", matchIfMissing = true)
-public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin {
+public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, ParameterBuilderPlugin,
+        ExpandedParameterBuilderPlugin {
     @Resource
     private SwaggerProperties swaggerProperties;
 
@@ -84,7 +110,7 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin {
      *
      * @return API信息
      **/
-    private ApiInfo apiInfo() {
+    public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title(swaggerProperties.getTitle())
                 .description(swaggerProperties.getDescription())
@@ -93,90 +119,151 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin {
                 .build();
     }
 
+    /**
+     * 作为 JavaBean 属性且打了{@link ApiModelProperty} 注解接受请求体参数时 (接口参数前使用 {@code @RequestBody} 注解）
+     **/
     @Override
-    public void apply(ModelPropertyContext modelPropertyContext) {
+    public void apply(ModelPropertyContext context) {
         if (swaggerProperties.getEnabled() == null || !swaggerProperties.getEnabled()) {
             return;
         }
+        if (!context.getBeanPropertyDefinition().isPresent()) {
+            return;
+        }
 
-        //获取当前字段的类型
-        final Class<?> fieldType = modelPropertyContext.getBeanPropertyDefinition().isPresent() ?
-                modelPropertyContext.getBeanPropertyDefinition().get().getField().getRawType() : null;
+        final Class<?> type = context.getBeanPropertyDefinition().get().getRawPrimaryType();
 
-        //为枚举字段设置注释
-        this.valueNameEnumDescHandler(modelPropertyContext, fieldType);
-    }
-
-    @Override
-    public boolean supports(DocumentationType documentationType) {
-        return false;
+        // 如果是目标枚举类型则修改 description 和 allowableValues 输出格式
+        if (type.isEnum()) {
+            Set<Class<?>> interfaceSet = Arrays.stream(type.getInterfaces()).collect(Collectors.toSet());
+            if (interfaceSet.contains(ValueNameEnum.class)) {
+                StringBuilder description = new StringBuilder();
+                List<String> allowableListValues = new ArrayList<>();
+                Arrays.stream(type.getEnumConstants()).map(obj -> (ValueNameEnum<? extends Serializable>) obj)
+                        .forEach(valueNameEnum -> {
+                            allowableListValues.add(valueNameEnum.getValue().toString());
+                            description.append(valueNameEnum.getValue().toString())
+                                    .append("-")
+                                    .append(valueNameEnum.getName())
+                                    .append("，");
+                        });
+                context.getBuilder().description(description.substring(0, description.length() - 1))
+                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
+            } else if (interfaceSet.contains(DbColumnEnum.class)) {
+                StringBuilder description = new StringBuilder();
+                List<String> allowableListValues = new ArrayList<>();
+                Arrays.stream(type.getEnumConstants()).map(obj -> (DbColumnEnum) obj).forEach(dbColumnEnum -> {
+                    allowableListValues.add(dbColumnEnum.getParamName());
+                    description.append(dbColumnEnum.getParamName())
+                            .append("-")
+                            .append(dbColumnEnum.getName())
+                            .append("，");
+                });
+                context.getBuilder().description(description.substring(0, description.length() - 1))
+                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
+            }
+        }
     }
 
     /**
-     * Swagger参数字段类型是 {@link ValueNameEnum} 实现枚举类字段时，格式化输出枚举可取值列表
+     * 直接作为打了{@code @RequestParam} 注解的请求参数时
      **/
-    private void valueNameEnumDescHandler(ModelPropertyContext context, Class<?> fieldType) {
-        // TODO
-        // Optional<ApiModelProperty> annotation = Optional.absent();
-        //
-        // // 找到 @ApiModelProperty 注解修饰的枚举类
-        // if (context.getAnnotatedElement().isPresent()) {
-        //     annotation = annotation
-        //             .or(ApiModelProperties.findApiModePropertyAnnotation(context.getAnnotatedElement().get()));
-        // }
-        // if (context.getBeanPropertyDefinition().isPresent()) {
-        //     annotation = annotation.or(Annotations.findPropertyAnnotation(
-        //             context.getBeanPropertyDefinition().get(),
-        //             ApiModelProperty.class));
-        // }
-        //
-        // //没有@ApiModelProperty 或者 notes 属性没有值，直接返回
-        // if (!annotation.isPresent()) {
-        //     return;
-        // }
-        //
-        // //@ApiModelProperties中的notes指定的class类型
-        // Class rawPrimaryType;
-        // try {
-        //     rawPrimaryType = Class.forName((annotation.get()).notes());
-        // } catch (ClassNotFoundException e) {
-        //     //如果指定的类型无法转化，直接忽略
-        //     return;
-        // }
-        //
-        // Object[] subItemRecords = null;
-        // SwaggerDisplayEnum swaggerDisplayEnum = AnnotationUtils
-        //         .findAnnotation(rawPrimaryType, SwaggerDisplayEnum.class);
-        // // 判断是否存在 @SwaggerDisplayEnum 注解，并且 rawPrimaryType 是枚举
-        // if (null != swaggerDisplayEnum && Enum.class.isAssignableFrom(rawPrimaryType)) {
-        //     // 拿到枚举的所有的值
-        //     subItemRecords = rawPrimaryType.getEnumConstants();
-        // }
-        // if (null == subItemRecords) {
-        //     return;
-        // }
-        //
-        // final List<String> displayValues =
-        //         Arrays.stream(subItemRecords)
-        //                 .filter(Objects::nonNull)
-        //                 // 调用枚举类的 toString 方法
-        //                 .map(Object::toString)
-        //                 .filter(Objects::nonNull)
-        //                 .collect(Collectors.toList());
-        //
-        // String joinText = " (" + String.join("; ", displayValues) + ")";
-        // try {
-        //     // 拿到字段上原先的描述
-        //     Field mField = ModelPropertyBuilder.class.getDeclaredField("description");
-        //     mField.setAccessible(true);
-        //     // context 中的 builder 对象保存了字段的信息
-        //     joinText = mField.get(context.getBuilder()) + joinText;
-        // } catch (Exception e) {
-        //     log.error(e.getMessage());
-        // }
-        //
-        // // 设置新的字段说明并且设置字段类型
-        // final ResolvedType resolvedType = context.getResolver().resolve(fieldType);
-        // context.getBuilder().description(joinText).type(resolvedType);
+    @Override
+    public void apply(ParameterContext context) {
+        if (swaggerProperties.getEnabled() == null || !swaggerProperties.getEnabled()) {
+            return;
+        }
+        Parameter parameter = context.parameterBuilder().build();
+        if (!parameter.getType().isPresent()) {
+            return;
+        }
+
+        final Class<?> type = parameter.getType().get().getErasedType();
+
+        // 如果是目标枚举类型则修改 description 和 allowableValues 输出格式
+        if (type.isEnum()) {
+            Set<Class<?>> interfaceSet = Arrays.stream(type.getInterfaces()).collect(Collectors.toSet());
+            if (interfaceSet.contains(ValueNameEnum.class)) {
+                StringBuilder description = new StringBuilder();
+                List<String> allowableListValues = new ArrayList<>();
+                Arrays.stream(type.getEnumConstants()).map(obj -> (ValueNameEnum<? extends Serializable>) obj)
+                        .forEach(valueNameEnum -> {
+                            allowableListValues.add(valueNameEnum.getValue().toString());
+                            description.append(valueNameEnum.getValue().toString())
+                                    .append("-")
+                                    .append(valueNameEnum.getName())
+                                    .append("，");
+                        });
+                context.parameterBuilder().description(description.substring(0, description.length() - 1))
+                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
+            } else if (interfaceSet.contains(DbColumnEnum.class)) {
+                StringBuilder description = new StringBuilder();
+                List<String> allowableListValues = new ArrayList<>();
+                Arrays.stream(type.getEnumConstants()).map(obj -> (DbColumnEnum) obj).forEach(dbColumnEnum -> {
+                    allowableListValues.add(dbColumnEnum.getParamName());
+                    description.append(dbColumnEnum.getParamName())
+                            .append("-")
+                            .append(dbColumnEnum.getName())
+                            .append("，");
+                });
+                context.parameterBuilder().description(description.substring(0, description.length() - 1))
+                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
+            }
+        }
+    }
+
+    /**
+     * 作为 JavaBean 属性接受请求参数时（未打{@code @RequestParam} 注解）
+     **/
+    @Override
+    public void apply(ParameterExpansionContext context) {
+        if (swaggerProperties.getEnabled() == null || !swaggerProperties.getEnabled()) {
+            return;
+        }
+        Parameter parameter = context.getParameterBuilder().build();
+        if (!parameter.getType().isPresent()) {
+            return;
+        }
+
+        Class<?> type = parameter.getType().get().getErasedType();
+
+        // 如果是目标枚举类型则修改 description 和 allowableValues 输出格式
+        if (type.isEnum()) {
+            Set<Class<?>> interfaceSet = Arrays.stream(type.getInterfaces()).collect(Collectors.toSet());
+            if (interfaceSet.contains(ValueNameEnum.class)) {
+                StringBuilder description = new StringBuilder();
+                List<String> allowableListValues = new ArrayList<>();
+                Arrays.stream(type.getEnumConstants()).map(obj -> (ValueNameEnum<? extends Serializable>) obj)
+                        .forEach(valueNameEnum -> {
+                            allowableListValues.add(valueNameEnum.getValue().toString());
+                            description.append(valueNameEnum.getValue().toString())
+                                    .append("-")
+                                    .append(valueNameEnum.getName())
+                                    .append("，");
+                        });
+                context.getParameterBuilder().description(description.substring(0, description.length() - 1))
+                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
+            } else if (interfaceSet.contains(DbColumnEnum.class)) {
+                StringBuilder description = new StringBuilder();
+                List<String> allowableListValues = new ArrayList<>();
+                Arrays.stream(type.getEnumConstants()).map(obj -> (DbColumnEnum) obj).forEach(dbColumnEnum -> {
+                    allowableListValues.add(dbColumnEnum.getParamName());
+                    description.append(dbColumnEnum.getParamName())
+                            .append("-")
+                            .append(dbColumnEnum.getName())
+                            .append("，");
+                });
+                context.getParameterBuilder().description(description.substring(0, description.length() - 1))
+                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
+            }
+        }
+    }
+
+    /**
+     * 是否是可处理的文档类型，默认返回支持
+     **/
+    @Override
+    public boolean supports(DocumentationType documentationType) {
+        return true;
     }
 }

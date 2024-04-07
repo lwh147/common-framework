@@ -54,7 +54,12 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public void test(SortOrderEnum orderEnum) {
+    public void test(UserQuery orderEnum) {
+        throw new NullPointerException("test");
+    }
+
+    @Override
+    public void test1(SortOrderEnum order) {
         throw new NullPointerException("test");
     }
 }

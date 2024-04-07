@@ -73,5 +73,12 @@ public interface UserApi {
      **/
     @GetMapping("/test")
     @ApiOperation(value = "test")
-    void test(@RequestParam SortOrderEnum order);
+    void test(UserQuery order);
+
+    /**
+     * test
+     **/
+    @GetMapping("/test1")
+    @ApiOperation(value = "test1")
+    void test1(@RequestParam SortOrderEnum order);
 }
