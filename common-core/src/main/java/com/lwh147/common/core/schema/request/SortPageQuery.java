@@ -34,7 +34,7 @@ public class SortPageQuery<T extends Enum<T> & DbColumnEnum> extends PageQuery i
     /**
      * 排序字段
      **/
-    @ApiModelProperty(value = "排序字段", example = "createTime")
+    @ApiModelProperty(value = "排序字段")
     private T column;
 
     /**

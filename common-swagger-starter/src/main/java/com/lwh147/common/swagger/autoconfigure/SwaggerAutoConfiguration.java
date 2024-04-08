@@ -160,7 +160,8 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, Par
                             .append("，");
                 });
                 context.getBuilder().description(description.substring(0, description.length() - 1))
-                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
+                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"))
+                        .example((Object) allowableListValues.get(0));
             }
         }
     }
