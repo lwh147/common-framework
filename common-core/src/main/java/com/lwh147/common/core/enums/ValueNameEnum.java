@@ -20,6 +20,7 @@ public interface ValueNameEnum<T extends Serializable> extends IEnum<T> {
      *
      * @return 枚举值
      **/
+    @Override
     T getValue();
 
     /**
@@ -46,6 +47,7 @@ public interface ValueNameEnum<T extends Serializable> extends IEnum<T> {
      * @see <a href="https://blog.csdn.net/Mr__fang/article/details/86158329">Java8 默认方法 default method</a>
      * @see <a href="https://blog.csdn.net/weixin_38308374/article/details/112440657">Java 8 新特性之接口默认方法和静态方法</a>
      **/
+    @Override
     String toString();
 
     /**

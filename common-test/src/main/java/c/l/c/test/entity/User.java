@@ -1,7 +1,7 @@
 package c.l.c.test.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.lwh147.common.mybatisplus.model.DataModel;
+import com.lwh147.common.mybatisplus.model.AbstractDataModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -21,7 +21,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(description = "用户实体")
 @TableName("user")
-public class User extends DataModel<User> implements Serializable {
+public class User extends AbstractDataModel<User> implements Serializable {
     @ApiModelProperty(value = "name", example = "李四")
     private String name;
     @ApiModelProperty(value = "sex", example = "男")

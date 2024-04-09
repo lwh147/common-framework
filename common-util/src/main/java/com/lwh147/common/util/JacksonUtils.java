@@ -60,7 +60,7 @@ public final class JacksonUtils {
         try {
             res = objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("使用Jackson序列化对象时发生异常：" + e.getMessage(), e);
+            throw new RuntimeException("Json processing exception", e);
         }
         return res;
     }
@@ -91,7 +91,7 @@ public final class JacksonUtils {
         try {
             t = objectMapper.readValue(jsonStr, javaType);
         } catch (Exception e) {
-            throw new RuntimeException("使用Jackson反序列化json字符串时发生异常：" + e.getMessage(), e);
+            throw new RuntimeException("Json processing exception", e);
         }
         return t;
     }
@@ -123,7 +123,7 @@ public final class JacksonUtils {
         try {
             list = objectMapper.readValue(jsonStr, javaType);
         } catch (Exception e) {
-            throw new RuntimeException("使用Jackson反序列化json字符串时发生异常：" + e.getMessage(), e);
+            throw new RuntimeException("Json processing exception", e);
         }
         return list;
     }

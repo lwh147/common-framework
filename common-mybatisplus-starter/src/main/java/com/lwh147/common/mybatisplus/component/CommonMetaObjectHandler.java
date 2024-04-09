@@ -22,8 +22,8 @@ public class CommonMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        // 填充创建时间
-        this.strictInsertFill(metaObject, BaseModel.CREATE_TIME_CC, Date.class, new Date());  // 起始版本 3.3.0(推荐)
+        // 填充创建时间 起始版本 3.3.0(推荐)
+        this.strictInsertFill(metaObject, BaseModel.CREATE_TIME_CC, Date.class, new Date());
     }
 
     /**
@@ -33,7 +33,7 @@ public class CommonMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-        // 填充更新时间
-        this.strictUpdateFill(metaObject, BaseModel.UPDATE_TIME_CC, Date.class, new Date());  // 起始版本 3.3.0(推荐)
+        // 填充更新时间 起始版本 3.3.0(推荐)
+        this.strictUpdateFill(metaObject, BaseModel.UPDATE_TIME_CC, Date.class, new Date());
     }
 }

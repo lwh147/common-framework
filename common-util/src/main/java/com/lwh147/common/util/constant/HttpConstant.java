@@ -20,11 +20,11 @@ public class HttpConstant {
     /**
      * 协议类型
      **/
-    public static class PROTOCOL {
+    public static class Protocol {
         public static final String HTTP = "http";
         public static final String HTTPS = "https";
 
-        private PROTOCOL() {}
+        private Protocol() {}
     }
 
     /**

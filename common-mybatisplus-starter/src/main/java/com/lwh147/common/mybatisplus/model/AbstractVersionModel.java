@@ -9,14 +9,14 @@ import lombok.ToString;
 /**
  * 使用乐观锁的数据实体类，在数据实体类基础上增加乐观锁字段
  *
- * @param <T> 继承了 {@code VersionModel} 的实体类
+ * @param <T> 继承了 {@code AbstractVersionModel} 的实体类
  * @author lwh
  * @date 2023/12/13 10:15
  **/
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public abstract class VersionModel<T extends VersionModel<T>> extends DataModel<T> {
+public abstract class AbstractVersionModel<T extends AbstractVersionModel<T>> extends AbstractDataModel<T> {
     /**
      * 数据版本
      **/

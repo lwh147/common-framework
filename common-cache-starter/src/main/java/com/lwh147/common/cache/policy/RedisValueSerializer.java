@@ -59,6 +59,7 @@ public final class RedisValueSerializer implements RedisSerializer<Object> {
     /**
      * 序列化
      **/
+    @Override
     public byte[] serialize(Object o) {
         return GENERIC_JACKSON_2_JSON_SERIALIZER.serialize(o);
     }
@@ -66,6 +67,7 @@ public final class RedisValueSerializer implements RedisSerializer<Object> {
     /**
      * 反序列化
      **/
+    @Override
     public Object deserialize(byte[] bytes) {
         return GENERIC_JACKSON_2_JSON_SERIALIZER.deserialize(bytes);
     }

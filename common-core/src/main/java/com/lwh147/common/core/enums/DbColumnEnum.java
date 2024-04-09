@@ -37,6 +37,7 @@ public interface DbColumnEnum {
      *
      * @apiNote 不输出 {@code columnName} 是为了避免暴露数据库表列名
      **/
+    @Override
     String toString();
 
     /**

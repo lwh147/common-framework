@@ -38,6 +38,7 @@ public class ApplicationRunListener implements SpringApplicationRunListener {
     public ApplicationRunListener(SpringApplication application, String[] args) {
     }
 
+    @Override
     public void running(ConfigurableApplicationContext context) {
         // SpringCloud会二次调用SpringBoot的run方法构造context用来初始化SpringCloud的相关组件
         // 这里利用第二次调用时context的id后会拼接"-1"的特性来控制该方法只被调用一次
@@ -47,7 +48,7 @@ public class ApplicationRunListener implements SpringApplicationRunListener {
     }
 
     private void postRunning(Environment env) {
-        String protocol = Strings.isNotBlank(env.getProperty("server.ssl.key-store")) ? HttpConstant.PROTOCOL.HTTPS : HttpConstant.PROTOCOL.HTTP;
+        String protocol = Strings.isNotBlank(env.getProperty("server.ssl.key-store")) ? HttpConstant.Protocol.HTTPS : HttpConstant.Protocol.HTTP;
         String serverPort = env.getProperty("server.port");
 
         String contextPath = env.getProperty("server.servlet.context-path");

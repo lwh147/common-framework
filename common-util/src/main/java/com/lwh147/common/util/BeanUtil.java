@@ -78,7 +78,7 @@ public final class BeanUtil extends BeanUtils {
         try {
             target = targetClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("转换Bean时实例化目标Bean异常", e);
+            throw new RuntimeException("Reflective operation exception", e);
         }
         copyProperties(source, target);
         if (callBack != null) {
@@ -120,7 +120,7 @@ public final class BeanUtil extends BeanUtils {
             try {
                 target = targetClass.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException("转换Bean时实例化目标Bean异常", e);
+                throw new RuntimeException("Reflective operation exception", e);
             }
             copyProperties(source, target);
             if (callBack != null) {

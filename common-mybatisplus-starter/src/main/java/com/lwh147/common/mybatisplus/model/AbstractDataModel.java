@@ -11,14 +11,14 @@ import lombok.ToString;
 /**
  * 数据实体类，在基础实体类上增加主键ID和逻辑删除
  *
- * @param <T> 继承了 {@code DataModel} 的实体类
+ * @param <T> 继承了 {@code AbstractDataModel} 的实体类
  * @author lwh
  * @date 2021/11/25 16:48
  **/
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public abstract class DataModel<T extends DataModel<T>> extends BaseModel<T> {
+public abstract class AbstractDataModel<T extends AbstractDataModel<T>> extends BaseModel<T> {
     /**
      * 主键，雪花算法生成
      **/

@@ -30,6 +30,7 @@ public final class RedisKeySerializer implements RedisSerializer<Object> {
     /**
      * 序列化
      **/
+    @Override
     public byte[] serialize(Object o) {
         return STRING_SERIALIZER.serialize(CacheKeyConverter.convert(o));
     }
@@ -37,6 +38,7 @@ public final class RedisKeySerializer implements RedisSerializer<Object> {
     /**
      * 反序列化
      **/
+    @Override
     public Object deserialize(byte[] bytes) {
         return STRING_SERIALIZER.deserialize(bytes);
     }
