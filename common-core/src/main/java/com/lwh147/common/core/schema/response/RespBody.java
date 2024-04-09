@@ -27,7 +27,7 @@ public class RespBody<T> implements Serializable {
     /**
      * 成功与否
      **/
-    @ApiModelProperty(value = "成功与否", example = "true", required = true)
+    @ApiModelProperty(value = "成功与否", required = true, example = "true")
     private Boolean success;
     /**
      * 业务响应数据

@@ -31,7 +31,7 @@ public interface DbColumnEnum {
     String getName();
 
     /**
-     * 推荐按 paramName-name 格式输出以提高日志和接口文档的可读性，还有安全性
+     * 推荐按 paramName-name 格式输出
      * <p>
      * 另见 {@link ValueNameEnum#toString()}
      *
@@ -51,17 +51,7 @@ public interface DbColumnEnum {
                 return e;
             }
         }
-        return null;
-    }
-
-    /**
-     * 判断枚举值是否存在
-     *
-     * @param <T> 实现了此接口的枚举类型
-     * @return 枚举值是否存在
-     **/
-    static <T extends Enum<T> & DbColumnEnum> boolean exist(Class<T> enumType, String paramName) {
-        return from(enumType, paramName) != null;
+        throw new IllegalArgumentException("No enum constant " + enumType.getCanonicalName() + "." + paramName);
     }
 
     /**

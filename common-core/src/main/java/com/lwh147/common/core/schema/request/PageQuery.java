@@ -30,7 +30,7 @@ public class PageQuery implements Serializable {
     @Max(value = MAX_PAGE, message = "页码必须为[1, 10000]的整数")
     @Min(value = DEFAULT_PAGE, message = "页码必须为[1, 10000]的整数")
     @NotNull(message = "页码不能为空")
-    @ApiModelProperty(value = "页码，[1,10000]", required = true, example = "1")
+    @ApiModelProperty(value = "页码[1, 10000]", required = true, example = "1")
     private Long page;
     /**
      * 页大小
@@ -38,7 +38,7 @@ public class PageQuery implements Serializable {
     @Max(value = MAX_PAGE_SIZE, message = "页大小必须为[1, 500]的整数")
     @Min(value = DEFAULT_PAGE, message = "页大小必须为[1, 500]的整数")
     @NotNull(message = "页大小不能为空")
-    @ApiModelProperty(value = "页大小，[1, 500]", required = true, example = "10")
+    @ApiModelProperty(value = "页大小[1, 500]", required = true, example = "10")
     private Long size;
 
     /**

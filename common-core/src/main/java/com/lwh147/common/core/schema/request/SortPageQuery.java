@@ -40,7 +40,7 @@ public class SortPageQuery<T extends Enum<T> & DbColumnEnum> extends PageQuery i
     /**
      * 排序类型
      **/
-    @ApiModelProperty(value = "排序类型", example = "DESC")
+    @ApiModelProperty(value = "排序类型")
     private SortOrderEnum order;
 
     /**

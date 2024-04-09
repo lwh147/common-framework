@@ -145,10 +145,11 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, Par
                             description.append(valueNameEnum.getValue().toString())
                                     .append("-")
                                     .append(valueNameEnum.getName())
-                                    .append("，");
+                                    .append(",");
                         });
                 context.getBuilder().description(description.substring(0, description.length() - 1))
-                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
+                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"))
+                        .example((Object) allowableListValues.get(0));
             } else if (interfaceSet.contains(DbColumnEnum.class)) {
                 StringBuilder description = new StringBuilder();
                 List<String> allowableListValues = new ArrayList<>();
@@ -157,7 +158,7 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, Par
                     description.append(dbColumnEnum.getParamName())
                             .append("-")
                             .append(dbColumnEnum.getName())
-                            .append("，");
+                            .append(",");
                 });
                 context.getBuilder().description(description.substring(0, description.length() - 1))
                         .allowableValues(new AllowableListValues(allowableListValues, "LIST"))
@@ -193,7 +194,7 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, Par
                             description.append(valueNameEnum.getValue().toString())
                                     .append("-")
                                     .append(valueNameEnum.getName())
-                                    .append("，");
+                                    .append(",");
                         });
                 context.parameterBuilder().description(description.substring(0, description.length() - 1))
                         .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
@@ -205,7 +206,7 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, Par
                     description.append(dbColumnEnum.getParamName())
                             .append("-")
                             .append(dbColumnEnum.getName())
-                            .append("，");
+                            .append(",");
                 });
                 context.parameterBuilder().description(description.substring(0, description.length() - 1))
                         .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
@@ -240,7 +241,7 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, Par
                             description.append(valueNameEnum.getValue().toString())
                                     .append("-")
                                     .append(valueNameEnum.getName())
-                                    .append("，");
+                                    .append(",");
                         });
                 context.getParameterBuilder().description(description.substring(0, description.length() - 1))
                         .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
@@ -252,7 +253,7 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, Par
                     description.append(dbColumnEnum.getParamName())
                             .append("-")
                             .append(dbColumnEnum.getName())
-                            .append("，");
+                            .append(",");
                 });
                 context.getParameterBuilder().description(description.substring(0, description.length() - 1))
                         .allowableValues(new AllowableListValues(allowableListValues, "LIST"));

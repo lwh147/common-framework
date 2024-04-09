@@ -25,24 +25,24 @@ public class PageData<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 页大小
-     **/
-    @ApiModelProperty(value = "页大小，[1-100]", required = true, example = "10")
-    private Long size;
-    /**
      * 页码
      **/
-    @ApiModelProperty(value = "页码，>=1", required = true, example = "1")
-    private Long current;
+    @ApiModelProperty(value = "页码[1, 10000]", required = true, example = "1")
+    private Long page;
+    /**
+     * 页大小
+     **/
+    @ApiModelProperty(value = "页大小[1, 500]", required = true, example = "10")
+    private Long size;
     /**
      * 数据总条数
      **/
-    @ApiModelProperty(value = "数据总条数", example = "1000")
+    @ApiModelProperty(value = "数据总条数", required = true, example = "1000")
     private Long total;
     /**
      * 页数
      **/
-    @ApiModelProperty(value = "页数", example = "100")
+    @ApiModelProperty(value = "页数", required = true, example = "100")
     private Long pages;
     /**
      * 当前页数据
@@ -64,7 +64,7 @@ public class PageData<T> implements Serializable {
          */
         return PageData.<T>builder()
                 .size(page.getSize())
-                .current(page.getCurrent())
+                .page(page.getCurrent())
                 .total(page.getTotal())
                 .pages(page.getPages())
                 .records(page.getRecords())

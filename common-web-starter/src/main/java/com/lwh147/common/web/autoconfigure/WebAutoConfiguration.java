@@ -14,6 +14,8 @@ import com.lwh147.common.core.enums.serializer.EnumDeserializer;
 import com.lwh147.common.core.enums.serializer.EnumSerializer;
 import com.lwh147.common.util.constant.DateTimeConstant;
 import com.lwh147.common.web.component.BannerPrinter;
+import com.lwh147.common.web.component.DbColumnEnumConverter;
+import com.lwh147.common.web.component.ValueNameEnumConverter;
 import com.lwh147.common.web.exception.ExceptionResolver;
 import com.lwh147.common.web.filter.RequestEncodingFilter;
 import com.lwh147.common.web.filter.RequestReplaceFilter;
@@ -27,6 +29,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -160,10 +163,10 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
      * 配置全局异常处理器
      **/
     @Override
-    public void configureHandlerExceptionResolvers(@Nonnull List<HandlerExceptionResolver> resolvers) {
+    public void extendHandlerExceptionResolvers(@Nonnull List<HandlerExceptionResolver> resolvers) {
         if (webProperties.getGlobalExceptionHandler().getEnabled()) {
             log.debug("配置并开启全局异常处理器");
-            resolvers.add(exceptionResolver);
+            resolvers.add(0, exceptionResolver);
         }
     }
 
@@ -198,5 +201,14 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         converter.setObjectMapper(objectMapper);
         // 添加转换器
         converters.add(0, converter);
+    }
+
+    /**
+     * 添加自定义枚举类型 {@link DbColumnEnum} 和 {@link ValueNameEnum} 的参数绑定转换策略
+     **/
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new ValueNameEnumConverter<>());
+        registry.addConverter(new DbColumnEnumConverter<>());
     }
 }

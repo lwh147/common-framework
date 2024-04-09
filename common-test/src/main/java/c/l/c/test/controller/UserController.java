@@ -7,6 +7,7 @@ import c.l.c.test.pojo.dto.UserUpdateDTO;
 import c.l.c.test.pojo.query.UserQuery;
 import c.l.c.test.pojo.vo.UserVO;
 import c.l.c.test.service.UserService;
+import com.lwh147.common.core.enums.CommonSortColumnEnum;
 import com.lwh147.common.core.enums.SortOrderEnum;
 import com.lwh147.common.core.schema.response.PageData;
 import com.lwh147.common.util.BeanUtil;
@@ -59,7 +60,7 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public void test1(SortOrderEnum order) {
+    public void test1(SortOrderEnum order, CommonSortColumnEnum sortColumnEnum) {
         throw new NullPointerException("test");
     }
 }

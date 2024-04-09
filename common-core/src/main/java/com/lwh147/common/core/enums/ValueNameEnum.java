@@ -30,7 +30,7 @@ public interface ValueNameEnum<T extends Serializable> extends IEnum<T> {
     String getName();
 
     /**
-     * 推荐按 value-name 格式输出以提高日志和接口文档的可读性
+     * 推荐按 value-name 格式输出
      * <p>
      * {@link Enum#toString()} 方法默认返回枚举的名字，可读性较差，实际使用中该方法比较鸡肋，基本上不会用到，但如果项目使用
      * Swagger，而枚举类型作为参数时 Swagger 会默认调用枚举对象的 toString() 方法在界面上展示
@@ -39,10 +39,9 @@ public interface ValueNameEnum<T extends Serializable> extends IEnum<T> {
      * 作者本意是想通过接口的默认方法直接为枚举类统一重写 toString() 方法，但由于语法限制无法实现
      * {@code default toString()}，会报编译错误：Default method 'toString' overrides a member of 'java.lang.Object'
      * <p>
-     * 类似的，由于枚举类的特殊性也不能通过接口提供统一的通用的静态方法 from 和 exist 实现
+     * 类似的，由于枚举类的特殊性也不能通过接口提供统一的通用方法 {@link ValueNameEnum#from} 实现
      * <p>
-     * 退而求其次，该接口提供了需要指定类型的静态 {@link ValueNameEnum#from}，{@link ValueNameEnum#exist} 和
-     * {@link ValueNameEnum#toString(Enum)} 方法
+     * 退而求其次，该接口提供了需要指定类型的静态 {@link ValueNameEnum#from} 和 {@link ValueNameEnum#toString} 方法
      *
      * @see <a href="https://blog.csdn.net/Mr__fang/article/details/86158329">Java8 默认方法 default method</a>
      * @see <a href="https://blog.csdn.net/weixin_38308374/article/details/112440657">Java 8 新特性之接口默认方法和静态方法</a>
@@ -61,17 +60,7 @@ public interface ValueNameEnum<T extends Serializable> extends IEnum<T> {
                 return e;
             }
         }
-        return null;
-    }
-
-    /**
-     * 判断枚举值是否存在
-     *
-     * @param <T> 实现了此接口的枚举类型
-     * @return 枚举值是否存在
-     **/
-    static <T extends Enum<T> & ValueNameEnum<? extends Serializable>> boolean exist(Class<T> enumType, String value) {
-        return from(enumType, value) != null;
+        throw new IllegalArgumentException("No enum constant " + enumType.getCanonicalName() + "." + value);
     }
 
     /**
