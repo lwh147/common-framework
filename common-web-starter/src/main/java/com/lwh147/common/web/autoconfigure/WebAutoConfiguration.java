@@ -1,13 +1,13 @@
 package com.lwh147.common.web.autoconfigure;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.lwh147.common.core.enums.DbColumnEnum;
 import com.lwh147.common.core.enums.ValueNameEnum;
 import com.lwh147.common.core.enums.serializer.EnumDeserializer;
@@ -38,6 +38,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -136,7 +137,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
                 // JSON与Java对象属性不全对应时也进行反序列化
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 // 将数字序列化为字符串
-                .configure(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS, true)
+                // .configure(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS, true)
                 // 将BigDecimal转换成PlainString，不采用科学计数法，完整打印数值
                 .configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true)
                 .build();
@@ -150,9 +151,14 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         // 配置实现了自定义接口的枚举类型的（反）序列化策略，以下两种方式选其一即可
         simpleModule.setSerializers(new EnumSerializer());
         simpleModule.setDeserializers(new EnumDeserializer());
-
         // simpleModule.setSerializerModifier(new EnumSerializerModifier());
         // simpleModule.setDeserializerModifier(new EnumDeserializerModifier());
+
+        // Long和BigDecimal转换为字符串输出
+        ToStringSerializer toStringSerializer = new ToStringSerializer();
+        simpleModule.addSerializer(Long.class, toStringSerializer);
+        simpleModule.addSerializer(long.class, toStringSerializer);
+        simpleModule.addSerializer(BigDecimal.class, toStringSerializer);
 
         webObjectMapper.registerModule(simpleModule);
 
