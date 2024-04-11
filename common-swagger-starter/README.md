@@ -38,7 +38,7 @@ public class TestApplication {
 
 具体配置请查看下面的 [配置项](#peizhixiang) 一节
 
-<div id="peizhixiang"/>
+<div id="peizhixiang"></div>
 
 ## 配置项
 
