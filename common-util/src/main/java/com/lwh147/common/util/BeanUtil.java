@@ -4,7 +4,6 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Bean转换工具类，基于 {@link BeanUtils} 封装
@@ -129,18 +128,6 @@ public final class BeanUtil extends BeanUtils {
             list.add(target);
         }
         return list;
-    }
-
-    /**
-     * Map 转换为 Bean
-     *
-     * @param map         原map
-     * @param targetClass 目标Bean类型
-     * @return 转换得到的目标Bean对象
-     **/
-    public static <T> T mapToBean(Map<String, ?> map, Class<T> targetClass) {
-        // TODO
-        return null;
     }
 
     /**
