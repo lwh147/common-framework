@@ -107,8 +107,16 @@ spring:
 | `page.dbType` | `enum DbType` | `mysql` | 数据库类型 |
 | `page.enableOptimizeJoin` | `Boolean` | `true` | 是否开启左连接优化 |
 
+## 代码生成器
+
+基于 Mybatis-Plus Generator 提供的代码生成器进一步封装，使其生成的代码更加符合本框架的实现规范，用户仅需进行一些必要的配置（如数据库和表信息等）即可，简单方便
+
+具体实现及使用举例请参考：
+
+* [生成器实现和使用举例](./src/main/java/com/lwh147/common/mybatisplus/generator/code/CodeGenerator.java)
+* [生成器配置](./src/main/java/com/lwh147/common/mybatisplus/generator/code/GenerateConfig.java)
+
 ## 待办
 
-* 代码生成器
 * SQL打印格式处理和优化
 * 日期Date改用LocalDateTime

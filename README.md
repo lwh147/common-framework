@@ -63,6 +63,7 @@ redisson-spring-boot-starter ------------------ 3.12.5
 jetcache-starter-redis-lettuce ---------------- 2.6.7
 reflections ----------------------------------- 0.10.2
 hutool-all ------------------------------------ 5.7.22
+velocity-engine-core -------------------------- 2.3
 ```
 
 ## 开发规约
