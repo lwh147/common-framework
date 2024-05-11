@@ -50,6 +50,7 @@
         <!-- 其它开发工具依赖库版本管理 -->
         <reflections.version>0.10.2</reflections.version>
         <hutool.version>5.7.22</hutool.version>
+        <velocity.version>2.3</velocity.version>
     </properties>
 
     <dependencyManagement>
@@ -219,6 +220,11 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocity.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
