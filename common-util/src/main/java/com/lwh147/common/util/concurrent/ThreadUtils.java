@@ -25,9 +25,9 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * 2. 当线程池中线程数量达到 corePoolSize 时，新提交任务将被放入 workQueue 中，等待线程池中任务调度执行
  * <p>
- * *3. 当 workQueue 已满，且 {@code maximumPoolSize > corePoolSize} 时新提交任务才会创建新线程执行任务！！！
+ * *3. 当 workQueue 已满且 {@code maximumPoolSize > corePoolSize} 时创建新线程
  * <p>
- * 4. 当提交任务数超过 maximumPoolSize 时，新提交任务由 RejectedExecutionHandler 处理
+ * 4. 反之当 workQueue 已满且 {@code maximumPoolSize <= corePoolSize} 时，新提交任务由 RejectedExecutionHandler 处理
  * <p>
  * 5. 当线程池中超过 corePoolSize 的线程空闲时间达到 keepAliveTime 时，关闭空闲线程
  * <p>
