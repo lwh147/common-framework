@@ -2,6 +2,7 @@ package com.lwh147.common.util.concurrent;
 
 
 import cn.hutool.core.thread.ThreadFactoryBuilder;
+import com.lwh147.common.util.constant.NumberConstant;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -76,7 +77,7 @@ public final class ThreadUtils {
     /**
      * 目标处理器利用率
      **/
-    public static final float PROCESSOR_USAGE_THRESHOLD = 0.85f;
+    public static final float PROCESSOR_USAGE_THRESHOLD = NumberConstant.DEFAULT_LOAD_FACTOR;
     /**
      * 线程池计数
      **/
@@ -96,7 +97,8 @@ public final class ThreadUtils {
             new LinkedBlockingQueue<>(PROCESSOR_NUM + 1),
             new ThreadFactoryBuilder().setNamePrefix(DEFAULT_EXECUTOR_NAME_PREFIX).build());
 
-    private ThreadUtils() {}
+    private ThreadUtils() {
+    }
 
     /**
      * 获取默认线程池

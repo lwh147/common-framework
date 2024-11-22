@@ -11,6 +11,11 @@ public class NumberConstant {
      * 默认缓冲区大小
      **/
     public static final int DEFAULT_BUFFERED_SIZE = 8196;
+    /**
+     * 装载因子，可用作内存、数组容量、CPU使用率等阈值
+     **/
+    public static final float DEFAULT_LOAD_FACTOR = 0.85f;
 
-    private NumberConstant() {}
+    private NumberConstant() {
+    }
 }
