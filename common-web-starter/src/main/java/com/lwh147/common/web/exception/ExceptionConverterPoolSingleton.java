@@ -1,7 +1,8 @@
 package com.lwh147.common.web.exception;
 
+import com.lwh147.common.core.exception.EnhancedExceptionConverter;
+import com.lwh147.common.core.exception.EnhancedRuntimeException;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
-import com.lwh147.common.core.exception.ICommonException;
 import com.lwh147.common.util.Strings;
 import com.lwh147.common.util.constant.RegExpConstant;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ public class ExceptionConverterPoolSingleton {
      * <p>
      * 每个异常转换器实际上也只会实例化产生一个转换器对象
      **/
-    private final Map<Type, IExceptionConverter> pool;
+    private final Map<Type, EnhancedExceptionConverter> pool;
     /**
      * 该类的单例对象，声明为volatile类型避免延迟初始化的优化问题，详见阿里巴巴开发规范
      **/
@@ -51,16 +52,16 @@ public class ExceptionConverterPoolSingleton {
         } else {
             reflections = new Reflections(defaultPackageName);
         }
-        Set<Class<? extends IExceptionConverter>> subTypes = reflections.getSubTypesOf(IExceptionConverter.class);
-        for (Class<? extends IExceptionConverter> cls : subTypes) {
+        Set<Class<? extends EnhancedExceptionConverter>> subTypes = reflections.getSubTypesOf(EnhancedExceptionConverter.class);
+        for (Class<? extends EnhancedExceptionConverter> cls : subTypes) {
             // 实例化转换器对象并根据其转换的异常类型放入转换器池中
             this.pool.put(getType(cls), newInstance(cls));
         }
         // 有循环，输出前先判断
         if (log.isDebugEnabled()) {
             log.debug("扫描到的异常转换器：");
-            for (Map.Entry<Type, IExceptionConverter> e : pool.entrySet()) {
-                log.debug("Converter: {}, Type: {}", e.getClass().toString(), e.getKey().toString());
+            for (Map.Entry<Type, EnhancedExceptionConverter> e : pool.entrySet()) {
+                log.debug("Converter: {}, Type: {}", e.getClass(), e.getKey().toString());
             }
         }
     }
@@ -96,12 +97,12 @@ public class ExceptionConverterPoolSingleton {
      * 根据传入异常类型从转换器池中获取对应的异常转换器对异常进行转换
      *
      * @param e 待转换的异常对象
-     * @return {@link ICommonException} 转换后的异常对象
+     * @return {@link EnhancedRuntimeException} 转换后的异常对象
      **/
     @SuppressWarnings("unchecked")
-    public ICommonException convert(Exception e) {
+    public EnhancedRuntimeException convert(Exception e) {
         // 从转换器池中获取对应类型的转换器
-        IExceptionConverter converter = this.pool.get(e.getClass());
+        EnhancedExceptionConverter converter = this.pool.get(e.getClass());
         if (converter != null) {
             // 不为空则调用其转换方法进行转换
             return converter.convert(e);
@@ -109,7 +110,7 @@ public class ExceptionConverterPoolSingleton {
         // 没有找到，去除获取到的message中可能存在的格式化字符
         String unformattedMessage = e.getMessage() == null ? "null" : RegExpConstant.ENTER_PATTERN.matcher(e.getMessage())
                 .replaceAll("");
-        return CommonExceptionEnum.SYSTEM_UNHANDLED_EXCEPTION_ERROR.toException(e.getClass().toString()
+        return CommonExceptionEnum.SYSTEM_UNHANDLED_EXCEPTION_ERROR.toException(e.getClass()
                 + ": " + unformattedMessage, e);
     }
 
@@ -119,7 +120,7 @@ public class ExceptionConverterPoolSingleton {
      * @param cls 异常转换器类对象
      * @return {@link Type} 该转换器支持转换的异常类型
      **/
-    private Type getType(Class<? extends IExceptionConverter> cls) {
+    private Type getType(Class<? extends EnhancedExceptionConverter> cls) {
         final String methodName = "convert";
         // 获取转换方法对象，必须是public的
         Method[] methods = cls.getMethods();
@@ -138,12 +139,12 @@ public class ExceptionConverterPoolSingleton {
      * 实例化转换器
      *
      * @param cls 转换器类
-     * @return {@link IExceptionConverter} 转换器实例对象
+     * @return {@link EnhancedExceptionConverter} 转换器实例对象
      **/
-    private IExceptionConverter newInstance(Class<? extends IExceptionConverter> cls) {
+    private EnhancedExceptionConverter newInstance(Class<? extends EnhancedExceptionConverter> cls) {
         try {
             // 获取无参构造方法
-            Constructor<? extends IExceptionConverter> constructor = cls.getDeclaredConstructor();
+            Constructor<? extends EnhancedExceptionConverter> constructor = cls.getDeclaredConstructor();
             // 设置访问权限
             constructor.setAccessible(true);
             // 实例化对象返回

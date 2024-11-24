@@ -1,12 +1,15 @@
 package com.lwh147.common.core.exception;
 
+import lombok.Getter;
+
 /**
- * 自定义非业务异常枚举类
+ * 通用开发框架层异常枚举
  *
  * @author lwh
  * @date 2021/10/22 10:49
  **/
-public enum CommonExceptionEnum implements ICommonExceptionEnum {
+@Getter
+public enum CommonExceptionEnum implements EnhancedRuntimeExceptionEnum {
     /**
      * 通用开发框架异常
      **/
@@ -56,20 +59,17 @@ public enum CommonExceptionEnum implements ICommonExceptionEnum {
     ;
 
     /**
-     * 错误码
+     * 异常枚举编码
      **/
     private final String code;
     /**
-     * 错误描述
+     * 异常枚举名称
      **/
-    private final String description;
+    private final String name;
 
-    /**
-     * 构造方法，默认私有
-     **/
-    CommonExceptionEnum(String code, String description) {
+    CommonExceptionEnum(String code, String name) {
         this.code = code;
-        this.description = description;
+        this.name = name;
     }
 
     @Override
@@ -78,8 +78,8 @@ public enum CommonExceptionEnum implements ICommonExceptionEnum {
     }
 
     @Override
-    public CommonException toException(String detailMessage) {
-        return new CommonException(this, detailMessage);
+    public CommonException toException(String message) {
+        return new CommonException(this, message);
     }
 
     @Override
@@ -88,17 +88,7 @@ public enum CommonExceptionEnum implements ICommonExceptionEnum {
     }
 
     @Override
-    public CommonException toException(String detailMessage, Throwable cause) {
-        return new CommonException(this, detailMessage, cause);
-    }
-
-    @Override
-    public String getCode() {
-        return this.code;
-    }
-
-    @Override
-    public String getDescription() {
-        return this.description;
+    public CommonException toException(String message, Throwable cause) {
+        return new CommonException(this, message, cause);
     }
 }

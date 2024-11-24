@@ -1,9 +1,10 @@
 package com.lwh147.common.web.exception;
 
+import com.lwh147.common.core.exception.EnhancedRuntimeException;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
-import com.lwh147.common.core.exception.ICommonException;
 import com.lwh147.common.core.schema.response.RespBody;
 import com.lwh147.common.util.JacksonUtils;
+import com.lwh147.common.util.Strings;
 import com.lwh147.common.util.constant.HttpConstant;
 import com.lwh147.common.web.properties.WebProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.UUID;
 
 /**
  * 全局异常处理器
@@ -59,27 +61,30 @@ public class ExceptionResolver implements HandlerExceptionResolver {
 
     @Override
     public ModelAndView resolveException(@Nullable HttpServletRequest httpServletRequest, @Nullable HttpServletResponse httpServletResponse, Object o, @Nullable Exception e) {
-        ICommonException ice;
+        EnhancedRuntimeException ee;
         // 判断参数是否合法
         if (httpServletRequest == null || httpServletResponse == null || e == null) {
             throw CommonExceptionEnum.COMMON_ERROR.toException("上下文环境异常: 请求或响应或异常对象为null");
-        }
-        // 判断是不是自定义异常
-        else if (e instanceof ICommonException) {
+            // 判断是不是增强异常类型
+        } else if (e instanceof EnhancedRuntimeException) {
             // 是，强转
-            ice = (ICommonException) e;
+            ee = (EnhancedRuntimeException) e;
         } else {
             // 否，转换
-            ice = poolSingleton.convert(e);
+            ee = poolSingleton.convert(e);
         }
-        // 微服务系统中，判断是否是下游错误的封装异常
-        if (ice.getSource() == null) {
-            ice.setSource(appName);
+        // 如果是当前服务发生异常，设置全局唯一异常追踪id，否则保持不变
+        if (Strings.isBlank(ee.getTraceId())) {
+            ee.setTraceId(UUID.randomUUID().toString());
+        }
+        // 如果是当前服务发生异常，设置服务名，否则保持不变
+        if (Strings.isBlank(ee.getSource())) {
+            ee.setSource(appName);
         }
         // 打印异常信息记录日志
-        this.doLog(ice);
+        this.doLog(ee);
         // 写入响应体
-        this.writeRespBody(httpServletResponse, ice);
+        this.writeRespBody(httpServletResponse, ee);
         // 返回
         return new ModelAndView();
     }
@@ -88,11 +93,11 @@ public class ExceptionResolver implements HandlerExceptionResolver {
      * 将失败响应写入响应体
      *
      * @param response 目标响应对象
-     * @param ice      封装后的自定义异常
+     * @param ee       增强异常
      **/
-    private void writeRespBody(HttpServletResponse response, ICommonException ice) {
+    private void writeRespBody(HttpServletResponse response, EnhancedRuntimeException ee) {
         // 构造失败响应体
-        RespBody<?> respBody = RespBody.failure(ice);
+        RespBody<?> respBody = RespBody.failure(ee);
         // 设置响应头
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.setHeader(HttpConstant.Header.CONTENT_TYPE, HttpConstant.ContentType.APPLICATION_JSON_CHARSET_UTF_8);
@@ -108,10 +113,13 @@ public class ExceptionResolver implements HandlerExceptionResolver {
     /**
      * 记录日志并打印异常调用栈信息
      *
-     * @param ice 自定义异常
+     * @param e 增强异常
      **/
-    private void doLog(ICommonException ice) {
-        // 打印异常类记录信息，cause为null默认不打印任何信息，不会报错
-        log.error(ice.toString(), ice.getCause());
+    private void doLog(EnhancedRuntimeException e) {
+        if (e.getCause() != null) {
+            log.error(e.toString(), e.getCause());
+        } else {
+            log.error(e.toString(), e);
+        }
     }
 }
