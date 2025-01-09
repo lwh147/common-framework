@@ -23,10 +23,11 @@ import java.time.temporal.ChronoUnit;
 /**
  * Spring Data Redis 配置
  * <p>
- * value采用Jackson泛型序列化策略 {@link org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer}，
- * key采用自定义序列化策略 {@link CacheKeyConverter}
+ * value采用 Jackson 泛型序列化策略 {@link org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer}
  * <p>
- * {@link RedisTemplate} 和 {@link RedisCacheManager} 均默认永不过期
+ * key采用自定义序列化策略 {@link CacheKeyConverter#convert(Object)}
+ * <p>
+ * {@link RedisTemplate} 默认永不过期， {@link RedisCacheManager} 默认3分钟过期
  * <p>
  * 默认使用数据库0，与JetCache的方法缓存区分
  *
