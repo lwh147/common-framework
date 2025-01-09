@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 存储用户请求上下文信息
+ * 存储请求上下文信息
  *
  * @author lwh
  * @date 2021/11/18 17:40
@@ -12,15 +12,14 @@ import java.util.Map;
 public final class ContextHolder {
     /**
      * 线程本地变量，该线程独享这份请求上下文
-     *
-     * @apiNote 使用 {@link ThreadLocal} 避免多线程问题
      **/
     private static final ThreadLocal<Map<String, String>> THREAD_LOCAL_MAP = new ThreadLocal<>();
 
     /**
      * 不能实例化
      **/
-    private ContextHolder() {}
+    private ContextHolder() {
+    }
 
     /**
      * 获取整个Map
@@ -43,8 +42,7 @@ public final class ContextHolder {
      * @param value 值
      **/
     public static void set(String key, String value) {
-        Map<String, String> map = getMap();
-        map.put(key, value);
+        getMap().put(key, value);
     }
 
     /**
@@ -54,8 +52,7 @@ public final class ContextHolder {
      * @return 值，不存在时返回null
      **/
     public static String get(String key) {
-        Map<String, String> map = getMap();
-        return map.getOrDefault(key, null);
+        return getMap().get(key);
     }
 
     /**
@@ -64,8 +61,7 @@ public final class ContextHolder {
      * @param key 要删除的key
      **/
     public static void remove(String key) {
-        Map<String, String> map = getMap();
-        map.remove(key);
+        getMap().remove(key);
     }
 
     /**
