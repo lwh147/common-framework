@@ -12,9 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 /**
- * 集群模式下雪花算法ID生成器，各工作机器竞争抢占注册自己的工作机器ID和所属数据中心ID
- * <p>
- * 策略详情如下：
+ * 集群模式下雪花算法ID生成器，各工作机器竞争抢占注册自己的工作机器ID和所属数据中心ID，策略详情如下：
  * <p>
  * 1.应用启动后注入当前Bean时，在PostCounstruct阶段对雪花算法对象的工作机器ID和所属数据中心ID信息进行初始化
  * <p>
@@ -54,6 +52,7 @@ public class ClusterIdGenerator implements IdentifierGenerator {
     private Snowflake snowflake;
     /**
      * 抢占成功时的锁对象，上锁成功后应用在运行期间锁会自动续约，默认永不解锁，应用停止后经过一定时间（默认30s）会自动解锁
+     * 不能改为局部变量，否则会导致锁对象被回收，锁失效
      **/
     private RLock lock;
 
@@ -92,7 +91,7 @@ public class ClusterIdGenerator implements IdentifierGenerator {
                 this.snowflake = new Snowflake(worker.getWorkerId(), worker.getDataCenterId());
                 // 更新Redis中上一次被注册的节点信息
                 redisTemplate.opsForValue().set(TARGET_WORKER_CACHE_KEY, worker);
-                log.info("成功初始化雪花算法工作节点为[{}]", worker.toString());
+                log.info("成功初始化雪花算法工作节点为[{}]", worker);
                 return;
             }
             // 尝试抢占下一个节点
@@ -113,10 +112,11 @@ public class ClusterIdGenerator implements IdentifierGenerator {
     private boolean tryLock(Worker worker) {
         this.lock = redissonClient.getLock(LOCKED_WORKER_CACHE_KEY_PREFIX + worker.generateCacheKey());
         if (this.lock.tryLock()) {
-            log.debug("抢占工作节点[{}]成功", worker.toString());
+            log.debug("抢占工作节点[{}]成功", worker);
             return true;
         } else {
-            log.debug("抢占工作节点[{}]失败", worker.toString());
+            log.debug("抢占工作节点[{}]失败", worker);
+            this.lock = null;
             return false;
         }
     }

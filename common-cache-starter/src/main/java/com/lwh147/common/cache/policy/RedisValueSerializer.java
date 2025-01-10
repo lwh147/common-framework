@@ -50,7 +50,7 @@ public final class RedisValueSerializer implements RedisSerializer<Object> {
 
         // 日期时间格式
         CACHE_OBJECT_MAPPER.setTimeZone(TimeZone.getTimeZone(DateTimeConstant.DEFAULT_TIMEZONE));
-        CACHE_OBJECT_MAPPER.setDateFormat(new SimpleDateFormat(DateTimeConstant.DEFAULT_DATETIME_MS_PATTERN));
+        CACHE_OBJECT_MAPPER.setDateFormat(new SimpleDateFormat(DateTimeConstant.DEFAULT_DATETIME_PATTERN));
     }
 
     private RedisValueSerializer() {

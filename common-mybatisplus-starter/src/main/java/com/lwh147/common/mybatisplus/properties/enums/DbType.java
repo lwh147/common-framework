@@ -1,6 +1,7 @@
 package com.lwh147.common.mybatisplus.properties.enums;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.*;
+import lombok.Getter;
 
 /**
  * 常见数据库类型及对应方言枚举类
@@ -8,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.*;
  * @author lwh
  * @date 2021/12/12 23:17
  **/
+@Getter
 public enum DbType {
     MYSQL("mysql", MySqlDialect.class),
     MARIADB("mariadb", MySqlDialect.class),
@@ -39,13 +41,5 @@ public enum DbType {
     DbType(final String type, final Class<? extends IDialect> dialect) {
         this.type = type;
         this.dialect = dialect;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public Class<? extends IDialect> getDialect() {
-        return dialect;
     }
 }

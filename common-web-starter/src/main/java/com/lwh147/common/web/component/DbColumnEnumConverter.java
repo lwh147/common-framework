@@ -48,7 +48,7 @@ public class DbColumnEnumConverter<T extends Enum<T> & DbColumnEnum> implements 
             }
         }
         throw new IllegalStateException("Can not convert to type " + targetType.getCanonicalName() + " from value "
-                + o.toString() + ": type mismatch");
+                + o + ": type mismatch");
     }
 
     /**

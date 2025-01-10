@@ -18,6 +18,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Worker implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 最大工作机器ID
      **/

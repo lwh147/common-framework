@@ -49,7 +49,7 @@ public class ValueNameEnumConverter<T extends Enum<T> & ValueNameEnum<? extends 
             }
         }
         throw new IllegalStateException("Can not convert to type " + targetType.getCanonicalName() + " from value "
-                + o.toString() + ": type mismatch");
+                + o + ": type mismatch");
     }
 
     /**

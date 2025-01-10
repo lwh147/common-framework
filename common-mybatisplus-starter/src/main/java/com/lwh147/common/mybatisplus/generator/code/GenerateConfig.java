@@ -35,7 +35,7 @@ public class GenerateConfig {
     /**
      * jdbc驱动
      */
-    private String jdbcDriver;
+    private String jdbcDriver = "com.mysql.cj.jdbc.Driver";
     /**
      * 数据库连接地址
      */
@@ -61,7 +61,7 @@ public class GenerateConfig {
     /**
      * 生成的表实体类型
      **/
-    private TableTypeEnum tableType = TableTypeEnum.DATA;
+    private TableTypeEnum tableType = TableTypeEnum.BASE;
     /**
      * 去掉表的前缀
      */

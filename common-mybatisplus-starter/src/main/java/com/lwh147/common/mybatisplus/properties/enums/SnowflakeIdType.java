@@ -8,17 +8,17 @@ package com.lwh147.common.mybatisplus.properties.enums;
  **/
 public enum SnowflakeIdType {
     /**
-     * 单机模式，算法ID中的 {@code dataCenter} 始终为 {@code 0}
+     * 单机模式，指定雪花算法中的 {@code dataCenterId} 和 {@code workerId} 为 {@code 0}
      **/
     STANDALONE,
     /**
      * 集群模式，各工作机器竞争抢占注册自己的工作机器ID和所属数据中心ID
      *
-     * @apiNote 使用远程Redis作为第三方
+     * @apiNote 使用Redis作为第三方
      **/
     CLUSTER,
     /**
-     * 用户指定，需要用户为每个应用单独指定 {@code dataCenter}
+     * 用户指定，需要用户为每个应用单独指定 {@code dataCenterId} 和 {@code workerId}
      **/
     CUSTOMIZED
 }

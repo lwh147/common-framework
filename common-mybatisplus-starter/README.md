@@ -53,25 +53,25 @@ spring:
 
 * abstract BaseModel extends Model
 
-继承自 `Model` (MyBatisPlus提供的基础模型)，包含创建时间和修改时间两个字段
-
-| 属性名 | 类型 | 数据库字段名 |
-|-------|-------|-------|
-| `createTime` | `Date` | `create_time` |
-| `updateTime` | `Date` | `update_time` |
-
-* abstract DataModel extends BaseModel
-
-继承自 `BaseModel` ，增加了表ID和逻辑删除两个字段
+继承自 `Model` (MyBatisPlus提供的基础模型)，包含主键id，创建时间和修改时间三个字段
 
 | 属性名 | 类型 | 数据库字段名 |
 |-------|-------|-------|
 | `id` | `Long` | `id` |
+| `createTime` | `Date` | `create_time` |
+| `updateTime` | `Date` | `update_time` |
+
+* abstract BaseDataModel extends BaseModel
+
+继承自 `BaseModel` ，增加了逻辑删除字段
+
+| 属性名 | 类型 | 数据库字段名 |
+|-------|-------|-------|
 | `deleted` | `Boolean` | `deleted` |
 
-* abstract VersionModel extends DataModel
+* abstract BaseVersionModel extends DataModel
 
-继承自 `DataModel` ，增加了版本控制字段
+继承自 `BaseDataModel` ，增加了版本控制字段
 
 | 属性名 | 类型 | 数据库字段名 |
 |-------|-------|-------|
@@ -118,5 +118,4 @@ spring:
 
 ## 待办
 
-* SQL打印格式处理和优化
 * 日期Date改用LocalDateTime
