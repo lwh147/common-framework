@@ -19,9 +19,9 @@ public final class CodeGenerator {
 
     public static void main(String[] args) {
         GenerateConfig config = new GenerateConfig();
-        config.setJdbcUrl("jdbc:mysql://182.254.137.131:3306/test?useSSL=false&characterEncoding=UTF-8&serverTimeZone=GMT%2B8");
+        config.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/test?useSSL=false&characterEncoding=UTF-8&serverTimeZone=GMT%2B8");
         config.setJdbcUserName("root");
-        config.setJdbcPassword("Lwh720626`");
+        config.setJdbcPassword("123456");
         config.setJdbcDriver("com.mysql.cj.jdbc.Driver");
         config.setAuthor("test");
         config.setParentPackage("com.lwh147");
