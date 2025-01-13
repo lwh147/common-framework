@@ -9,28 +9,28 @@ import lombok.Setter;
  * 本框架基于分布式微服务架构系统设计扩展后的增强异常类
  * <p>
  * 作为异常应该记录保存三大内容：在哪里（事发地），发生了什么（事发现场），为什么（原因），
- * 在曾经的单服务系统中，Java内置的传统Exception类记录的上述内容已经满足快速排错的需求，然而在
- * 如今的分布式微服务架构系统中，Java内置的传统Exception类记录的内容略显匮乏，在帮助排查错误的能力
+ * 在曾经的单服务系统中，Java内置的传统 {@link Exception} 类记录的上述内容已经满足快速排错的需求，然而在
+ * 如今的分布式微服务架构系统中，Java内置的传统 {@link Exception} 类记录的内容略显匮乏，在帮助排查错误的能力
  * 上已经捉襟见肘，所以需要进行扩展以存储更多更详细的信息来增强异常类帮助排错的能力，这个类就是
  * 本框架基于分布式微服务架构系统设计扩展后的增强异常类，该类包含以下信息：
  * <p>
- * traceId（全局唯一的异常追踪id）：方便在日志中寻找异常日志，根据id可直接搜索定位到异常日志
+ * {@code traceId}（全局唯一的异常追踪id）：方便在日志中寻找异常日志，根据id可直接搜索定位到异常日志
  * <p>
- * source（异常源头微服务名）：为了直接体现出发生异常的源头服务，开发可直接去source指定的服务日志中使用traceId查找日志，
+ * {@code source}（异常源头微服务名）：为了直接体现出发生异常的源头服务，开发可直接去source指定的服务日志中使用traceId查找日志，
  * 就不需要从异常链路头部开始一个个微服务找过去
  * <p>
- * at（异常发生的代码位置）：提取了异常堆栈中的栈顶调用信息，大部分情况下异常堆栈栈顶所指代码位置就是异常现场，（当然也可能是
+ * {@code at}（异常发生的代码位置）：提取了异常堆栈中的栈顶调用信息，大部分情况下异常堆栈栈顶所指代码位置就是异常现场，（当然也可能是
  * JDK或其它依赖库中的代码），这样方便快速定位异常代码位置
  * <p>
- * code（异常枚举编码）：项目中定义的错误枚举信息
+ * {@code code}（异常枚举编码）：项目中定义的错误枚举信息
  * <p>
- * name（异常枚举名称）：项目中定义的错误枚举信息
+ * {@code name}（异常枚举名称）：项目中定义的错误枚举信息
  * <p>
- * message（异常信息）： {@link RuntimeException} 已包含
+ * {@code message}（异常信息）： {@link RuntimeException} 已包含
  * <p>
- * cause（异常原因）： {@link RuntimeException} 已包含
+ * {@code cause}（异常原因）： {@link RuntimeException} 已包含
  * <p>
- * message异常信息和cause原因在 {@link Throwable} 中已经存在，而 {@link RuntimeException}
+ * {@code message}异常信息和{@code cause}原因在 {@link Throwable} 中已经存在，而 {@link RuntimeException}
  * 继承了它，所以该类选择继承 {@link RuntimeException} 复用 {@code detailMessage}
  * 和 {@code cause} 属性（对应上文所述的 message 和 cause ），进一步添加 {@link CommonException#traceId}、
  * {@link CommonException#source}、{@link CommonException#code}、{@link CommonException#name}、

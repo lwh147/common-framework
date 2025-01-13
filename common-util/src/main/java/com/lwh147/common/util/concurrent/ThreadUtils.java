@@ -4,10 +4,7 @@ package com.lwh147.common.util.concurrent;
 import cn.hutool.core.thread.ThreadFactoryBuilder;
 import com.lwh147.common.util.constant.NumberConstant;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * 线程工具类，统一管理线程池，预防OOM
@@ -22,17 +19,19 @@ import java.util.concurrent.TimeUnit;
  * {@code threadFactory} - 新建线程工厂
  * {@code handler} - 当提交任务数超过 {@code maxmumPoolSize + workQueue} 时，任务会交给它来处理
  * </pre>
- * 1. 当线程池中线程数量小于 corePoolSize ，新提交任务将创建一个新线程执行任务，即使此时线程池中存在空闲线程
+ * 1. 当线程池中线程数量小于 {@code corePoolSize} ，新提交任务将创建一个新线程执行任务，即使此时线程池中存在空闲线程
  * <p>
- * 2. 当线程池中线程数量达到 corePoolSize 时，新提交任务将被放入 workQueue 中，等待线程池中任务调度执行
+ * 2. 当线程池中线程数量达到 {@code corePoolSize} 时，新提交任务将被放入 {@code workQueue} 中，等待线程池中任务调度执行
  * <p>
- * *3. 当 workQueue 已满且 {@code maximumPoolSize > corePoolSize} 时创建新线程
+ * *3. 当 {@code workQueue} 已满且 {@code maximumPoolSize > corePoolSize} 时创建新线程
  * <p>
- * 4. 反之当 workQueue 已满且 {@code maximumPoolSize <= corePoolSize} 时，新提交任务由 RejectedExecutionHandler 处理
+ * 4. 反之当 {@code workQueue} 已满且 {@code maximumPoolSize <= corePoolSize} 时，新提交任务由
+ * {@link RejectedExecutionHandler} 处理
  * <p>
- * 5. 当线程池中超过 corePoolSize 的线程空闲时间达到 keepAliveTime 时，关闭空闲线程
+ * 5. 当线程池中超过 {@code corePoolSize} 的线程空闲时间达到 {@code keepAliveTime} 时，关闭空闲线程
  * <p>
- * 6. 当设置 {@code allowCoreThreadTimeOut(true)} 时，线程池中 corePoolSize 线程空闲时间达到 keepAliveTime 也将关闭
+ * 6. 当设置 {@code allowCoreThreadTimeOut(true)} 时，线程池中 {@code corePoolSize} 线程空闲时间达到 {@code keepAliveTime}
+ * 也将关闭
  *
  * <p>
  * 参数设置方式：
@@ -75,9 +74,17 @@ public final class ThreadUtils {
      **/
     public static final int PROCESSOR_NUM = Runtime.getRuntime().availableProcessors();
     /**
-     * 目标处理器利用率
+     * 分配给当前JVM虚拟机的内存大小，单位：字节
      **/
-    public static final float PROCESSOR_USAGE_THRESHOLD = NumberConstant.DEFAULT_LOAD_FACTOR;
+    public static final long TOTAL_MEMORY = Runtime.getRuntime().totalMemory();
+    /**
+     * 当前JVM虚拟机的剩余内存大小，单位：字节
+     **/
+    public static final long FREE_MEMORY = Runtime.getRuntime().freeMemory();
+    /**
+     * 默认线程大小，6MB
+     **/
+    public static final long DEFAULT_THREAD_SIZE = NumberConstant.M2 * 3;
     /**
      * 线程池计数
      **/
@@ -86,16 +93,24 @@ public final class ThreadUtils {
      * 默认线程池内线程名称前缀
      **/
     public static final String DEFAULT_EXECUTOR_NAME_PREFIX = "default-exec-worker-";
-
     /**
      * 默认线程池
      **/
-    private static final ExecutorService DEFAULT_EXECUTOR = new ThreadPoolExecutor(
-            (int) (PROCESSOR_NUM * PROCESSOR_USAGE_THRESHOLD / EXECUTOR_COUNT + 1f),
-            (int) (2f * PROCESSOR_NUM * PROCESSOR_USAGE_THRESHOLD + 1f),
-            1L, TimeUnit.MINUTES,
-            new LinkedBlockingQueue<>(PROCESSOR_NUM + 1),
-            new ThreadFactoryBuilder().setNamePrefix(DEFAULT_EXECUTOR_NAME_PREFIX).build());
+    private static final ExecutorService DEFAULT_EXECUTOR;
+
+    static {
+        // 根据可用内存大小及装载因子计算阻塞队列大小
+        final int BLOCK_QUEUE_SIZE = FREE_MEMORY > DEFAULT_THREAD_SIZE ?
+                (int) (FREE_MEMORY * NumberConstant.DEFAULT_LOAD_FACTOR / DEFAULT_THREAD_SIZE) : 1;
+        DEFAULT_EXECUTOR = new ThreadPoolExecutor(
+                (int) (PROCESSOR_NUM * NumberConstant.DEFAULT_LOAD_FACTOR / EXECUTOR_COUNT + 1f),
+                (int) (2f * PROCESSOR_NUM * NumberConstant.DEFAULT_LOAD_FACTOR + 1f),
+                1L, TimeUnit.MINUTES,
+                new LinkedBlockingQueue<>(BLOCK_QUEUE_SIZE),
+                new ThreadFactoryBuilder().setNamePrefix(DEFAULT_EXECUTOR_NAME_PREFIX).build());
+        // 预加载线程池
+        ((ThreadPoolExecutor) DEFAULT_EXECUTOR).prestartAllCoreThreads();
+    }
 
     private ThreadUtils() {
     }
@@ -105,5 +120,13 @@ public final class ThreadUtils {
      **/
     public static ExecutorService getDefaultExecutor() {
         return DEFAULT_EXECUTOR;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(PROCESSOR_NUM);
+        System.out.println(TOTAL_MEMORY);
+        System.out.println(FREE_MEMORY);
+        System.out.println(FREE_MEMORY > DEFAULT_THREAD_SIZE ?
+                (int) (FREE_MEMORY * NumberConstant.DEFAULT_LOAD_FACTOR / DEFAULT_THREAD_SIZE) : 1);
     }
 }
