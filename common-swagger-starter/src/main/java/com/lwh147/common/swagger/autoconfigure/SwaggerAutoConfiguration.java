@@ -130,36 +130,12 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, Par
         if (!context.getBeanPropertyDefinition().isPresent()) {
             return;
         }
-
-        final Class<?> type = context.getBeanPropertyDefinition().get().getRawPrimaryType();
-
         // 如果是目标枚举类型则修改 description 和 allowableValues 输出格式
+        final Class<?> type = context.getBeanPropertyDefinition().get().getRawPrimaryType();
         if (type.isEnum()) {
-            Set<Class<?>> interfaceSet = Arrays.stream(type.getInterfaces()).collect(Collectors.toSet());
-            if (interfaceSet.contains(ValueNameEnum.class)) {
-                StringBuilder description = new StringBuilder();
-                List<String> allowableListValues = new ArrayList<>();
-                Arrays.stream(type.getEnumConstants()).map(obj -> (ValueNameEnum<? extends Serializable>) obj)
-                        .forEach(valueNameEnum -> {
-                            allowableListValues.add(valueNameEnum.getValue().toString());
-                            description.append(valueNameEnum.getValue().toString())
-                                    .append("-")
-                                    .append(valueNameEnum.getName())
-                                    .append(",");
-                        });
-                context.getBuilder().description(description.substring(0, description.length() - 1))
-                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"))
-                        .example((Object) allowableListValues.get(0));
-            } else if (interfaceSet.contains(DbColumnEnum.class)) {
-                StringBuilder description = new StringBuilder();
-                List<String> allowableListValues = new ArrayList<>();
-                Arrays.stream(type.getEnumConstants()).map(obj -> (DbColumnEnum) obj).forEach(dbColumnEnum -> {
-                    allowableListValues.add(dbColumnEnum.getParamName());
-                    description.append(dbColumnEnum.getParamName())
-                            .append("-")
-                            .append(dbColumnEnum.getName())
-                            .append(",");
-                });
+            StringBuilder description = new StringBuilder();
+            List<String> allowableListValues = new ArrayList<>();
+            if (this.extractCommonEnumValueAndDescription(type, description, allowableListValues)) {
                 context.getBuilder().description(description.substring(0, description.length() - 1))
                         .allowableValues(new AllowableListValues(allowableListValues, "LIST"))
                         .example((Object) allowableListValues.get(0));
@@ -179,35 +155,12 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, Par
         if (!parameter.getType().isPresent()) {
             return;
         }
-
-        final Class<?> type = parameter.getType().get().getErasedType();
-
         // 如果是目标枚举类型则修改 description 和 allowableValues 输出格式
+        final Class<?> type = parameter.getType().get().getErasedType();
         if (type.isEnum()) {
-            Set<Class<?>> interfaceSet = Arrays.stream(type.getInterfaces()).collect(Collectors.toSet());
-            if (interfaceSet.contains(ValueNameEnum.class)) {
-                StringBuilder description = new StringBuilder();
-                List<String> allowableListValues = new ArrayList<>();
-                Arrays.stream(type.getEnumConstants()).map(obj -> (ValueNameEnum<? extends Serializable>) obj)
-                        .forEach(valueNameEnum -> {
-                            allowableListValues.add(valueNameEnum.getValue().toString());
-                            description.append(valueNameEnum.getValue().toString())
-                                    .append("-")
-                                    .append(valueNameEnum.getName())
-                                    .append(",");
-                        });
-                context.parameterBuilder().description(description.substring(0, description.length() - 1))
-                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
-            } else if (interfaceSet.contains(DbColumnEnum.class)) {
-                StringBuilder description = new StringBuilder();
-                List<String> allowableListValues = new ArrayList<>();
-                Arrays.stream(type.getEnumConstants()).map(obj -> (DbColumnEnum) obj).forEach(dbColumnEnum -> {
-                    allowableListValues.add(dbColumnEnum.getParamName());
-                    description.append(dbColumnEnum.getParamName())
-                            .append("-")
-                            .append(dbColumnEnum.getName())
-                            .append(",");
-                });
+            StringBuilder description = new StringBuilder();
+            List<String> allowableListValues = new ArrayList<>();
+            if (this.extractCommonEnumValueAndDescription(type, description, allowableListValues)) {
                 context.parameterBuilder().description(description.substring(0, description.length() - 1))
                         .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
             }
@@ -226,35 +179,12 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, Par
         if (!parameter.getType().isPresent()) {
             return;
         }
-
-        Class<?> type = parameter.getType().get().getErasedType();
-
         // 如果是目标枚举类型则修改 description 和 allowableValues 输出格式
+        Class<?> type = parameter.getType().get().getErasedType();
         if (type.isEnum()) {
-            Set<Class<?>> interfaceSet = Arrays.stream(type.getInterfaces()).collect(Collectors.toSet());
-            if (interfaceSet.contains(ValueNameEnum.class)) {
-                StringBuilder description = new StringBuilder();
-                List<String> allowableListValues = new ArrayList<>();
-                Arrays.stream(type.getEnumConstants()).map(obj -> (ValueNameEnum<? extends Serializable>) obj)
-                        .forEach(valueNameEnum -> {
-                            allowableListValues.add(valueNameEnum.getValue().toString());
-                            description.append(valueNameEnum.getValue().toString())
-                                    .append("-")
-                                    .append(valueNameEnum.getName())
-                                    .append(",");
-                        });
-                context.getParameterBuilder().description(description.substring(0, description.length() - 1))
-                        .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
-            } else if (interfaceSet.contains(DbColumnEnum.class)) {
-                StringBuilder description = new StringBuilder();
-                List<String> allowableListValues = new ArrayList<>();
-                Arrays.stream(type.getEnumConstants()).map(obj -> (DbColumnEnum) obj).forEach(dbColumnEnum -> {
-                    allowableListValues.add(dbColumnEnum.getParamName());
-                    description.append(dbColumnEnum.getParamName())
-                            .append("-")
-                            .append(dbColumnEnum.getName())
-                            .append(",");
-                });
+            StringBuilder description = new StringBuilder();
+            List<String> allowableListValues = new ArrayList<>();
+            if (this.extractCommonEnumValueAndDescription(type, description, allowableListValues)) {
                 context.getParameterBuilder().description(description.substring(0, description.length() - 1))
                         .allowableValues(new AllowableListValues(allowableListValues, "LIST"));
             }
@@ -267,5 +197,34 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, Par
     @Override
     public boolean supports(DocumentationType documentationType) {
         return true;
+    }
+
+    /**
+     * 根据通用枚举类型提取枚举值和描述
+     **/
+    private boolean extractCommonEnumValueAndDescription(Class<?> type, StringBuilder description, List<String> allowableListValues) {
+        Set<Class<?>> interfaceSet = Arrays.stream(type.getInterfaces()).collect(Collectors.toSet());
+        if (interfaceSet.contains(ValueNameEnum.class)) {
+            Arrays.stream(type.getEnumConstants()).map(obj -> (ValueNameEnum<? extends Serializable>) obj)
+                    .forEach(valueNameEnum -> {
+                        allowableListValues.add(valueNameEnum.getValue().toString());
+                        description.append(valueNameEnum.getValue().toString())
+                                .append("-")
+                                .append(valueNameEnum.getName())
+                                .append(",");
+                    });
+            return true;
+        } else if (interfaceSet.contains(DbColumnEnum.class)) {
+            Arrays.stream(type.getEnumConstants()).map(obj -> (DbColumnEnum) obj).forEach(dbColumnEnum -> {
+                allowableListValues.add(dbColumnEnum.getParamName());
+                description.append(dbColumnEnum.getParamName())
+                        .append("-")
+                        .append(dbColumnEnum.getName())
+                        .append(",");
+            });
+            return true;
+        } else {
+            return false;
+        }
     }
 }

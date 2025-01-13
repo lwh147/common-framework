@@ -42,9 +42,9 @@ public class SwaggerProperties {
     @Value("${spring.application.name:app-name}")
     private String title;
     /**
-     * 文档描述，默认为：接口文档
+     * 文档描述，默认为：这是文档描述
      **/
-    private String description = "接口文档";
+    private String description = "这是文档描述";
     /**
      * 联系人信息
      **/
@@ -54,13 +54,13 @@ public class SwaggerProperties {
     @Data
     public static class Contact {
         /**
-         * 联系人姓名，默认为：管理员
+         * 联系人姓名，默认为：联系人姓名
          **/
-        private String name = "管理员";
+        private String name = "联系人姓名";
         /**
-         * 联系人网页地址，默认为百度
+         * 联系人网页地址，默认为：<a href="https://www.example.com">联系人网页地址</a>
          **/
-        private String url = "https://www.baidu.com";
+        private String url = "https://www.example.com";
         /**
          * 联系人邮箱，默认为空
          **/
