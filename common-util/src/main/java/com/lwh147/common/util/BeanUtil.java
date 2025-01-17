@@ -13,7 +13,9 @@ import java.util.List;
  **/
 public final class BeanUtil extends BeanUtils {
 
-    private BeanUtil() {}
+    private BeanUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 复制属性

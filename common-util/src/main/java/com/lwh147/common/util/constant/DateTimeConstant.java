@@ -58,5 +58,7 @@ public class DateTimeConstant {
     public static final long MILLISECONDS_OF_MONTH = DAYS_OF_MONTH * MILLISECONDS_OF_DAY;
     public static final long MILLISECONDS_OF_YEAR = DAYS_OF_YEAR * MILLISECONDS_OF_DAY;
 
-    private DateTimeConstant() {}
+    private DateTimeConstant() {
+        throw new IllegalStateException("Constant class");
+    }
 }

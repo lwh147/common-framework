@@ -25,7 +25,9 @@ public final class JacksonUtils {
      **/
     public static final ObjectMapper DEFAULT_OBJECT_MAPPER = JsonMapper.builder().build();
 
-    private JacksonUtils() {}
+    private JacksonUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     static {
         // 将BigDecimal转换成PlainString，不采用科学计数法，完整打印数值

@@ -113,6 +113,7 @@ public final class ThreadUtils {
     }
 
     private ThreadUtils() {
+        throw new IllegalStateException("Utility class");
     }
 
     /**

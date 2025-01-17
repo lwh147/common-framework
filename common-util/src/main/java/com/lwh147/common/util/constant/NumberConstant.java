@@ -21,5 +21,6 @@ public class NumberConstant {
     public static final long M2 = 2 * 1024 * 1024;
 
     private NumberConstant() {
+        throw new IllegalStateException("Constant class");
     }
 }

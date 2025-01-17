@@ -41,5 +41,3 @@ public class TestApplication {
 | `global-exception-handler.converter-scan-custom-package` | `String` | - | 自定义的异常转换器扫描包路径 |
 
 ## 待办
-
-* 日志打印格式优化

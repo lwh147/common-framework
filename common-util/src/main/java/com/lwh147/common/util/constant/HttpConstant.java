@@ -11,11 +11,15 @@ import java.nio.charset.StandardCharsets;
 public class HttpConstant {
     public static final String REQUEST_METHOD = "requestMethod";
     public static final String REQUEST_URL = "requestUrl";
-    public static final String REQUEST_PARAM = "requestParam";
+    public static final String REQUEST_URI = "requestUri";
+    public static final String REQUEST_PARAMS = "requestParams";
     public static final String REQUEST_BODY = "requestBody";
+    public static final String REQUEST_IP = "requestIp";
     public static final String RESPONSE_BODY = "responseBody";
 
-    private HttpConstant() {}
+    private HttpConstant() {
+        throw new IllegalStateException("Constant class");
+    }
 
     /**
      * 协议类型
@@ -24,7 +28,9 @@ public class HttpConstant {
         public static final String HTTP = "http";
         public static final String HTTPS = "https";
 
-        private Protocol() {}
+        private Protocol() {
+            throw new IllegalStateException("Constant class");
+        }
     }
 
     /**
@@ -36,7 +42,9 @@ public class HttpConstant {
         public static final String PUT = "PUT";
         public static final String DELETE = "DELETE";
 
-        private Method() {}
+        private Method() {
+            throw new IllegalStateException("Constant class");
+        }
     }
 
     /**
@@ -56,7 +64,9 @@ public class HttpConstant {
         public static final String ACCEPT_ENCODING = "Accept-Encoding";
         public static final String CONNECTION = "Connection";
 
-        private Header() {}
+        private Header() {
+            throw new IllegalStateException("Constant class");
+        }
     }
 
     /**
@@ -93,6 +103,8 @@ public class HttpConstant {
 
         public static final String VIDEO_MP4 = "video/mpeg4";
 
-        private ContentType() {}
+        private ContentType() {
+            throw new IllegalStateException("Constant class");
+        }
     }
 }

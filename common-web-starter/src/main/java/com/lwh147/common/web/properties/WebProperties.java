@@ -14,9 +14,19 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @ConfigurationProperties(prefix = "web")
 public class WebProperties {
     /**
-     * 是否打印框架Banner
+     * 是否打印框架Banner，默认打印
      **/
     private Boolean enableBannerPrint = true;
+    /**
+     * 请求及响应参数内容打印字符长度限制，默认不限制
+     * <p>
+     * {@code <0} 不限制，默认
+     * <p>
+     * {@code =0} 不打印
+     * <p>
+     * {@code >0} 限制打印的字符数
+     **/
+    private Integer requestParamsAndBodyPrintLength = -1;
     /**
      * 全局异常处理配置
      **/

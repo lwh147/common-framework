@@ -13,7 +13,9 @@ import java.util.Date;
  **/
 public final class DateTimeUtils {
 
-    private DateTimeUtils() {}
+    private DateTimeUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 置时间为0点

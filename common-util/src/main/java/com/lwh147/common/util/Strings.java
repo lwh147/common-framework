@@ -15,7 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class Strings {
     private static final ThreadLocal<StringBuilder> TEMP_STR = ThreadLocal.withInitial(StringBuilder::new);
 
-    private Strings() {}
+    private Strings() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * Returns a double quoted string.

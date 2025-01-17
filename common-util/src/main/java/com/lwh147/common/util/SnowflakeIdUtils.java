@@ -15,7 +15,9 @@ public final class SnowflakeIdUtils {
      **/
     private static final Snowflake SNOWFLAKE = new Snowflake(0L, 0L);
 
-    private SnowflakeIdUtils() {}
+    private SnowflakeIdUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 获取一个雪花算法节点，不保证不会重复

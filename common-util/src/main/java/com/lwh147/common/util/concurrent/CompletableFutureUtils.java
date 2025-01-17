@@ -12,7 +12,9 @@ import java.util.function.Supplier;
  **/
 public final class CompletableFutureUtils {
 
-    private CompletableFutureUtils() {}
+    private CompletableFutureUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 使用默认线程池运行带有返回值的异步计算任务
