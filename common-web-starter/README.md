@@ -34,10 +34,11 @@ public class TestApplication {
 
 配置前缀 `web`
 
-| 配置项名称 | 类型 | 默认值 | 说明 |
-| --------- | ---- | ----- | ---- |
-| `enable-banner-print` | `Boolean` | `true` | 是否打印Banner |
-| `global-exception-handler.enabled` | `Boolean` | `true` | 是否开启全局异常处理 |
-| `global-exception-handler.converter-scan-custom-package` | `String` | - | 自定义的异常转换器扫描包路径 |
+| 配置项名称 | 类型        | 默认值    | 说明                                                 |
+| --------- |-----------|--------|----------------------------------------------------|
+| `enable-banner-print` | `Boolean` | `true` | 是否打印Banner                                         |
+| `request-params-and-body-print-length` | `Integer` | `-1`   | 请求及响应参数内容打印字符长度限制：< 0 不限制，= 0 不打印，> 0 限制，默认 -1 不限制 |
+| `global-exception-handler.enabled` | `Boolean` | `true` | 是否开启全局异常处理                                         |
+| `global-exception-handler.converter-scan-custom-package` | `String`  | -      | 自定义的异常转换器扫描包路径                                     |
 
 ## 待办
