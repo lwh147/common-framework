@@ -1,10 +1,10 @@
-package com.lwh147.common.web.logging;
+package com.lwh147.common.web.interceptor;
 
 import com.lwh147.common.core.context.ContextHolder;
 import com.lwh147.common.util.WebUtils;
 import com.lwh147.common.util.constant.HttpConstant;
 import com.lwh147.common.util.constant.RegExpConstant;
-import com.lwh147.common.web.filter.RepeatableReadRequestWrapper;
+import com.lwh147.common.web.filter.RepeatableReadRequestFilter;
 import com.lwh147.common.web.properties.WebProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -65,9 +65,9 @@ public class RequestLoggingInterceptor implements HandlerInterceptor {
         ContextHolder.set(HttpConstant.REQUEST_IP, ip);
         String body = null;
         // 是否是包装类型
-        if (request instanceof RepeatableReadRequestWrapper) {
+        if (request instanceof RepeatableReadRequestFilter.RepeatableReadRequestWrapper) {
             // 获取请求体信息
-            body = ((RepeatableReadRequestWrapper) request).getBody();
+            body = ((RepeatableReadRequestFilter.RepeatableReadRequestWrapper) request).getBody();
             if (body != null) {
                 body = RegExpConstant.ENTER_PATTERN.matcher(body).replaceAll("");
             }

@@ -1,4 +1,4 @@
-package com.lwh147.common.web.logging;
+package com.lwh147.common.web.aop;
 
 import com.lwh147.common.core.schema.response.RespBody;
 import com.lwh147.common.util.JacksonUtils;

@@ -17,9 +17,9 @@ import com.lwh147.common.web.component.BannerPrinter;
 import com.lwh147.common.web.component.DbColumnEnumConverter;
 import com.lwh147.common.web.component.ValueNameEnumConverter;
 import com.lwh147.common.web.exception.ExceptionResolver;
+import com.lwh147.common.web.filter.RepeatableReadRequestFilter;
 import com.lwh147.common.web.filter.RequestEncodingFilter;
-import com.lwh147.common.web.filter.RequestReplaceFilter;
-import com.lwh147.common.web.logging.RequestLoggingInterceptor;
+import com.lwh147.common.web.interceptor.RequestLoggingInterceptor;
 import com.lwh147.common.web.properties.WebProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
     @Resource
     private ExceptionResolver exceptionResolver;
     @Resource
-    private RequestReplaceFilter requestReplaceFilter;
+    private RepeatableReadRequestFilter repeatableReadRequestFilter;
     @Resource
     private RequestEncodingFilter requestEncodingFilter;
     @Resource
@@ -98,14 +98,46 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
      * 配置可重复读请求替换过滤器
      **/
     @Bean
-    public FilterRegistrationBean<RequestReplaceFilter> requestReplaceFilterRegister() {
-        FilterRegistrationBean<RequestReplaceFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(requestReplaceFilter);
+    public FilterRegistrationBean<RepeatableReadRequestFilter> requestReplaceFilterRegister() {
+        FilterRegistrationBean<RepeatableReadRequestFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(repeatableReadRequestFilter);
         registrationBean.addUrlPatterns("/*");
         registrationBean.setName("logFilter");
         registrationBean.setOrder(2);
         log.debug("配置并开启可重复读包装请求替换过滤器");
         return registrationBean;
+    }
+
+    /**
+     * 配置请求日志记录拦截器
+     **/
+    @Override
+    public void addInterceptors(@Nonnull InterceptorRegistry registry) {
+        // 拦截白名单
+        List<String> whiteList = new ArrayList<>();
+        whiteList.add("/");
+        whiteList.add("/error");
+        whiteList.add("/csrf");
+        whiteList.add("/swagger-resources/**");
+        whiteList.add("/static/**");
+        whiteList.add("/webjars/**");
+        whiteList.add("/favicon.ico");
+
+        registry.addInterceptor(requestLoggingInterceptor)
+                .excludePathPatterns(whiteList)
+                .addPathPatterns("/**");
+        log.debug("配置并开启日志记录拦截器，白名单{}", Arrays.toString(whiteList.toArray()));
+    }
+
+    /**
+     * 配置全局异常处理器
+     **/
+    @Override
+    public void extendHandlerExceptionResolvers(@Nonnull List<HandlerExceptionResolver> resolvers) {
+        if (webProperties.getGlobalExceptionHandler().getEnabled()) {
+            log.debug("配置并开启全局异常处理器");
+            resolvers.add(0, exceptionResolver);
+        }
     }
 
     /**
@@ -163,38 +195,6 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         webObjectMapper.registerModule(simpleModule);
 
         return webObjectMapper;
-    }
-
-    /**
-     * 配置全局异常处理器
-     **/
-    @Override
-    public void extendHandlerExceptionResolvers(@Nonnull List<HandlerExceptionResolver> resolvers) {
-        if (webProperties.getGlobalExceptionHandler().getEnabled()) {
-            log.debug("配置并开启全局异常处理器");
-            resolvers.add(0, exceptionResolver);
-        }
-    }
-
-    /**
-     * 配置请求日志记录拦截器
-     **/
-    @Override
-    public void addInterceptors(@Nonnull InterceptorRegistry registry) {
-        // 拦截白名单
-        List<String> whiteList = new ArrayList<>();
-        whiteList.add("/");
-        whiteList.add("/error");
-        whiteList.add("/csrf");
-        whiteList.add("/swagger-resources/**");
-        whiteList.add("/static/**");
-        whiteList.add("/webjars/**");
-        whiteList.add("/favicon.ico");
-
-        registry.addInterceptor(requestLoggingInterceptor)
-                .excludePathPatterns(whiteList)
-                .addPathPatterns("/**");
-        log.debug("配置并开启日志记录拦截器，白名单{}", Arrays.toString(whiteList.toArray()));
     }
 
     /**
