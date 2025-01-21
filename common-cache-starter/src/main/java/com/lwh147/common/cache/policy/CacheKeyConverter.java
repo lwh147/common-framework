@@ -27,6 +27,7 @@ import java.util.Date;
  **/
 public final class CacheKeyConverter {
     private CacheKeyConverter() {
+        throw new IllegalStateException("Utility class");
     }
 
     public static String convert(Object key) {

@@ -1,4 +1,6 @@
-package com.lwh147.common.core.exception;
+package com.lwh147.common.core.exception.converter;
+
+import com.lwh147.common.core.exception.EnhancedRuntimeException;
 
 /**
  * 增强异常转换器接口，可实现此接口将常见异常转换为增强异常的接口

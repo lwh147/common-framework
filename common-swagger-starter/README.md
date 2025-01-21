@@ -52,9 +52,9 @@ public class TestApplication {
 | `excluded-paths` | `List<String>` | `^/error$` | 排除的匹配规则，可配置多个 |
 | `version` | `String` | `1.0.0` | API版本号 |
 | `title` | `String` | `${spring.appliction.name:app_name}` | 页面简介标题 |
-| `description` | `String` | `接口文档` | 页面内容描述 |
-| `contact.name` | `String` | `管理员` | 联系人姓名 |
-| `contact.url` | `String` | `www.baidu.com` | 联系人主页 |
+| `description` | `String` | `这是文档描述` | 页面内容描述 |
+| `contact.name` | `String` | `联系人姓名` | 联系人姓名 |
+| `contact.url` | `String` | `https://www.example.com` | 联系人主页 |
 | `contact.email` | `String` | - | 联系人邮箱 |
 
 ## 待办

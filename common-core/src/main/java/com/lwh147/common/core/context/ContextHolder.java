@@ -19,6 +19,7 @@ public final class ContextHolder {
      * 不能实例化
      **/
     private ContextHolder() {
+        throw new IllegalStateException("Utility class");
     }
 
     /**

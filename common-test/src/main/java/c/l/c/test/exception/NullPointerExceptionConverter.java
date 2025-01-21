@@ -1,7 +1,7 @@
 package c.l.c.test.exception;
 
 import com.lwh147.common.core.exception.CommonExceptionEnum;
-import com.lwh147.common.core.exception.EnhancedExceptionConverter;
+import com.lwh147.common.core.exception.converter.EnhancedExceptionConverter;
 import com.lwh147.common.core.exception.EnhancedRuntimeException;
 
 /**

@@ -1,7 +1,8 @@
-package com.lwh147.common.web.exception;
+package com.lwh147.common.web.component;
 
 import com.lwh147.common.core.exception.EnhancedRuntimeException;
 import com.lwh147.common.core.exception.CommonExceptionEnum;
+import com.lwh147.common.core.exception.converter.ExceptionConverterPoolSingleton;
 import com.lwh147.common.core.schema.response.RespBody;
 import com.lwh147.common.util.JacksonUtils;
 import com.lwh147.common.util.Strings;
@@ -42,21 +43,22 @@ public class ExceptionResolver implements HandlerExceptionResolver {
      **/
     @Resource
     private WebProperties webProperties;
-    /**
-     * 单例的异常转换器池
-     **/
-    private ExceptionConverterPoolSingleton poolSingleton;
 
     /**
-     * 在PostConstruct阶段完成异常转换器池的创建和初始化
+     * 单例的异常转换器
+     **/
+    private ExceptionConverterPoolSingleton exceptionConverter;
+
+    /**
+     * 在 PostConstruct 阶段完成异常转换器池的创建和初始化
      * <p>
-     * 因为需要注入 {@link ExceptionResolver#webProperties} ，所以不
-     * 能在声明时直接赋值 或 在构造器中初始化
+     * 因为需要注入 {@link ExceptionResolver#webProperties} ，所以不能在声明时直接赋值 或 在构造器中初始化
      **/
     @PostConstruct
     private void postConstruct() {
         // 此时 webProperties 已完成注入
-        poolSingleton = ExceptionConverterPoolSingleton.newInstance(webProperties.getGlobalExceptionHandler().getConverterScanCustomPackage());
+        exceptionConverter = ExceptionConverterPoolSingleton.getInstance(webProperties.getGlobalExceptionHandler()
+                .getCustomConverterScanPackages());
     }
 
     @Override
@@ -71,7 +73,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
             ee = (EnhancedRuntimeException) e;
         } else {
             // 否，转换
-            ee = poolSingleton.convert(e);
+            ee = exceptionConverter.convert(e);
         }
         // 如果是当前服务发生异常，设置全局唯一异常追踪id，否则保持不变
         if (Strings.isBlank(ee.getTraceId())) {
@@ -116,10 +118,6 @@ public class ExceptionResolver implements HandlerExceptionResolver {
      * @param e 增强异常
      **/
     private void doLog(EnhancedRuntimeException e) {
-        if (e.getCause() != null) {
-            log.error(e.toString(), e.getCause());
-        } else {
-            log.error(e.toString(), e);
-        }
+        log.error(e.toString(), e.getCause() == null ? e : e.getCause());
     }
 }

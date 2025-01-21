@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
+import java.util.List;
+
 /**
  * Web配置类
  *
@@ -39,12 +41,12 @@ public class WebProperties {
     @Data
     public static class GlobalExceptionHandler {
         /**
-         * 是否开启全局异常处理
+         * 是否开启全局异常处理，默认开启
          **/
         private Boolean enabled = true;
         /**
-         * 自定义的异常转换器扫描包路径
+         * 自定义的异常转换器扫描包路径，默认空
          **/
-        private String converterScanCustomPackage;
+        private List<String> customConverterScanPackages;
     }
 }

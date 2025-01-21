@@ -1,5 +1,6 @@
 package com.lwh147.common.core.exception;
 
+import com.lwh147.common.core.exception.converter.EnhancedExceptionConverter;
 import com.lwh147.common.util.constant.RegExpConstant;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

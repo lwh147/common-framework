@@ -1,4 +1,4 @@
-package com.lwh147.common.web.component;
+package com.lwh147.common.web.component.formatter;
 
 import com.lwh147.common.core.enums.DbColumnEnum;
 import org.springframework.core.convert.TypeDescriptor;

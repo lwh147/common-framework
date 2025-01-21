@@ -17,6 +17,10 @@ import com.lwh147.common.mybatisplus.model.BaseModel;
  **/
 public final class CodeGenerator {
 
+    private CodeGenerator() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void main(String[] args) {
         GenerateConfig config = new GenerateConfig();
         config.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/test?useSSL=false&characterEncoding=UTF-8&serverTimeZone=GMT%2B8");
