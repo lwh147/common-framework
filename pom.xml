@@ -6,7 +6,7 @@
 
     <groupId>com.lwh147</groupId>
     <artifactId>common-framework</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <description>A common framework to accelerate SpringBoot/SpringCloud app development</description>
 
     <packaging>pom</packaging>
@@ -30,7 +30,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <!-- 开发框架版本管理 -->
-        <common.framework.version>1.0-SNAPSHOT</common.framework.version>
+        <common.framework.version>1.0.0-SNAPSHOT</common.framework.version>
         <!-- 开发框架基础依赖库版本管理 -->
         <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
         <spring-cloud-alibaba.version>2.2.10-RC1</spring-cloud-alibaba.version>

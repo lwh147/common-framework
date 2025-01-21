@@ -5,4 +5,4 @@
 | \ \ /\ / / '_ \| |__   _|/ /
 | |\ V  V /| | | | |  | | / /
 |_| \_/\_/ |_| |_|_|  |_|/_/
-:Common-Framework(1.0-SNAPSHOT):
+:Common-Framework(1.0.0-SNAPSHOT):

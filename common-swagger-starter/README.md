@@ -18,7 +18,7 @@
 <dependency>
     <groupId>com.lwh147</groupId>
     <artifactId>common-swagger-starter</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
 

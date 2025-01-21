@@ -12,7 +12,7 @@ Mybaits-Plus的启动类封装，主要封装了雪花算法Id生成器以及Myb
 <dependency>
     <groupId>com.lwh147</groupId>
     <artifactId>common-mybatisplus-starter</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
