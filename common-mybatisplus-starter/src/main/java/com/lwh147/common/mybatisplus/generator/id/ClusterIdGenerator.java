@@ -73,7 +73,7 @@ public class ClusterIdGenerator implements IdentifierGenerator {
 
         // 从Redis中获取上一次被注册的节点
         Worker worker = (Worker) redisTemplate.opsForValue().get(TARGET_WORKER_CACHE_KEY);
-        log.debug("从Redis中获取到的上一次被注册的节点[{}]", worker);
+        log.debug("Retrieved the last registered Snowflake Worker from Redis [{}]", worker);
         if (worker == null) {
             // 没有被注册的节点
             worker = new Worker();
@@ -91,7 +91,7 @@ public class ClusterIdGenerator implements IdentifierGenerator {
                 this.snowflake = new Snowflake(worker.getWorkerId(), worker.getDataCenterId());
                 // 更新Redis中上一次被注册的节点信息
                 redisTemplate.opsForValue().set(TARGET_WORKER_CACHE_KEY, worker);
-                log.info("成功初始化雪花算法工作节点为[{}]", worker);
+                log.info("Successfully initialized the Snowflake Worker as [{}]", worker);
                 return;
             }
             // 尝试抢占下一个节点
@@ -112,10 +112,10 @@ public class ClusterIdGenerator implements IdentifierGenerator {
     private boolean tryLock(Worker worker) {
         this.lock = redissonClient.getLock(LOCKED_WORKER_CACHE_KEY_PREFIX + worker.generateCacheKey());
         if (this.lock.tryLock()) {
-            log.debug("抢占工作节点[{}]成功", worker);
+            log.debug("Successfully occupied the worker [{}]", worker);
             return true;
         } else {
-            log.debug("抢占工作节点[{}]失败", worker);
+            log.debug("Failed to occupy the worker [{}]", worker);
             this.lock = null;
             return false;
         }

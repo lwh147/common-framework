@@ -14,9 +14,9 @@ import com.lwh147.common.core.enums.serializer.EnumDeserializer;
 import com.lwh147.common.core.enums.serializer.EnumSerializer;
 import com.lwh147.common.util.constant.DateTimeConstant;
 import com.lwh147.common.web.component.BannerPrinter;
+import com.lwh147.common.web.component.ExceptionResolver;
 import com.lwh147.common.web.component.formatter.DbColumnEnumConverter;
 import com.lwh147.common.web.component.formatter.ValueNameEnumConverter;
-import com.lwh147.common.web.component.ExceptionResolver;
 import com.lwh147.common.web.filter.RepeatableReadRequestFilter;
 import com.lwh147.common.web.filter.RequestEncodingFilter;
 import com.lwh147.common.web.interceptor.RequestLoggingInterceptor;
@@ -41,7 +41,6 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -90,7 +89,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         registrationBean.addUrlPatterns("/*");
         registrationBean.setName("encodingFilter");
         registrationBean.setOrder(1);
-        log.debug("配置并开启统一编码过滤器[UTF-8]");
+        log.debug("Enable unified request encoding (UTF-8) filter");
         return registrationBean;
     }
 
@@ -104,7 +103,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         registrationBean.addUrlPatterns("/*");
         registrationBean.setName("logFilter");
         registrationBean.setOrder(2);
-        log.debug("配置并开启可重复读包装请求替换过滤器");
+        log.debug("Enable repeatable read request body replacement filter");
         return registrationBean;
     }
 
@@ -126,7 +125,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(requestLoggingInterceptor)
                 .excludePathPatterns(whiteList)
                 .addPathPatterns("/**");
-        log.debug("配置并开启日志记录拦截器，白名单{}", Arrays.toString(whiteList.toArray()));
+        log.debug("Enable request logging interceptor, whitelist: {}", whiteList);
     }
 
     /**
@@ -135,8 +134,8 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
     @Override
     public void extendHandlerExceptionResolvers(@Nonnull List<HandlerExceptionResolver> resolvers) {
         if (webProperties.getGlobalExceptionHandler().getEnabled()) {
-            log.debug("配置并开启全局异常处理器");
             resolvers.add(0, exceptionResolver);
+            log.debug("Enable global exception handler");
         }
     }
 

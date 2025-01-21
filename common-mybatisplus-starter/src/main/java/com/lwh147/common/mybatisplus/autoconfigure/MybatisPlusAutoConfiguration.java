@@ -48,19 +48,20 @@ public class MybatisPlusAutoConfiguration {
     public IdentifierGenerator idGenerator() {
         SnowflakeIdType snowflakeIdType = snowflakeProperties.getIdType();
         if (SnowflakeIdType.STANDALONE.equals(snowflakeIdType)) {
-            log.debug("配置并开启雪花算法ID生成器[单机模式]");
+            log.debug("Enable Snowflake ID generator [STANDALONE]");
             return new StandaloneIdGenerator();
         } else if (SnowflakeIdType.CLUSTER.equals(snowflakeIdType)) {
-            log.debug("配置并开启雪花算法ID生成器[集群模式]");
+            log.debug("Enable Snowflake ID generator [CLUSTER]");
             return new ClusterIdGenerator();
         } else {
             Long workerId = snowflakeProperties.getWorkerId();
             Long dataCenterId = snowflakeProperties.getDataCenterId();
             if (workerId != null && dataCenterId != null) {
-                log.debug("配置并开启雪花算法ID生成器[定制模式]");
+                log.debug("Enable Snowflake ID generator [CUSTOMIZED(workerId=" + workerId + ", dataCenterId="
+                        + dataCenterId + ")]");
                 return new CustomIdGenerator(workerId, dataCenterId);
             }
-            log.warn("配置了雪花算法ID生成器为[定制模式]但没有指定工作机器ID和数据中心ID，将使用默认的[单机模式]");
+            log.warn("Configured Snowflake ID generator as [CUSTOMIZED] but did not specify worker ID and data center ID, will use default [STANDALONE]");
             return new StandaloneIdGenerator();
         }
     }
@@ -94,28 +95,28 @@ public class MybatisPlusAutoConfiguration {
             // 左连接优化策略
             pageInterceptor.setOptimizeJoin(pageInfo.getEnableOptimizeJoin());
             interceptor.addInnerInterceptor(pageInterceptor);
-            log.debug("配置并开启MybaitsPlus分页插件");
+            log.debug("Enable MyBatisPlus pagination plugin");
         }
 
         // 乐观锁
         if (mybatisPlusProperties.getEnableOptimisticLocker()) {
             OptimisticLockerInnerInterceptor optimisticLockerInterceptor = new OptimisticLockerInnerInterceptor();
             interceptor.addInnerInterceptor(optimisticLockerInterceptor);
-            log.debug("配置并开启MybaitsPlus乐观锁");
+            log.debug("Enable MyBatisPlus optimistic locker");
         }
 
         // 防止全表更新与删除
         if (mybatisPlusProperties.getEnableBlockAttackCheck()) {
             BlockAttackInnerInterceptor blockAttackInnerInterceptor = new BlockAttackInnerInterceptor();
             interceptor.addInnerInterceptor(blockAttackInnerInterceptor);
-            log.debug("配置并开启MybaitsPlus防止全表更新与删除策略");
+            log.debug("Enable MyBatisPlus strategy to prevent full table updates and deletions");
         }
 
         // 拦截垃圾sql
         if (mybatisPlusProperties.getEnableIllegalSqlCheck()) {
             IllegalSQLInnerInterceptor illegalSqlInterceptor = new IllegalSQLInnerInterceptor();
             interceptor.addInnerInterceptor(illegalSqlInterceptor);
-            log.debug("配置并开启MybaitsPlus拦截垃圾sql策略");
+            log.debug("Enable MyBatisPlus strategy to intercept bad SQL");
         }
 
         return interceptor;

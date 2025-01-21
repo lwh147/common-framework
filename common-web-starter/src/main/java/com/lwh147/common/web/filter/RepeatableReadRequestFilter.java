@@ -102,7 +102,7 @@ public class RepeatableReadRequestFilter implements Filter {
                     try {
                         bufferedReader.close();
                     } catch (IOException e) {
-                        log.warn("读取请求体完成后关闭BufferedReader失败：{}", e.getMessage(), e);
+                        log.warn("Failed to close BufferedReader after reading request body: {}", e.getMessage(), e);
                     }
                 }
             }

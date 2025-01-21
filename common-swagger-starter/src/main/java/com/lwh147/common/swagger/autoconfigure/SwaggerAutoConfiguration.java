@@ -101,7 +101,7 @@ public class SwaggerAutoConfiguration implements ModelPropertyBuilderPlugin, Par
                 builder.paths(input -> !input.matches(reg));
             }
         }
-        log.debug("配置并开启Swagger[{}]", swaggerProperties);
+        log.debug("Configure Swagger as [{}]", swaggerProperties);
         return builder.build();
     }
 

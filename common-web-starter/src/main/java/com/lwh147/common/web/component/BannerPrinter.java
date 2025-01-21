@@ -31,7 +31,7 @@ public class BannerPrinter {
     public void print() {
         URL url = this.getClass().getClassLoader().getResource(FILE);
         if (url == null) {
-            log.warn("未找到{}文件", FILE);
+            log.warn("Banner file [{}] not found", FILE);
             return;
         }
         File file = new File(url.getPath());
@@ -49,12 +49,12 @@ public class BannerPrinter {
                 bufferedReader.close();
                 fileReader.close();
             } catch (FileNotFoundException e) {
-                log.warn("未找到{}文件", FILE, e);
+                log.warn("Banner file [{}] not found", FILE, e);
             } catch (IOException e) {
-                log.warn("{}文件读取失败", FILE, e);
+                log.warn("Faild to read Banner file [{}]", FILE, e);
             }
         } else {
-            log.warn("未找到{}文件", FILE);
+            log.warn("Banner file [{}] not found", FILE);
         }
     }
 }

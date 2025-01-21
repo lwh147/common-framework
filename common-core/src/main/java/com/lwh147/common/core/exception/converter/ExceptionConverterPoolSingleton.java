@@ -43,18 +43,17 @@ public class ExceptionConverterPoolSingleton {
      * @param customPackages 用户自定义的异常转换器扫描包路径
      **/
     private void converterPoolInit(List<String> customPackages) {
-        log.debug("开始初始化异常转换器池...");
         converterPool = new HashMap<>(16);
         if (customPackages == null) {
             customPackages = new ArrayList<>(16);
         }
         customPackages.add(DEFAULT_PACKAGE_NAME);
-        log.debug("异常转换器扫描包路径：{}", customPackages);
+        log.debug("EnhancedException converter scan package paths: {}", customPackages);
         Reflections reflections = new Reflections(customPackages);
         Set<Class<? extends EnhancedExceptionConverter>> subTypes = reflections.getSubTypesOf(EnhancedExceptionConverter.class);
         Type type;
         EnhancedExceptionConverter<?> instance;
-        log.debug("扫描到的异常转换器：");
+        log.debug("Scanned exception converters: ");
         for (Class<? extends EnhancedExceptionConverter> cls : subTypes) {
             // 实例化转换器对象并根据其转换的异常类型放入转换器池中
             type = getType(cls);
@@ -62,7 +61,6 @@ public class ExceptionConverterPoolSingleton {
             converterPool.put(type, instance);
             log.debug("Type: {}, Converter: {}", type.toString(), instance.getClass());
         }
-        log.debug("异常转换器池初始化完成");
     }
 
     /**

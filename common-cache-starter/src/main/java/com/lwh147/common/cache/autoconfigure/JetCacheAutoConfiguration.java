@@ -54,7 +54,7 @@ public class JetCacheAutoConfiguration {
         final String localhostIp = "127.0.0.1";
 
         if (localhost.equals(redisProperties.getHost()) || localhostIp.equals(redisProperties.getHost())) {
-            log.warn("开启了JetCache但未提供Redis配置或使用本地Redis");
+            log.warn("JetCache is enabled but no Redis configuration is provided or local Redis is used");
         }
         // 使用Redis主机和端口号获取uri构建对象
         RedisURI.Builder uriBuilder = RedisURI.Builder.redis(redisProperties.getHost(), redisProperties.getPort());
@@ -76,7 +76,7 @@ public class JetCacheAutoConfiguration {
         uriBuilder.withSsl(redisProperties.isSsl());
 
         RedisURI uri = uriBuilder.build();
-        log.debug("建立Redis连接[{}]", uri.toURI().toString());
+        log.debug("Connected to Redis [{}]", uri.toURI().toString());
 
         // 创建基于Lettuce的Redis客户端
         RedisClient client = RedisClient.create(uri);
@@ -126,7 +126,7 @@ public class JetCacheAutoConfiguration {
         globalCacheConfig.setStatIntervalMinutes(jetCacheProperties.getStatIntervalMinutes());
         // 区域名不作为缓存key前缀
         globalCacheConfig.setAreaInCacheName(false);
-        log.debug("配置并开启JetCache[{}]", jetCacheProperties);
+        log.debug("Enable JetCache [{}]", jetCacheProperties);
         return globalCacheConfig;
     }
 
