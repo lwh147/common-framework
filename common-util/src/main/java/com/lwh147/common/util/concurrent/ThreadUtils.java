@@ -105,7 +105,7 @@ public final class ThreadUtils {
         DEFAULT_EXECUTOR = new ThreadPoolExecutor(
                 (int) (PROCESSOR_NUM * NumberConstant.DEFAULT_LOAD_FACTOR / EXECUTOR_COUNT + 1f),
                 (int) (2f * PROCESSOR_NUM * NumberConstant.DEFAULT_LOAD_FACTOR + 1f),
-                1L, TimeUnit.MINUTES,
+                3L, TimeUnit.MINUTES,
                 new LinkedBlockingQueue<>(BLOCK_QUEUE_SIZE),
                 new ThreadFactoryBuilder().setNamePrefix(DEFAULT_EXECUTOR_NAME_PREFIX).build());
         // 预加载线程池
@@ -129,5 +129,7 @@ public final class ThreadUtils {
         System.out.println(FREE_MEMORY);
         System.out.println(FREE_MEMORY > DEFAULT_THREAD_SIZE ?
                 (int) (FREE_MEMORY * NumberConstant.DEFAULT_LOAD_FACTOR / DEFAULT_THREAD_SIZE) : 1);
+        System.out.println((int) (PROCESSOR_NUM * NumberConstant.DEFAULT_LOAD_FACTOR / EXECUTOR_COUNT + 1f));
+        System.out.println((int) (2f * PROCESSOR_NUM * NumberConstant.DEFAULT_LOAD_FACTOR + 1f));
     }
 }
